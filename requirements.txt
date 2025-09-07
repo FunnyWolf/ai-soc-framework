@@ -1,0 +1,11 @@
+pydantic
+watchdog
+redis
+langgraph
+langgraph-checkpoint-redis
+langchain-core
+langchain-community
+langchain-openai
+thehive4py
+requests
+flask
