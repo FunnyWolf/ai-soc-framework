@@ -1,3 +1,7 @@
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from flask import Flask, request, jsonify
 
 from CONFIG import FLASK_LISTEN_PORT, FLASK_LISTEN_HOST
@@ -52,7 +56,6 @@ def index():
 
 
 if __name__ == '__main__':
-    logger.info(f"Starting Flask server on http://{FLASK_LISTEN_HOST}:{FLASK_LISTEN_PORT}")
     logger.info(f"Splunk Webhook URL : http://{FLASK_LISTEN_HOST}:{FLASK_LISTEN_PORT}/api/v1/webhook/splunk")
     logger.info(f"Kibana Webhook URL : http://{FLASK_LISTEN_HOST}:{FLASK_LISTEN_PORT}/api/v1/webhook/kibana")
     app.run(host=FLASK_LISTEN_HOST, port=FLASK_LISTEN_PORT)

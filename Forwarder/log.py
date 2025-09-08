@@ -2,7 +2,7 @@ import logging
 import sys
 
 
-def setup_logging(log_file='main.log'):
+def setup_logging(log_file='forwarder.log'):
     """
     Configures the root logger for the entire application.
     - Logs to both a file and the console.
