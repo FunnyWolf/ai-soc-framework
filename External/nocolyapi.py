@@ -5,7 +5,7 @@ import requests
 from CONFIG import NOCOLY_URL, AISOAR_APPKEY, AISOAR_SIGN
 
 
-class Field(TypedDict):
+class FieldType(TypedDict):
     id: str
     name: str
     alias: str
@@ -21,7 +21,7 @@ class Field(TypedDict):
     remark: str
 
 
-class Option(TypedDict):
+class OptionType(TypedDict):
     key: str
     value: str
     index: int
@@ -29,17 +29,17 @@ class Option(TypedDict):
 
 
 # Define the recursive types first
-class Condition(TypedDict):
+class ConditionType(TypedDict):
     type: Literal["condition"]
     field: str
     operator: str
     value: Any
 
 
-class Group(TypedDict):
+class GroupType(TypedDict):
     type: Literal["group"]
     logic: Literal["AND", "OR"]
-    children: List[Union["Group", Condition]]
+    children: List[Union["GroupType", ConditionType]]
 
 
 class Worksheet(object):
@@ -47,7 +47,7 @@ class Worksheet(object):
         pass
 
     @staticmethod
-    def get_fields(worksheet_id: str) -> List[Field]:
+    def get_fields(worksheet_id: str) -> List[FieldType]:
         headers = {"HAP-Appkey": AISOAR_APPKEY,
                    "HAP-Sign": AISOAR_SIGN}
         url = f"{NOCOLY_URL}/api/v3/app/worksheets/{worksheet_id}"
@@ -203,7 +203,7 @@ class OptionSet(object):
         raise Exception(f"optionset {name} not found")
 
     @staticmethod
-    def get_option_by_name_and_value(name, value) -> Option:
+    def get_option_by_name_and_value(name, value) -> OptionType:
         optionsets = OptionSet.list()
         for optionset in optionsets:
             if optionset["name"] == name:
@@ -245,6 +245,28 @@ class Artifact(object):
     def create(fields: list):
         row_id = WorksheetRow.create(Artifact.WORKSHEET_ID, fields)
         return row_id
+
+    @staticmethod
+    def get_by_deduplication_key(deduplication_key: str):
+        filter = {
+            "type": "group",
+            "logic": "AND",
+            "children": [
+                {
+                    "type": "condition",
+                    "field": "deduplication_key",
+                    "operator": "eq",
+                    "value": deduplication_key
+                },
+            ]
+        }
+        rows = WorksheetRow.list(Artifact.WORKSHEET_ID, filter)
+        if rows:
+            if len(rows) > 1:
+                raise Exception(f"found multiple rows with deduplication_key {deduplication_key}")
+            return rows[0]
+        else:
+            return None
 
     @staticmethod
     def update_by_type_and_value(data: dict):
@@ -331,13 +353,13 @@ class Case(object):
         rows = WorksheetRow.list(Case.WORKSHEET_ID, filter)
         if rows:
             if len(rows) > 1:
-                raise Exception(f"found multiple cases with deduplication_key {deduplication_key}")
+                raise Exception(f"found multiple rows with deduplication_key {deduplication_key}")
             return rows[0]
         else:
             return None
 
 
-class OptionAPI(object):
+class Option(object):
     def __init__(self):
         pass
 
