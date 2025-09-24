@@ -66,17 +66,18 @@ class RuleDefinition:
         for field in sorted(self.deduplication_fields):
             key_parts.append(artifacts_map.get(field, 'N/A'))
 
-        return "-".join(key_parts)
+        return "_".join(key_parts)
 
     def generate_case_title(self, artifacts: List[Dict[str, Any]] = None) -> str:
-        template_values = {"rule_name": self.rule_name}
-        for art in artifacts:
-            template_values[art['type']] = art['value']
         if self.case_title_template is None:
-            title = ""
+            title = self.rule_name
             for art in artifacts:
                 if art.get('type') in self.deduplication_fields:
-                    title += f" {art['type']}:{art['value']}"
-            return f"{self.rule_name}{title.strip()}"
+                    title = f"{title} {art['type']}:{art['value']}"
+            return title
         else:
-            return self.case_title_template.format_map(template_values)
+            template_values = {"rule_name": self.rule_name}
+            for art in artifacts:
+                template_values[art['type']] = art['value']
+            title = self.case_title_template.format_map(template_values)
+            return title
