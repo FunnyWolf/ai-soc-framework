@@ -93,11 +93,12 @@ class WorksheetRow(object):
             raise
 
     @staticmethod
-    def list(worksheet_id: str, filter: dict):
+    def list(worksheet_id: str, filter: dict, fields: list = None):
         headers = {"HAP-Appkey": AISOAR_APPKEY,
                    "HAP-Sign": AISOAR_SIGN}
         url = f"{NOCOLY_URL}/api/v3/app/worksheets/{worksheet_id}/rows/list"
         data = {
+            "fields": fields,
             "filter": filter,
             "sorts": [
                 {
@@ -108,6 +109,7 @@ class WorksheetRow(object):
             "includeTotalCount": True,
             "includeSystemFields": True,
             "useFieldIdAsKey": False,
+            "pageSize": 1000,
         }
         try:
             response = requests.post(url,
@@ -163,6 +165,31 @@ class WorksheetRow(object):
             response = requests.patch(url,
                                       headers=headers,
                                       json=data)
+            response.raise_for_status()
+
+            response_data = response.json()
+            if response_data.get("success"):
+                return response_data.get("data")
+            else:
+                raise Exception(f"error_code: {response_data.get('error_code')} error_msg: {response_data.get('error_msg')}")
+        except Exception as e:
+            raise
+
+    @staticmethod
+    def delete(worksheet_id: str, row_ids: list):
+        headers = {"HAP-Appkey": AISOAR_APPKEY,
+                   "HAP-Sign": AISOAR_SIGN}
+        url = f"{NOCOLY_URL}/api/v3/app/worksheets/{worksheet_id}/rows/batch"
+
+        data = {
+            "rowIds": row_ids,
+            "triggerWorkflow": True,
+        }
+
+        try:
+            response = requests.delete(url,
+                                       headers=headers,
+                                       json=data)
             response.raise_for_status()
 
             response_data = response.json()

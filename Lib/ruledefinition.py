@@ -12,9 +12,9 @@ class RuleDefinition:
                  rule_id: str,
                  rule_name: str,
                  deduplication_fields: List[str],
-                 case_title_template: str,
-                 deduplication_window: str,
-                 source: str,
+                 case_title_template: str = None,
+                 deduplication_window: str = "24h",
+                 source: str = "Default",
                  ):
 
         self.rule_id = rule_id
@@ -68,8 +68,15 @@ class RuleDefinition:
 
         return "-".join(key_parts)
 
-    def generate_case_title(self, artifacts: List[Dict[str, Any]]) -> str:
+    def generate_case_title(self, artifacts: List[Dict[str, Any]] = None) -> str:
         template_values = {"rule_name": self.rule_name}
         for art in artifacts:
             template_values[art['type']] = art['value']
-        return self.case_title_template.format_map(template_values)
+        if self.case_title_template is None:
+            title = ""
+            for art in artifacts:
+                if art.get('type') in self.deduplication_fields:
+                    title += f" {art['type']}:{art['value']}"
+            return f"{self.rule_name}{title.strip()}"
+        else:
+            return self.case_title_template.format_map(template_values)
