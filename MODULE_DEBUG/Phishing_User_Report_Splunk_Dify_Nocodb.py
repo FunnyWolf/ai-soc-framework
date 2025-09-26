@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 
 from External.difyclient import DifyClient
 from External.nocodbclient import NocodbClient
-from Lib.base import BaseModule
+from Lib.basemodule import BaseModule
 
 
 class AnalyzeResult(BaseModel):

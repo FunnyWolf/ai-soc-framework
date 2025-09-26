@@ -1,8 +1,26 @@
-from typing import TypedDict, Literal, List, Union, Any
+from typing import TypedDict, Literal, List, Union, Any, Dict, Optional
 
 import requests
 
 from CONFIG import NOCOLY_URL, AISOAR_APPKEY, AISOAR_SIGN
+from Lib.api import get_current_time_string, string_to_timestamp
+from Lib.ruledefinition import RuleDefinition
+
+
+class InputAlert(TypedDict):
+    source: str
+    rule_id: str
+    rule_name: str
+    name: str
+    alert_date: str
+    create_data: str
+    tags: List[str]
+    severity: str
+    reference: str
+    description: str
+    summary_ai: Optional[Union[str, Dict[str, Any]]]
+    artifacts: List[Dict]
+    raw_log: Dict
 
 
 class FieldType(TypedDict):
@@ -396,3 +414,92 @@ class Option(object):
         for option in options:
             value_list.append(option.get("value"))
         return value_list
+
+
+def common_handler(alert: InputAlert, rule_def: RuleDefinition) -> str:
+    # artifact
+    artifact_rowid_list = []
+    artifacts = alert.get("artifacts", [])
+    for artifact in artifacts:
+        deduplication_key = artifact["deduplication_key"]
+        artifact_fields = [
+            {"id": "type", "value": artifact["type"]},
+            {"id": "value", "value": artifact["value"]},
+            {"id": "enrichment", "value": artifact["enrichment"]},
+            {"id": "deduplication_key", "value": deduplication_key},
+        ]
+
+        row = Artifact.get_by_deduplication_key(deduplication_key)
+        if row is None:
+            row_id = Artifact.create(artifact_fields)
+        else:
+            row_id = row.get("rowId")
+            Artifact.update(row_id, artifact_fields)
+
+        artifact_rowid_list.append(row_id)
+
+    alert_fields = [
+        {"id": "tags", "value": alert.get("tags"), "type": 2},
+        {"id": "severity", "value": alert.get("severity")},
+        {"id": "source", "value": alert.get("source")},
+        {"id": "alert_date", "value": alert.get("alert_date")},
+        {"id": "reference", "value": alert.get("reference")},
+        {"id": "description", "value": alert.get("description")},
+        {"id": "raw_log", "value": alert.get("raw_log")},
+        {"id": "rule_id", "value": alert.get("rule_id")},
+        {"id": "rule_name", "value": alert.get("rule_name")},
+        {"id": "name", "value": alert.get("name")},
+        {"id": "summary_ai", "value": alert.get("summary_ai")},
+        {"id": "artifacts", "value": artifact_rowid_list},
+    ]
+
+    # alert
+    row_id_alert = Alert.create(alert_fields)
+
+    # case
+    timestamp = string_to_timestamp(alert["alert_date"], "%Y-%m-%dT%H:%M:%SZ")
+    deduplication_key = rule_def.generate_deduplication_key(artifacts=artifacts, timestamp=timestamp)
+
+    row = Case.get_by_deduplication_key(deduplication_key)
+    if row is None:
+        case_field = [
+            {"id": "title", "value": rule_def.generate_case_title(artifacts=artifacts)},
+            {"id": "deduplication_key", "value": deduplication_key},
+            {"id": "alert", "value": [row_id_alert]},
+            {"id": "case_status", "value": "New"},
+            {"id": "created_at", "value": get_current_time_string()},
+            {"id": "tags", "value": alert["tags"], "type": 2},
+            {"id": "severity", "value": alert["severity"]},
+            {"id": "type", "value": rule_def.source},
+            {"id": "description", "value": alert["description"]},
+        ]
+        row_id_create = Case.create(case_field)
+        return row_id_create
+    else:
+        row_id_case = row.get("rowId")
+        existing_alerts = row.get("alert", [])
+        if row_id_alert not in existing_alerts:
+            existing_alerts.append(row_id_alert)
+
+        option_new_score = OptionSet.get_option_by_name_and_value("alert_case_severity", alert["severity"]).get("score", 0)
+
+        severity_value_exist = row.get("severity")[0].get("value")
+        option_exist_score = OptionSet.get_option_by_name_and_value("alert_case_severity", severity_value_exist).get("score", 0)
+
+        if option_new_score > option_exist_score:
+            severity = alert["severity"]
+        else:
+            severity = severity_value_exist
+
+        tags_exist = Option.to_value_list(row.get("tags", []))
+        for tag in alert["tags"]:
+            if tag not in tags_exist:
+                tags_exist.append(tag)
+
+        case_field = [
+            {"id": "alert", "value": existing_alerts},
+            {"id": "severity", "value": severity},
+            {"id": "tags", "value": tags_exist, "type": 2}
+        ]
+        row_id_updated = Case.update(row_id_case, case_field)
+        return row_id_updated

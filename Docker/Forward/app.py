@@ -1,12 +1,35 @@
-import sys
 import os
+import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from flask import Flask, request, jsonify
 
+from flask import Flask, request, jsonify
 from CONFIG import FLASK_LISTEN_PORT, FLASK_LISTEN_HOST
-from Forwarder.log import logger
 from Lib.redis_stream_api import RedisStreamAPI
+
+import logging
+import sys
+
+
+def setup_logging(log_file='forwarder.log'):
+    """
+    Configures the root logger for the entire application.
+    - Logs to both a file and the console.
+    - Sets a standardized format for log messages.
+    """
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(levelname)s - %(asctime)s - [%(name)s] - %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S',
+        handlers=[
+            logging.FileHandler(log_file),
+            logging.StreamHandler(sys.stdout)
+        ]
+    )
+
+
+setup_logging()
+logger = logging.getLogger("forwarder")
 
 redis_stream_api = RedisStreamAPI()
 app = Flask(__name__)

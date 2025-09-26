@@ -3,7 +3,6 @@ import os
 import threading
 import time
 
-from Core.module_loader import start_watching
 from Lib.log import logger
 
 
@@ -11,22 +10,16 @@ class Engine:
     def __init__(self):
         self.modules = {}
         self.modules_dir = "MODULES"
-        self.observer = None
 
     def start(self):
         if not os.path.isdir(self.modules_dir):
             os.makedirs(self.modules_dir)
 
         self._load_initial_modules()
-        self.observer = start_watching(self, self.modules_dir)
 
         logger.info("Engine started successfully, beginning module monitoring")
 
     def stop(self):
-        if self.observer:
-            self.observer.stop()
-            self.observer.join()
-
         for module_name in list(self.modules.keys()):
             self.unload_module(module_name)
         logger.info("All modules have been stopped")

@@ -1,5 +1,5 @@
 import json
-import uuid
+import textwrap
 from datetime import datetime
 from typing import Optional, Union, Dict, Any
 
@@ -7,12 +7,14 @@ from langchain_core.messages import AIMessage, HumanMessage
 from langgraph.graph import StateGraph
 from langgraph.graph.state import CompiledStateGraph
 from pydantic import BaseModel, Field
-from thehive4py.types.alert import InputAlert, OutputAlert
 
+from External.nocolyapi import InputAlert, common_handler
 from External.opanaiapi import OpenAIAPI
 from External.thehiveclient import TheHiveClient
-from Lib.base import LanggraphModule
+from Lib.api import string_to_string_time, get_current_time_string
+from Lib.basemodule import LanggraphModule
 from Lib.llmapi import AgentState
+from Lib.ruledefinition import RuleDefinition
 
 
 class AnalyzeResult(BaseModel):
@@ -38,6 +40,7 @@ class Module(LanggraphModule):
             if alert is None:
                 return
 
+            alert = json.loads(alert["_raw"])
             # 解析数据,此处是获取Kibana获取的alert样例
             headers = alert["headers"]
             headers = {"From": headers["From"], "To": headers["To"], "Subject": headers["Subject"], "Date": headers["Date"],
@@ -146,31 +149,65 @@ class Module(LanggraphModule):
             analyze_result: AnalyzeResult = AnalyzeResult(**state.analyze_result)
             alert_raw = state.alert_raw
 
-            to = alert_raw["headers"]["To"]
-            subject = alert_raw["headers"]["Subject"]
+            mail_to = alert_raw["headers"]["To"]
+            mail_subject = alert_raw["headers"]["Subject"]
+            mail_from = alert_raw["headers"]["From"]
             if analyze_result.is_phishing and analyze_result.confidence > 0.8:
-                severity = 2
+                severity = "High"
             else:
-                severity = 0
+                severity = "Info"
 
-            # 发送到thehive
+            alert_date = string_to_string_time(alert_raw.get("@timestamp"), "%Y-%m-%dT%H:%M:%S.%fZ", "%Y-%m-%dT%H:%M:%SZ")
+            description = f"""
+                ## Analyze Result (AI)
+
+                * **confidence**: {analyze_result.confidence}
+                * **is_phishing**: <font color="green">{analyze_result.is_phishing}</font>
+                """
+            description = textwrap.dedent(description).strip()
+
+            rule_name = "用户上报的钓鱼邮件"
             input_alert: InputAlert = {
-                "type": "phishing",
-                "source": "user_report",
-                "sourceRef": str(uuid.uuid4()),
-                "title": self.module_name,
-                "description": f"```json{alert_raw}```",
-                "tags": ["phishing", "user_report"],
+                "source": "Email",
+                "rule_id": self.module_name,
+                "rule_name": rule_name,
+                "name": f"用户上报的钓鱼邮件: {mail_subject}",
+                "alert_date": alert_date,
+                "create_data": get_current_time_string(),
+                "tags": ["phishing", "user-report"],
                 "severity": severity,
-                "summary": f"{analyze_result.model_dump()}",
-                "observables": [
-                    {"dataType": "mail", "data": to},
-                    {"dataType": "mail-subject", "data": subject},
+                "description": description,
+                "reference": "https://your-siem-or-device-url.com/data?source=123456",
+                "summary_ai": analyze_result.reasoning,
+                "artifacts": [
+                    {
+                        "type": "mail_to",
+                        "value": mail_to,
+                        "deduplication_key": f"mail_to-{mail_to}",
+                        "enrichment": {"update_time": get_current_time_string()}  # just for test, no meaning, data should come from TI or other cmdb
+                    },
+                    {
+                        "type": "mail_subject",
+                        "value": mail_subject,
+                        "deduplication_key": f"mail_subject-{mail_subject}",
+                        "enrichment": {"update_time": get_current_time_string()}
+                    },
+                    {
+                        "type": "mail_from",
+                        "value": mail_from,
+                        "deduplication_key": f"mail_from-{mail_from}",
+                        "enrichment": {"update_time": get_current_time_string()}
+                    },
                 ],
+                "raw_log": alert_raw
             }
-
-            output_alert: OutputAlert = self.thehive_client.alert_create(input_alert)
-            self.logger.debug(output_alert)
+            rule = RuleDefinition(
+                rule_id=self.module_name,
+                rule_name=rule_name,
+                deduplication_fields=["mail_from"],
+                source="Email"
+            )
+            case_row_id = common_handler(input_alert, rule)
             return state
 
         # 编译graph
@@ -191,6 +228,6 @@ class Module(LanggraphModule):
 
 if __name__ == "__main__":
     module = Module()
-    module.debug_alert_name = "Phishing_User_Report_Kibana_Langgraph_Thehive"
+    module.debug_alert_name = "ES-Rule-21-Phishing_user_report_mail"  # needed when debug module, framework will read redis stream by this name
     module.debug_message_id = "0-0"
     module.run()

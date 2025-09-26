@@ -30,3 +30,8 @@ THEHIVE_API_KEY = "xxx"
 NOCODB_URL = "http://192.168.1.114:8080"
 NOCODB_TOKEN = "xxx"
 NOCODB_ALERT_TABLE_ID = "xxx"
+
+# ollama config example
+# OPENAI_BASE_URL = 'http://localhost:11434/v1'
+# OPENAI_API_KEY='ollama'
+# OPENAI_MODEL = "qwen3:30b-a3b"
