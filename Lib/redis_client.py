@@ -1,9 +1,9 @@
 import redis
-from Lib.log import logger
 
 from CONFIG import (
     REDIS_HOST, REDIS_PORT, REDIS_DB, REDIS_PASSWORD
 )
+from Lib.log import logger
 
 
 class RedisClient(object):

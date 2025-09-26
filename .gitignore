@@ -168,4 +168,5 @@ cython_debug/
 .idea/
 Test/*
 CONFIG.py
-Test
+Docker/log/*
+!Docker/log/.gitkeep

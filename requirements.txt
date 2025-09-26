@@ -1,5 +1,4 @@
 pydantic
-watchdog
 redis
 langgraph
 langgraph-checkpoint-redis
@@ -8,4 +7,19 @@ langchain-community
 langchain-openai
 thehive4py
 requests
-flask
+Django
+djangorestframework
+channels
+requests
+APScheduler
+django-redis
+dnspython
+tldextract
+pycryptodome
+cryptography
+Jinja2
+dnslib
+pluginbase
+rsa
+pluginbase
+lxml
