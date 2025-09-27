@@ -1,8 +1,6 @@
 import redis
 
-from CONFIG import (
-    REDIS_HOST, REDIS_PORT, REDIS_DB, REDIS_PASSWORD
-)
+from CONFIG import REDIS_URL
 from Lib.log import logger
 
 
@@ -14,15 +12,7 @@ class RedisClient(object):
     @staticmethod
     def get_stream_connection():
         """用于订阅类操作,无需使用连接池"""
-
-        redis_client = redis.Redis(
-            host=REDIS_HOST,
-            port=REDIS_PORT,
-            db=REDIS_DB,
-            password=REDIS_PASSWORD,
-            decode_responses=True,
-        )
-
+        redis_client = redis.Redis.from_url(f"{REDIS_URL}0", decode_responses=True)
         # 测试连接
         try:
             redis_client.ping()

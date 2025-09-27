@@ -132,9 +132,9 @@ class Module(LanggraphModule):
             openai_api = OpenAIAPI()
 
             model_kwargs = {
-                "extra_body": {
-                    "enable_thinking": False
-                }
+                # "extra_body": {
+                #     "enable_thinking": False
+                # }
             }
 
             llm = openai_api.get_model(model_kwargs)
@@ -173,7 +173,7 @@ class Module(LanggraphModule):
                 "rule_name": rule_name,
                 "name": f"用户上报的钓鱼邮件: {mail_subject}",
                 "alert_date": alert_date,
-                "create_data": get_current_time_string(),
+                "created_date": get_current_time_string(),
                 "tags": ["phishing", "user-report"],
                 "severity": severity,
                 "description": description,
@@ -228,6 +228,7 @@ class Module(LanggraphModule):
 
 if __name__ == "__main__":
     module = Module()
+    # module.debug_alert_name = "ES-Rule-21-Phishing_user_report_mail"  # needed when debug module, framework will read redis stream by this name
     module.debug_alert_name = "ES-Rule-21-Phishing_user_report_mail"  # needed when debug module, framework will read redis stream by this name
     module.debug_message_id = "0-0"
     module.run()

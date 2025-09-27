@@ -13,7 +13,7 @@ class InputAlert(TypedDict):
     rule_name: str
     name: str
     alert_date: str
-    create_data: str
+    created_date: str
     tags: List[str]
     severity: str
     reference: str
@@ -443,6 +443,7 @@ def common_handler(alert: InputAlert, rule_def: RuleDefinition) -> str:
         {"id": "severity", "value": alert.get("severity")},
         {"id": "source", "value": alert.get("source")},
         {"id": "alert_date", "value": alert.get("alert_date")},
+        {"id": "created_date", "value": alert.get("created_date")},
         {"id": "reference", "value": alert.get("reference")},
         {"id": "description", "value": alert.get("description")},
         {"id": "raw_log", "value": alert.get("raw_log")},

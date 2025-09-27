@@ -69,6 +69,11 @@
 
 您可以参考 `MODULES` 目录下的现有模块，开发自己的自动化流程。每个模块都是一个独立的 Python 文件，框架会自动加载并运行它。
 
+
+## TODO
+- Redis Stream 过期策略
+
+
 ## 许可证
 
 该项目采用 [MIT](https://choosealicense.com/licenses/mit/) 许可证。
