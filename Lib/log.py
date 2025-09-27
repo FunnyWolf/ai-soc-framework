@@ -1,3 +1,3 @@
 import logging
 
-logger = logging.getLogger("ai-soc-framework")
+logger = logging.getLogger("django")

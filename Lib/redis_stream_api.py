@@ -1,3 +1,4 @@
+import datetime
 import json
 from typing import Dict, Any, Optional, List
 
@@ -263,3 +264,29 @@ class RedisStreamAPI:
             self.redis_client.close()
         except Exception as e:
             logger.exception(e)
+
+    def clean_redis_stream(self, max_age_days=30):
+        """
+        清理Redis Stream中超过指定天数的键值对。
+        """
+        # 计算最老允许的时间戳，单位为毫秒
+        # Unix时间戳（秒）* 1000
+        logger.info(f"开始清理Redis Stream中超过 {max_age_days} 天的键值对...")
+        cutoff_timestamp_ms = int((datetime.datetime.now() - datetime.timedelta(days=max_age_days)).timestamp() * 1000)
+
+        try:
+            for key in self.redis_client.scan_iter(match='*'):
+                # 检查键的类型是否为 stream
+                if self.redis_client.type(key) == 'stream':
+                    # 使用 XTRIM 命令删除早于给定ID的条目
+                    # ID的格式是 `unix_time_ms-sequence_number`
+                    # 我们可以使用 `unix_time_ms-0` 作为删除的上限ID
+                    trim_id = f'{cutoff_timestamp_ms}-0'
+
+                    # `XTRIM` 带有 `MINID` 选项，用于删除ID小于指定ID的所有条目
+                    trimmed_count = self.redis_client.xtrim(key, minid=trim_id)
+                    logger.info(f"  已从Stream '{key}' 中删除 {trimmed_count} 个过期条目。")
+        except Exception as e:
+            logger.exception(e)
+        finally:
+            logger.info("清理任务完成。")
