@@ -4,7 +4,7 @@
 *.pyc
 __pycache__/
 local_settings.py
-db.sqlite3
+#db.sqlite3
 db.sqlite3-journal
 media
 
@@ -176,5 +176,8 @@ Test/*
 Docker/log/*
 !Docker/log/.gitkeep
 
-PLAYBOOK/Debug_*
+Docker/mcp_uuid
+Docker/db_chroma/*
+PLAYBOOKS/Debug_*
 DATA/Debug_*/
+PLUGINS/Embeddings/db/*

@@ -28,15 +28,13 @@ def timestamp_to_string(timestamp, format_str: str = "%Y-%m-%d %H:%M:%S") -> str
 
     # 转换为默认格式的时间字符串
     time_string_default = timestamp_to_string(current_timestamp)
-    print(f"默认格式: {time_string_default}")
 
     # 转换为带毫秒的格式
     time_string_with_ms = timestamp_to_string(current_timestamp, "%Y-%m-%d %H:%M:%S.%f")
-    print(f"带毫秒格式: {time_string_with_ms}")
 
     # 转换为只包含日期和时区的格式
     time_string_custom = timestamp_to_string(current_timestamp, "%Y/%m/%d %Z")
-    print(f"自定义格式: {time_string_custom}")
+
     """
     dt_object = datetime.datetime.fromtimestamp(timestamp)
     return dt_object.strftime(format_str)
@@ -47,7 +45,6 @@ def string_to_timestamp(time_string: str, format_str: str = "%Y-%m-%dT%H:%M:%S")
     time_string = "2023-01-01 00:00:00"
 
     timestamp_result = string_to_timestamp(time_string)
-    print(f"时间戳结果: {timestamp_result}")
 
     time_string_custom = "2023/12/25 10:30:00"
     timestamp_custom = string_to_timestamp(time_string_custom, "%Y/%m/%d %H:%M:%S")
@@ -65,7 +62,6 @@ def string_to_string_time(time_string: str, from_format: str, to_format: str) ->
     time_string = "2023-01-01 00:00:00"
 
     converted_time = string_to_string_time(time_string, "%Y-%m-%d %H:%M:%S", "%Y/%m/%d %I:%M %p")
-    print(f"转换后的时间字符串: {converted_time}")
     """
     dt_object = datetime.datetime.strptime(time_string, from_format)
     return dt_object.strftime(to_format)
@@ -74,7 +70,6 @@ def string_to_string_time(time_string: str, from_format: str, to_format: str) ->
 def get_current_timestamp() -> int:
     """
     current_ts = get_current_timestamp()
-    print(f"当前时间戳: {current_ts}")
     """
     return int(time.time())
 
@@ -84,11 +79,9 @@ def get_current_time_string(format_str: str = "%Y-%m-%dT%H:%M:%SZ") -> str:
     # 示例
     # 默认格式
     current_time_str = get_current_time_string()
-    print(f"当前时间字符串（默认格式）: {current_time_str}")
 
     # 自定义格式：年-月-日
     current_date_str = get_current_time_string("%Y-%m-%d")
-    print(f"当前时间字符串（自定义格式）: {current_date_str}")
     """
     return datetime.datetime.now().strftime(format_str)
 
@@ -135,6 +128,35 @@ def is_ipaddress(ip_str):
         return True
     except Exception as E:
         return False
+
+
+def is_private_ip(ip_address: str) -> bool:
+    # 私有 IP 地址段的 CIDR 列表
+    # 注意：根据您的要求，不添加任何调试信息，如果有异常直接raise
+    PRIVATE_NETWORKS = [
+        '10.0.0.0/8',
+        '172.16.0.0/12',
+        '192.168.0.0/16',
+    ]
+
+    try:
+        ip = ipaddress.ip_address(ip_address)
+    except ValueError as e:
+        # 如果 ipaddress.ip_address 抛出异常，根据要求直接 raise
+        return False
+
+    # 检查是否为 IPv4 地址
+    if not isinstance(ip, ipaddress.IPv4Address):
+        # 仅处理 IPv4 地址，IPv6 地址不在此函数的内网判断范围
+        return False
+
+    # 遍历私有网络，检查 IP 是否在其中
+    for network_cidr in PRIVATE_NETWORKS:
+        network = ipaddress.ip_network(network_cidr)
+        if ip in network:
+            return True
+
+    return False
 
 
 def is_domain(url):
@@ -304,11 +326,12 @@ def get_dns_cname(domain):
         # 返回CNAME记录列表
         return [cname_record.to_text() for cname_record in cname]
     except dns.resolver.NXDOMAIN:
-        print(f"Domain {domain} does not exist.")
+        pass
+
     except dns.resolver.NoAnswer:
-        print(f"No CNAME record found for {domain}.")
+        pass
     except Exception as e:
-        print(f"An error occurred: {e}")
+        pass
 
     return []
 
@@ -324,12 +347,11 @@ def get_dns_a(domain):
         # 返回CNAME记录列表
         return [a.to_text() for a in A]
     except dns.resolver.NXDOMAIN:
-        print(f"Domain {domain} does not exist.")
+        pass
     except dns.resolver.NoAnswer:
-        print(f"No CNAME record found for {domain}.")
+        pass
     except Exception as e:
-        print(f"An error occurred: {e}")
-
+        pass
     return []
 
 
@@ -486,3 +508,80 @@ def read_file_and_base64(file_path: str) -> dict:
     except Exception as e:
         # 直接raise异常，不包含调试信息
         raise Exception(f"发生未知错误: {e}")
+
+
+def generate_four_random_timestamps(
+        days_ago_max: int = 10,
+        min_delta_2: int = 0,
+        max_delta_2: int = 10,  # T2 在 T1 之后 0 到 10 分钟内
+        min_delta_3: int = 0,
+        max_delta_3: int = 30,  # T3 在 T2 之后 0 到 30 分钟内
+        min_delta_4: int = 0,
+        max_delta_4: int = 12 * 60,  # T4 在 T3 之后 0 到 12 小时内 (转换为分钟)
+) -> dict:
+    """
+    生成四个满足指定时间间隔和格式的随机时间戳。
+
+    Args:
+        days_ago_max: 第一个时间点 T1 最多在当前时间之前的天数（可配置）。
+        min_delta_2, max_delta_2: T2 相对于 T1 的最小/最大分钟间隔。
+        min_delta_3, max_delta_3: T3 相对于 T2 的最小/最大分钟间隔。
+        min_delta_4, max_delta_4: T4 相对于 T3 的最小/最大分钟间隔（以分钟计）。
+
+    Returns:
+        包含四个格式化时间戳的字典。
+    """
+
+    # 1. 定义时间戳格式
+    # %Y-%m-%dT%H:%M:%SZ 格式对应 ISO 8601，其中 'Z' 表示 UTC/Zulu time
+    TIME_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
+
+    # 2. 获取当前的 UTC 时间作为基准时间
+    # 使用 UTC 时间可以避免时区和夏令时问题
+    now_utc = datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
+
+    # --- 生成 T1 (当前时间点之前 [0, days_ago_max] 天内随机的一个时间) ---
+
+    # 计算 T1 的时间范围：[now_utc - days_ago_max 天, now_utc]
+    start_t1 = now_utc - datetime.timedelta(days=days_ago_max)
+
+    # 将时间范围转换为秒数（时间戳）
+    time_diff_seconds = int((now_utc - start_t1).total_seconds())
+
+    # 生成一个 T1 之前的随机秒数
+    random_seconds_t1 = random.randint(0, time_diff_seconds)
+
+    # 计算 T1
+    t1 = start_t1 + datetime.timedelta(seconds=random_seconds_t1)
+
+    # --- 生成 T2 (T1 之后 [min_delta_2, max_delta_2] 分钟内随机的一个时间) ---
+
+    # 随机选择一个分钟间隔
+    random_minutes_t2 = random.randint(min_delta_2, max_delta_2)
+    # 计算 T2
+    t2 = t1 + datetime.timedelta(minutes=random_minutes_t2)
+
+    # --- 生成 T3 (T2 之后 [min_delta_3, max_delta_3] 分钟内随机的一个时间) ---
+
+    # 随机选择一个分钟间隔
+    random_minutes_t3 = random.randint(min_delta_3, max_delta_3)
+    # 计算 T3
+    t3 = t2 + datetime.timedelta(minutes=random_minutes_t3)
+
+    # --- 生成 T4 (T3 之后 [min_delta_4, max_delta_4] 分钟内随机的一个时间) ---
+
+    # 随机选择一个分钟间隔
+    random_minutes_t4 = random.randint(min_delta_4, max_delta_4)
+    # 计算 T4
+    t4 = t3 + datetime.timedelta(minutes=random_minutes_t4)
+
+    # 3. 格式化输出
+    # strftime("%Y-%m-%dT%H:%M:%SZ") 将 datetime 对象格式化为所需字符串
+    result = {
+        "alert_date": t1.strftime(TIME_FORMAT),
+        "created_date": t2.strftime(TIME_FORMAT),
+        "acknowledged_date": t3.strftime(TIME_FORMAT),
+        "closed_date": t4.strftime(TIME_FORMAT),
+    }
+
+    return result

@@ -52,7 +52,7 @@ class Engine:
             module_class = getattr(module, "Module")
 
             threads = []
-            for i in range(module_class.thread_num):
+            for i in range(module_class.THREAD_NUM):
                 thread_name = f"{module_name}_thread_{i}"
                 instance = module_class()
                 instance._thread_name = thread_name

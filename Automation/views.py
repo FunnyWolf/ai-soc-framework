@@ -12,7 +12,9 @@ class PlaybookView(BaseView):
     def create(self, request, **kwargs):
         try:
             playbook = request.data.get('playbook')
-            context = Playbook.create(playbook, params=request.data)
+            name = request.data.get('playbook_name')
+            type = request.data.get('playbook_type')
+            context = Playbook.create(playbook=playbook, params=request.data, name=name, type=type)
         except Exception as E:
             logger.exception(E)
             context = data_return(500, {"status": "Failed", "job_id": None}, CODE_MSG_ZH.get(500), CODE_MSG_EN.get(500))

@@ -62,7 +62,6 @@ class WebhookNocolyMailView(BaseView):
     def create(self, request, **kwargs):
         try:
             data = request.data
-            print(data)
             context = data_return(200, {}, CODE_MSG_ZH.get(200), CODE_MSG_EN.get(200))
             return Response(context)
         except Exception as E:

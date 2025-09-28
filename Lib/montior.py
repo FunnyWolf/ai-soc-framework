@@ -7,6 +7,7 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from django.contrib.auth.models import User
 
+from Automation.Handle.playbook import Playbook
 from CONFIG import REDIS_STREAM_STORE_DAYS, ASF_TOKEN
 from Lib.engine import Engine
 from Lib.log import logger
@@ -28,15 +29,21 @@ class MainMonitor(object):
 
     def start(self):
         logger.info("启动后台服务")
+
+        # add api user
+        logger.info("写入ASF_TOKEN到缓存")
         api_usr = User()
         api_usr.username = "api_token"
         api_usr.is_active = True
         Xcache.set_token_user(ASF_TOKEN, api_usr, None)
 
+        logger.info("加载剧本配置信息")
+        Playbook.load_all_module_config()
+
         self.MainScheduler.add_job(func=self.subscribe_clean_thread,
                                    max_instances=1,
                                    trigger='interval',
-                                   minutes=5,
+                                   hours=1,
                                    id='subscribe_clean_thread')
         self.MainScheduler.start()
 

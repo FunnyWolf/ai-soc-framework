@@ -4,19 +4,18 @@ from typing import Optional, Union, Dict, Any
 
 from pydantic import BaseModel, Field
 
-from Lib.External.difyclient import DifyClient
-from Lib.External.nocolyapi import InputAlert
-from Lib.External.sirpapi import common_handler
 from Lib.api import string_to_string_time, get_current_time_string
 from Lib.basemodule import BaseModule
-from Lib.ruledefinition import RuleDefinition
+from Lib.grouprule import GroupRule
+from PLUGINS.Dify.dify import Dify
+from PLUGINS.SIRP.sirpapi import create_alert_with_group_rule, InputAlert
 
 
 class AnalyzeResult(BaseModel):
-    """用于从文本中提取用户信息的结构"""
-    is_phishing: bool = Field(description="是否为钓鱼邮件，True或False")
-    confidence: float = Field(description="信心指数,范围0到1之间")
-    reasoning: Optional[Union[str, Dict[str, Any]]] = Field(description="推理过程", default=None)
+    """Structure for extracting user information from text"""
+    is_phishing: bool = Field(description="Whether it is a phishing email, True or False")
+    confidence: float = Field(description="Confidence score, range between 0 and 1")
+    reasoning: Optional[Union[str, Dict[str, Any]]] = Field(description="Reasoning process", default=None)
 
 
 class Module(BaseModule):
@@ -25,14 +24,14 @@ class Module(BaseModule):
         super().__init__()
 
     def alert_preprocess_node(self):
-        """预处理告警数据"""
-        # 获取stream中的原始告警
+        """Preprocess alert data"""
+        # Get raw alert from stream
         alert = self.read_message()
         if alert is None:
             return
 
-        # 解析数据,此处是获取Splunk Webhook发送的JSON数据的处理样例
-        alert = json.loads(alert["_raw"])
+        # Parse data, this is an example of handling JSON data sent by Splunk Webhook
+        # alert = json.loads(alert["_raw"])
 
         headers = alert["headers"]
         headers = {"From": headers["From"], "To": headers["To"], "Subject": headers["Subject"], "Date": headers["Date"],
@@ -44,9 +43,8 @@ class Module(BaseModule):
         return
 
     def alert_analyze_node(self):
-        api_key = self.get_dify_api_key()
-        client = DifyClient()
-
+        client = Dify()
+        api_key = client.get_dify_api_key(self.module_name)
         inputs = {
             "alert_raw": json.dumps(self.agent_state.alert_raw)
         }
@@ -60,7 +58,7 @@ class Module(BaseModule):
         return
 
     def alert_output_node(self):
-        """处理分析结果"""
+        """Process analysis results"""
         analyze_result: AnalyzeResult = AnalyzeResult(**self.agent_state.analyze_result)
         alert_raw = self.agent_state.alert_raw
 
@@ -81,12 +79,12 @@ class Module(BaseModule):
                         """
         description = textwrap.dedent(description).strip()
 
-        rule_name = "用户上报的钓鱼邮件"
+        rule_name = "User Reported Phishing Email"
         input_alert: InputAlert = {
             "source": "Email",
             "rule_id": self.module_name,
             "rule_name": rule_name,
-            "name": f"用户上报的钓鱼邮件: {mail_subject}",
+            "name": f"User Reported Phishing Email: {mail_subject}",
             "alert_date": alert_date,
             "created_date": get_current_time_string(),
             "tags": ["phishing", "user-report"],
@@ -98,31 +96,33 @@ class Module(BaseModule):
                 {
                     "type": "mail_to",
                     "value": mail_to,
-                    "deduplication_key": f"mail_to-{mail_to}",
+                    # "deduplication_key": f"mail_to-{mail_to}",
                     "enrichment": {"update_time": get_current_time_string()}  # just for test, no meaning, data should come from TI or other cmdb
                 },
                 {
                     "type": "mail_subject",
                     "value": mail_subject,
-                    "deduplication_key": f"mail_subject-{mail_subject}",
+                    # "deduplication_key": f"mail_subject-{mail_subject}",
                     "enrichment": {"update_time": get_current_time_string()}
                 },
                 {
                     "type": "mail_from",
                     "value": mail_from,
-                    "deduplication_key": f"mail_from-{mail_from}",
+                    # "deduplication_key": f"mail_from-{mail_from}",
                     "enrichment": {"update_time": get_current_time_string()}
                 },
             ],
             "raw_log": alert_raw
         }
-        rule = RuleDefinition(
+        workbook = self.load_markdown_template("PHISHING_L2_WORKBOOK").format()
+        rule = GroupRule(
             rule_id=self.module_name,
             rule_name=rule_name,
             deduplication_fields=["mail_from"],
-            source="Email"
+            source="Email",
+            workbook=workbook,
         )
-        case_row_id = common_handler(input_alert, rule)
+        case_row_id = create_alert_with_group_rule(input_alert, rule)
 
         return
 

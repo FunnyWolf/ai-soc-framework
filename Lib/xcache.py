@@ -6,11 +6,13 @@
 from django.core.cache import cache
 
 from Lib.configs import EXPIRE_MINUTES
+from Lib.log import logger
 
 
 class Xcache(object):
     XCACHE_TOKEN = "XCACHE_TOKEN"
     XCACHE_MODULES_TASK_LIST = "XCACHE_MODULES_TASK_LIST"
+    XCACHE_MODULES_CONFIG = "XCACHE_MODULES_CONFIG"
 
     def __init__(self):
         pass
@@ -65,3 +67,40 @@ class Xcache(object):
         re_key = f"{Xcache.XCACHE_MODULES_TASK_LIST}_*"
         keys = cache.keys(re_key)
         return len(keys)
+
+    @staticmethod
+    def list_module_configs():
+        modules_config = cache.get(Xcache.XCACHE_MODULES_CONFIG)
+        if modules_config is None:
+            return None
+        else:
+            return modules_config
+
+    @staticmethod
+    def update_module_configs(all_modules_config):
+        cache.set(Xcache.XCACHE_MODULES_CONFIG, all_modules_config, None)
+        return True
+
+    @staticmethod
+    def get_module_config(loadpath):
+        modules_config = cache.get(Xcache.XCACHE_MODULES_CONFIG)
+        try:
+            for config in modules_config:
+                if config.get("loadpath") == loadpath:
+                    return config
+            return None
+        except Exception as E:
+            logger.exception(E)
+            return None
+
+    @staticmethod
+    def get_module_config_by_name_and_type(type, name):
+        modules_config = cache.get(Xcache.XCACHE_MODULES_CONFIG)
+        try:
+            for config in modules_config:
+                if config.get("NAME") == name and config.get("TYPE") == type:
+                    return config
+            return None
+        except Exception as E:
+            logger.exception(E)
+            return None

@@ -10,46 +10,6 @@
 - AI SOAR 内置简单易用的告警聚合功能, 支持默认规则和自定义规则
 - 框架代码皆为 Python 编写, 易于二次开发和扩展
 
-### AI SOAR Dashboard
-
-![img.png](Static/img.png)
-
-![img_1.png](Static/img_1.png)
-
-### AI SOAR Case Table
-
-![img_2.png](Static/img_2.png)
-
-![img_3.png](Static/img_3.png)
-
-![img_4.png](Static/img_4.png)
-
-![img_5.png](Static/img_5.png)
-
-### AI SOAR Alert Table
-
-![img_6.png](Static/img_6.png)
-
-![img_7.png](Static/img_7.png)
-
-![img_8.png](Static/img_8.png)
-
-![img_9.png](Static/img_9.png)
-
-### AI SOAR Artifact Table
-
-![img_10.png](Static/img_10.png)
-
-![img_11.png](Static/img_11.png)
-
-### Redis Alert Stream
-
-![img_12.png](Static/img_12.png)
-
-### 架构图
-
-![img.png](Static/img_arch.png)
-
 ## 为什么使用 ASF & ASF 解决哪些问题
 
 - 预算 / 资源有限无法购买商用 SOAR 产品
@@ -90,10 +50,6 @@
 - 企业没有基础的安全设备和日志采集能力
 
 > 没有设备就没有日志和告警, 那也就不需要自动化
-
-## 开发部署
-
-[Development](Development.md)
 
 ## 许可证
 
