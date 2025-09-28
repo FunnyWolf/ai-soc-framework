@@ -1,18 +1,21 @@
-# Flask Config
-FLASK_LISTEN_PORT = 7000
-FLASK_LISTEN_HOST = "0.0.0.0"
-
 # Redis Stack Config
-REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
-REDIS_DB = 0
-REDIS_PASSWORD = "redis-stack-password-for-ai-soc-framework"
+# You can change the Redis URL according to your environment
+# Login in Redis Insight by http://serverip:8001 and default/redis-stack-password-for-ai-soc-framework
+
+REDIS_URL = "redis://:redis-stack-password-for-ai-soc-framework@192.168.1.114:6379/"
+REDIS_STREAM_STORE_DAYS = 7  # 消息在Redis Stream中保存的天数
 
 # LLM Config
 OPENAI_API_KEY = "sk-xxx"
 OPENAI_BASE_URL = "https://api.openai.com/v1"
 OPENAI_MODEL = ""
 OPENAI_PROXY = ""
+
+# ollama config example
+# OPENAI_BASE_URL = 'http://localhost:11434/v1'
+# OPENAI_API_KEY='ollama'
+# OPENAI_MODEL = "qwen3:30b-a3b"
+
 
 # Dify Config
 DIFY_BASE_URL = "https://api.dify.ai/v1"
@@ -30,8 +33,3 @@ THEHIVE_API_KEY = "xxx"
 NOCODB_URL = "http://192.168.1.114:8080"
 NOCODB_TOKEN = "xxx"
 NOCODB_ALERT_TABLE_ID = "xxx"
-
-# ollama config example
-# OPENAI_BASE_URL = 'http://localhost:11434/v1'
-# OPENAI_API_KEY='ollama'
-# OPENAI_MODEL = "qwen3:30b-a3b"

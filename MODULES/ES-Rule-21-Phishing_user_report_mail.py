@@ -228,7 +228,6 @@ class Module(LanggraphModule):
 
 if __name__ == "__main__":
     module = Module()
-    # module.debug_alert_name = "ES-Rule-21-Phishing_user_report_mail"  # needed when debug module, framework will read redis stream by this name
     module.debug_alert_name = "ES-Rule-21-Phishing_user_report_mail"  # needed when debug module, framework will read redis stream by this name
     module.debug_message_id = "0-0"
     module.run()

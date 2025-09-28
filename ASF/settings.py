@@ -158,5 +158,15 @@ INSTALLED_APPS = [
     'Core',
     'Forwarder.apps.ForwarderConfig'
 ]
+APPEND_SLASH = False
+from CONFIG import REDIS_URL
 
-from CONFIG import CACHES
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": f"{REDIS_URL}1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}

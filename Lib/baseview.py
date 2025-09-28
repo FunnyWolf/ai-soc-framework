@@ -12,5 +12,8 @@ class FakeSerializer(Serializer):
 
 
 class BaseView(ModelViewSet, UpdateAPIView, DestroyAPIView):
-    queryset = None  # 设置类的queryset
+    queryset = []  # 设置类的queryset
     serializer_class = FakeSerializer  # 设置类的serializer_class
+
+
+

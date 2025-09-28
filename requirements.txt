@@ -23,4 +23,4 @@ pluginbase
 rsa
 pluginbase
 lxml
-flask
+uvicorn
