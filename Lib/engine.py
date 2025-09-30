@@ -12,8 +12,6 @@ class Engine:
         self.modules_dir = "MODULES"
 
     def start(self):
-        if not os.path.isdir(self.modules_dir):
-            os.makedirs(self.modules_dir)
 
         self._load_initial_modules()
 

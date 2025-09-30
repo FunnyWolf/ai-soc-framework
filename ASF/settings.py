@@ -10,9 +10,10 @@ try:
 except:
     SECRET_KEY = utils.get_random_secret_key()
     os.environ['SECRET_KEY'] = SECRET_KEY
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
 
+from CONFIG import REDIS_URL
+
+DEBUG = False
 ALLOWED_HOSTS = ['*']
 
 # Application definition
@@ -156,10 +157,10 @@ INSTALLED_APPS = [
 
     'channels',
     'Core',
-    'Forwarder.apps.ForwarderConfig'
+    'Forwarder.apps.ForwarderConfig',
+    'Automation.apps.AutomationConfig'
 ]
 APPEND_SLASH = False
-from CONFIG import REDIS_URL
 
 CACHES = {
     "default": {

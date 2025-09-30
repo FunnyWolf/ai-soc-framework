@@ -10,6 +10,7 @@ from rest_framework.viewsets import ModelViewSet
 from Core.Handle.currentuser import CurrentUser
 from Lib.api import data_return
 from Lib.baseview import BaseView
+from Lib.configs import BASEAUTH_MSG_ZH, BASEAUTH_MSG_EN, EXPIRE_MINUTES
 from Lib.log import logger
 
 

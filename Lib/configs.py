@@ -65,6 +65,26 @@ BASEAUTH_MSG_EN = {
     303: 'Viper has been brute force attack,please change password',
 }
 
+Playbook_MSG_ZH = {
+    201: "新建后台任务成功",
+
+    301: "模块前序检查失败,检查函数内部错误",
+    305: "获取模块配置失败",
+    306: "新建后台任务失败",
+    307: "新建后台任务失败",
+
+}
+
+Playbook_MSG_EN = {
+    201: "Create background task succeeded",
+
+    301: "Module pre-check failed, check function internal error",
+    305: "Failed to get module configuration",
+    306: "Failed to create a new background task",
+    307: "Failed to create background job",
+
+}
+
 Empty_MSG = {
     201: "",
     202: "",

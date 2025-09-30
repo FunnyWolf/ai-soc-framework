@@ -21,9 +21,9 @@ class Xcache(object):
         return cache_user
 
     @staticmethod
-    def set_token_user(token, user):
+    def set_token_user(token, user, expire=EXPIRE_MINUTES):
         key = f"{Xcache.XCACHE_TOKEN}-{token}"
-        cache.set(key, user, EXPIRE_MINUTES)
+        cache.set(key, user, expire)
 
     @staticmethod
     def clean_all_token():
