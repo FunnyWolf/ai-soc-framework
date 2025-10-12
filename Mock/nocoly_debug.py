@@ -1,7 +1,7 @@
 import datetime
 import random
 
-from External.nocolyapi import Artifact, Alert, Case, OptionSet, Option
+from Lib.External.nocolyapi import Artifact, Alert, Case, OptionSet, Option
 from Lib.api import get_current_time_string, string_to_timestamp
 from Mock.alert import get_mock_alerts
 from Mock.rule import rule_list

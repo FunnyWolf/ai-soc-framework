@@ -9,8 +9,8 @@ from langgraph.graph.state import CompiledStateGraph
 from pydantic import BaseModel, Field
 from thehive4py.types.alert import InputAlert, OutputAlert
 
-from External.opanaiapi import OpenAIAPI
-from External.thehiveclient import TheHiveClient
+from Lib.External import OpenAIAPI
+from Lib.External import TheHiveClient
 from Lib.basemodule import LanggraphModule
 from Lib.llmapi import AgentState
 

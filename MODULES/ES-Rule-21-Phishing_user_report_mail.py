@@ -8,9 +8,9 @@ from langgraph.graph import StateGraph
 from langgraph.graph.state import CompiledStateGraph
 from pydantic import BaseModel, Field
 
-from External.nocolyapi import InputAlert, common_handler
-from External.opanaiapi import OpenAIAPI
-from External.thehiveclient import TheHiveClient
+from Lib.External.nocolyapi import InputAlert, common_handler
+from Lib.External import OpenAIAPI
+from Lib.External import TheHiveClient
 from Lib.api import string_to_string_time, get_current_time_string
 from Lib.basemodule import LanggraphModule
 from Lib.llmapi import AgentState

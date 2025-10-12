@@ -4,8 +4,8 @@ from typing import Optional, Union, Dict, Any
 
 from pydantic import BaseModel, Field
 
-from External.difyclient import DifyClient
-from External.nocolyapi import InputAlert, common_handler
+from Lib.External.difyclient import DifyClient
+from Lib.External.nocolyapi import InputAlert, common_handler
 from Lib.api import string_to_string_time, get_current_time_string
 from Lib.basemodule import BaseModule
 from Lib.ruledefinition import RuleDefinition

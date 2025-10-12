@@ -3,8 +3,8 @@ from typing import Optional, Union, Dict, Any
 
 from pydantic import BaseModel, Field
 
-from External.difyclient import DifyClient
-from External.nocodbclient import NocodbClient
+from Lib.External.difyclient import DifyClient
+from Lib.External.nocodbclient import NocodbClient
 from Lib.basemodule import BaseModule
 
 

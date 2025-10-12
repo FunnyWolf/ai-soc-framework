@@ -1,4 +1,4 @@
-from External.nocolyapi import WorksheetRow
+from Lib.External.nocolyapi import WorksheetRow
 
 if __name__ == "__main__":
     filter = {
