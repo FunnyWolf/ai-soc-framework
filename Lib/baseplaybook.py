@@ -1,7 +1,9 @@
+from abc import ABC
+
 from Lib.log import logger
 
 
-class BasePlaybook(object):
+class BasePlaybook(ABC):
     def __init__(self, params):
         super().__init__()
         self._params = params
@@ -11,4 +13,4 @@ class BasePlaybook(object):
         return self._params.get(key, default)
 
     def run(self):
-        raise NotImplementedError
+        pass

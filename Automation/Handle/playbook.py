@@ -20,7 +20,7 @@ class Playbook(object):
             class_intent = importlib.import_module(load_path)
             playbook_intent: BasePlaybook = class_intent.Module(params=params)
         except Exception as E:
-            logger.warning(E)
+            logger.exception(E)
             context = data_return(305, {}, Playbook_MSG_ZH.get(305), Playbook_MSG_EN.get(305))
             return context
 
@@ -29,6 +29,6 @@ class Playbook(object):
             context = data_return(201, check_result, Playbook_MSG_ZH.get(201), Playbook_MSG_EN.get(201))
             return context
         except Exception as E:
-            logger.warning(E)
+            logger.exception(E)
             context = data_return(301, {}, Playbook_MSG_ZH.get(301), Playbook_MSG_EN.get(301))
             return context

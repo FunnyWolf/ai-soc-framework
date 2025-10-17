@@ -24,4 +24,6 @@ pluginbase
 rsa
 pluginbase
 lxml
+openpyxl
+langchain-ollama
 uvicorn

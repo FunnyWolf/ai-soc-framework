@@ -2,7 +2,7 @@ from typing import TypedDict, Literal, List, Union, Any, Dict, Optional
 
 import requests
 
-from CONFIG import NOCOLY_URL, AISOAR_APPKEY, AISOAR_SIGN
+from CONFIG import SIRP_URL, SIRP_APPKEY, SIRP_SIGN
 from Lib.api import get_current_time_string, string_to_timestamp
 from Lib.ruledefinition import RuleDefinition
 
@@ -65,10 +65,10 @@ class Worksheet(object):
         pass
 
     @staticmethod
-    def get_fields(worksheet_id: str) -> List[FieldType]:
-        headers = {"HAP-Appkey": AISOAR_APPKEY,
-                   "HAP-Sign": AISOAR_SIGN}
-        url = f"{NOCOLY_URL}/api/v3/app/worksheets/{worksheet_id}"
+    def get_fields(worksheet_id: str) -> Dict[str, FieldType]:
+        headers = {"HAP-Appkey": SIRP_APPKEY,
+                   "HAP-Sign": SIRP_SIGN}
+        url = f"{SIRP_URL}/api/v3/app/worksheets/{worksheet_id}"
 
         response = requests.get(
             url,
@@ -79,7 +79,11 @@ class Worksheet(object):
 
         response_data = response.json()
         if response_data.get("success"):
-            return response_data.get("data").get("fields")
+            fields_list: List[FieldType] = response_data.get("data").get("fields")
+            fields_dict = {}
+            for field in fields_list:
+                fields_dict[field["id"]] = field
+            return fields_dict
         else:
             raise Exception(f"error_code: {response_data.get('error_code')} error_msg: {response_data.get('error_msg')}")
 
@@ -90,10 +94,10 @@ class WorksheetRow(object):
 
     @staticmethod
     def get(worksheet_id: str, row_id: str):
-        headers = {"HAP-Appkey": AISOAR_APPKEY,
-                   "HAP-Sign": AISOAR_SIGN}
-        url = f"{NOCOLY_URL}/api/v3/app/worksheets/{worksheet_id}/rows/{row_id}"
-
+        headers = {"HAP-Appkey": SIRP_APPKEY,
+                   "HAP-Sign": SIRP_SIGN}
+        url = f"{SIRP_URL}/api/v3/app/worksheets/{worksheet_id}/rows/{row_id}"
+        fields = Worksheet.get_fields(worksheet_id)
         try:
             response = requests.get(
                 url,
@@ -104,7 +108,15 @@ class WorksheetRow(object):
 
             response_data = response.json()
             if response_data.get("success"):
-                return response_data.get("data")
+                data = response_data.get("data")
+                data_new = {}
+                for key in data:
+                    if key.startswith("_") or key == "rowId":
+                        data_new[key] = data[key]
+                    else:
+                        alias = fields.get(key).get('alias')
+                        data_new[alias] = data[key]
+                return data_new
             else:
                 raise Exception(f"error_code: {response_data.get('error_code')} error_msg: {response_data.get('error_msg')}")
         except Exception as e:
@@ -112,9 +124,9 @@ class WorksheetRow(object):
 
     @staticmethod
     def list(worksheet_id: str, filter: dict, fields: list = None):
-        headers = {"HAP-Appkey": AISOAR_APPKEY,
-                   "HAP-Sign": AISOAR_SIGN}
-        url = f"{NOCOLY_URL}/api/v3/app/worksheets/{worksheet_id}/rows/list"
+        headers = {"HAP-Appkey": SIRP_APPKEY,
+                   "HAP-Sign": SIRP_SIGN}
+        url = f"{SIRP_URL}/api/v3/app/worksheets/{worksheet_id}/rows/list"
         data = {
             "fields": fields,
             "filter": filter,
@@ -145,9 +157,9 @@ class WorksheetRow(object):
 
     @staticmethod
     def create(worksheet_id: str, fields: list):
-        headers = {"HAP-Appkey": AISOAR_APPKEY,
-                   "HAP-Sign": AISOAR_SIGN}
-        url = f"{NOCOLY_URL}/api/v3/app/worksheets/{worksheet_id}/rows"
+        headers = {"HAP-Appkey": SIRP_APPKEY,
+                   "HAP-Sign": SIRP_SIGN}
+        url = f"{SIRP_URL}/api/v3/app/worksheets/{worksheet_id}/rows"
 
         data = {
             "triggerWorkflow": True,
@@ -170,9 +182,9 @@ class WorksheetRow(object):
 
     @staticmethod
     def update(worksheet_id: str, row_id: str, fields: list):
-        headers = {"HAP-Appkey": AISOAR_APPKEY,
-                   "HAP-Sign": AISOAR_SIGN}
-        url = f"{NOCOLY_URL}/api/v3/app/worksheets/{worksheet_id}/rows/{row_id}"
+        headers = {"HAP-Appkey": SIRP_APPKEY,
+                   "HAP-Sign": SIRP_SIGN}
+        url = f"{SIRP_URL}/api/v3/app/worksheets/{worksheet_id}/rows/{row_id}"
 
         data = {
             "triggerWorkflow": True,
@@ -195,9 +207,9 @@ class WorksheetRow(object):
 
     @staticmethod
     def delete(worksheet_id: str, row_ids: list):
-        headers = {"HAP-Appkey": AISOAR_APPKEY,
-                   "HAP-Sign": AISOAR_SIGN}
-        url = f"{NOCOLY_URL}/api/v3/app/worksheets/{worksheet_id}/rows/batch"
+        headers = {"HAP-Appkey": SIRP_APPKEY,
+                   "HAP-Sign": SIRP_SIGN}
+        url = f"{SIRP_URL}/api/v3/app/worksheets/{worksheet_id}/rows/batch"
 
         data = {
             "rowIds": row_ids,
@@ -225,9 +237,9 @@ class OptionSet(object):
 
     @staticmethod
     def list():
-        headers = {"HAP-Appkey": AISOAR_APPKEY,
-                   "HAP-Sign": AISOAR_SIGN}
-        url = f"{NOCOLY_URL}/api/v3/app/optionsets"
+        headers = {"HAP-Appkey": SIRP_APPKEY,
+                   "HAP-Sign": SIRP_SIGN}
+        url = f"{SIRP_URL}/api/v3/app/optionsets"
 
         response = requests.get(url,
                                 headers=headers)

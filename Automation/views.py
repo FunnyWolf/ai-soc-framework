@@ -13,7 +13,6 @@ class PlaybookView(BaseView):
         try:
             playbook = request.data.get('playbook')
             context = Playbook.create(playbook, params=request.data)
-            return Response(context)
         except Exception as E:
             logger.exception(E)
             context = data_return(500, {}, CODE_MSG_ZH.get(500), CODE_MSG_EN.get(500))

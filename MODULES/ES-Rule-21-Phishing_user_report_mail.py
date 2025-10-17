@@ -8,8 +8,8 @@ from langgraph.graph import StateGraph
 from langgraph.graph.state import CompiledStateGraph
 from pydantic import BaseModel, Field
 
+from Lib.External.llmapi import LLMAPI
 from Lib.External.nocolyapi import InputAlert, common_handler
-from Lib.External.opanaiapi import OpenAIAPI
 from Lib.External.thehiveclient import TheHiveClient
 from Lib.api import string_to_string_time, get_current_time_string
 from Lib.basemodule import LanggraphModule
@@ -129,7 +129,7 @@ class Module(LanggraphModule):
             ]
 
             # 运行
-            openai_api = OpenAIAPI()
+            openai_api = LLMAPI()
 
             llm = openai_api.get_model()
             llm = llm.with_structured_output(AnalyzeResult)
