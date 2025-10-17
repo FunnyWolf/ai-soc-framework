@@ -64,8 +64,10 @@ class RedisStreamAPI:
                 consumer_name = REDIS_CONSUMER_NAME
 
             # 确保消费者组存在
-            self._ensure_consumer_group(stream_key, consumer_group)
-
+            flag = self._ensure_consumer_group(stream_key, consumer_group)
+            if not flag:
+                logger.error(f"无法确保消费者组 {consumer_group} 存在。")
+                return None
             # 从消费者组读取消息
             messages = self.redis_client.xreadgroup(
                 consumer_group,
@@ -213,13 +215,25 @@ class RedisStreamAPI:
             if consumer_group not in group_names:
                 # 创建消费者组
                 self.redis_client.xgroup_create(stream_key, consumer_group, '$', mkstream=True)
+            return True
         except redis.ResponseError as e:
-            if "BUSYGROUP" in str(e):
-                pass
+            # 如果流不存在，xinfo_groups会报错。捕获此错误并创建流和组。
+            if "no such key" in str(e).lower():
+                try:
+                    self.redis_client.xgroup_create(stream_key, consumer_group, '$', mkstream=True)
+                    return True
+                except Exception as create_e:
+                    logger.exception(f"创建流 {stream_key} 和组 {consumer_group} 失败: {create_e}")
+                    return False
+            elif "BUSYGROUP" in str(e):
+                # 消费者组已存在，这是正常情况
+                return True
             else:
-                logger.exception(e)
+                logger.exception(f"检查或创建消费者组时发生未知Redis响应错误: {e}")
+                return False
         except Exception as e:
             logger.exception(e)
+            return False
 
     def get_stream_info(self, stream_key: str) -> Optional[Dict[str, Any]]:
         """

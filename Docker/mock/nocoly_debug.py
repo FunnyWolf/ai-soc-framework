@@ -3,8 +3,8 @@ import random
 
 from Lib.External.nocolyapi import Artifact, Alert, Case, OptionSet, Option
 from Lib.api import get_current_time_string, string_to_timestamp
-from Mock.alert import get_mock_alerts
-from Mock.rule import rule_list
+from Docker.mock.alert import get_mock_alerts
+from Docker.mock.rule import rule_list
 
 
 def generate_four_random_timestamps(

@@ -18,7 +18,6 @@ class BaseModule(object):
     def __init__(self):
         self._thread_name = None
         self.logger = logger
-        self.agent_state: AgentState = AgentState(messages=[], alert_raw={}, temp_data={}, analyze_result={})
 
         # debug
         self.debug_alert_name = None
@@ -54,6 +53,7 @@ class LanggraphModule(BaseModule):
     def __init__(self):
         super().__init__()
         self.graph: CompiledStateGraph = None
+        self.agent_state = None
 
     ## LLM PART
     @staticmethod
@@ -62,18 +62,32 @@ class LanggraphModule(BaseModule):
         return checkpointer
 
     def load_system_prompt_template(self, filename):
-        """从模块对应的 MODULES_DATA 目录加载 md 文件内容
+        """加载系统提示模板。
+
+        优先级：
+        1. 如果传入的 filename 作为路径(可包含或不包含 .md)直接存在文件，则直接读取该文件。
+        2. 否则，从 MODULES_DATA/<module_name>/ 目录下按原有逻辑加载 (自动补全 .md 后缀)。
 
         Args:
-            filename: md 文件名称，不需要包含 .md 后缀
+            filename (str): 可以是一个直接文件路径，或是模板名（不含 .md）。
         Returns:
-            str: md 文件的内容
+            SystemMessagePromptTemplate: 解析后的系统提示模板对象。
+        Raises:
+            Exception: 当文件无法读取时抛出。
         """
+        if os.path.isfile(filename):
+            template_path = filename
+        else:
+            if filename.endswith('.md'):
+                fname = filename
+            else:
+                fname = f"{filename}.md"
+            template_path = os.path.join(MODULE_DATA_DIR, self.module_name, fname)
 
-        template_path = os.path.join(MODULE_DATA_DIR, self.module_name, f"{filename}.md")
         try:
             with open(template_path, 'r', encoding='utf-8') as f:
                 system_prompt_template: SystemMessagePromptTemplate = SystemMessagePromptTemplate.from_template(f.read())
+                logger.debug(f"Loaded system prompt template from: {template_path}")
                 return system_prompt_template
         except Exception as e:
             logger.warning(f"Failed to load prompt template {template_path}: {str(e)}")
@@ -83,8 +97,8 @@ class LanggraphModule(BaseModule):
         self.graph.checkpointer.delete_thread(self.module_name)
         config = RunnableConfig()
         config["configurable"] = {"thread_id": self.module_name}
-
-        self.agent_state = AgentState(messages=[], alert_raw={}, temp_data={}, analyze_result={})
+        if self.agent_state is None:
+            self.agent_state = AgentState(messages=[], alert_raw={}, temp_data={}, analyze_result={})
         for event in self.graph.stream(self.agent_state, config, stream_mode="values"):
             self.logger.debug(event)
 

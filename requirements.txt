@@ -1,3 +1,4 @@
+langchain-ollama
 pydantic
 redis
 langgraph

@@ -1,6 +1,7 @@
 import datetime
 import ipaddress
 import json
+import os
 import random
 import re
 import shlex
@@ -9,10 +10,14 @@ import string
 import subprocess
 import time
 import uuid
+from collections import OrderedDict
 from urllib.parse import urlparse
 
 import dns.resolver
 import tldextract
+from openpyxl import Workbook
+from openpyxl import load_workbook
+from openpyxl.utils.exceptions import InvalidFileException
 
 
 def timestamp_to_string(timestamp, format_str: str = "%Y-%m-%d %H:%M:%S") -> str:
@@ -324,3 +329,83 @@ def get_dns_a(domain):
         print(f"An error occurred: {e}")
 
     return []
+
+
+def write_list_of_dict_to_excel_sheet(data_list: list[dict], file_path: str, sheet_name: str):
+    """
+    仅使用 openpyxl 库将字典列表中的数据写入指定的 XLSX 文件和 sheet。
+
+    逻辑：
+    - 如果 XLSX 文件存在，则打开文件，否则创建文件。
+    - 指定 sheet 如果存在，则覆盖（删除旧的，创建新的）；如果不存在，则创建。
+    - 字典的 key 作为表头。
+
+    Args:
+        data_list: 列表，列表中的每个元素是一个字典（代表一行数据）。
+        file_path: XLSX 文件的完整路径和名称。
+        sheet_name: 要写入的 sheet 的名称。
+    """
+    if not data_list:
+        return
+
+    if os.path.exists(file_path):
+        workbook = load_workbook(file_path)
+    else:
+        workbook = Workbook()
+
+    if sheet_name in workbook.sheetnames:
+        del workbook[sheet_name]
+
+    worksheet = workbook.create_sheet(title=sheet_name, index=0)
+
+    header = list(data_list[0].keys())
+    worksheet.append(header)
+    for row_dict in data_list:
+        # 按照 header 的顺序提取字典的值作为一行数据
+        row_values = [row_dict.get(key, '') for key in header]
+        worksheet.append(row_values)
+
+    os.makedirs(os.path.dirname(file_path) or '.', exist_ok=True)
+    if not os.path.exists(file_path) and 'Sheet' in workbook.sheetnames and workbook['Sheet'].max_row == 1 and workbook['Sheet'].cell(1, 1).value is None:
+        del workbook['Sheet']
+
+    workbook.save(file_path)
+
+
+def read_excel_sheet_to_list_of_dict(file_path: str, sheet_name: str) -> list[dict]:
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"文件不存在: {file_path}")
+
+    data_list = []
+
+    try:
+        workbook = load_workbook(file_path, data_only=True)
+    except InvalidFileException as e:
+        raise InvalidFileException(f"文件格式无效或无法打开: {e}")
+    except Exception as e:
+        raise Exception(f"加载文件时发生未知错误: {e}")
+
+    if sheet_name not in workbook.sheetnames:
+        raise ValueError(f"Sheet '{sheet_name}' 不存在于工作簿中。")
+
+    worksheet = workbook[sheet_name]
+
+    rows = worksheet.iter_rows(values_only=True)
+
+    try:
+        header_row = next(rows)
+        headers = [str(cell_value).strip() if cell_value is not None else f'Column_{i + 1}'
+                   for i, cell_value in enumerate(header_row)]
+
+    except StopIteration:
+        return data_list
+
+    for row_values in rows:
+        if all(v is None for v in row_values):
+            continue
+
+        row_dict = OrderedDict(zip(headers, row_values))
+
+        data_list.append(row_dict)
+
+    return data_list

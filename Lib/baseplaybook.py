@@ -2,13 +2,13 @@ from Lib.log import logger
 
 
 class BasePlaybook(object):
-    def __init__(self, custom_param):
+    def __init__(self, params):
         super().__init__()
-        self.custom_param = custom_param
+        self._params = params
         self.logger = logger
 
     def param(self, key, default=None):
-        return self.custom_param.get(key, default)
+        return self._params.get(key, default)
 
     def run(self):
         raise NotImplementedError

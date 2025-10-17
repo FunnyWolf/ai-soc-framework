@@ -18,7 +18,7 @@ class Playbook(object):
         try:
             load_path = f"PLAYBOOK.{playbook}"
             class_intent = importlib.import_module(load_path)
-            playbook_intent: BasePlaybook = class_intent.Module(custom_param=params)
+            playbook_intent: BasePlaybook = class_intent.Module(params=params)
         except Exception as E:
             logger.warning(E)
             context = data_return(305, {}, Playbook_MSG_ZH.get(305), Playbook_MSG_EN.get(305))

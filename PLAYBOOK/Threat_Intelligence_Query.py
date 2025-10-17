@@ -1,12 +1,10 @@
-import json
-
 from Lib.baseplaybook import BasePlaybook
 
 
 class Module(BasePlaybook):
 
-    def __init__(self, custom_param):
-        super().__init__(custom_param)  # do not delete this code
+    def __init__(self, params):
+        super().__init__(params)  # do not delete this code
 
     def run(self):
         type = self.param("type")
@@ -21,3 +19,12 @@ class Module(BasePlaybook):
                       "last_seen": "2024-10-01T12:34:56Z"}
         result = {"enrichment": json.dumps(result)}
         return result
+
+
+if __name__ == "__main__":
+    import json
+
+    params = {'playbook': 'Threat_Intelligence_Query', 'rowid': 'bce78786-9a99-42f1-9c3a-8eb7ffc76bfa', 'worksheet': 'Artifact'}
+    module = Module(params)
+    result = module.run()
+    print(json.dumps(result))

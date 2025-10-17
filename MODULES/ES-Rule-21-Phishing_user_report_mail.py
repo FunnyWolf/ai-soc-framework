@@ -9,8 +9,8 @@ from langgraph.graph.state import CompiledStateGraph
 from pydantic import BaseModel, Field
 
 from Lib.External.nocolyapi import InputAlert, common_handler
-from Lib.External import OpenAIAPI
-from Lib.External import TheHiveClient
+from Lib.External.opanaiapi import OpenAIAPI
+from Lib.External.thehiveclient import TheHiveClient
 from Lib.api import string_to_string_time, get_current_time_string
 from Lib.basemodule import LanggraphModule
 from Lib.llmapi import AgentState
@@ -131,13 +131,7 @@ class Module(LanggraphModule):
             # 运行
             openai_api = OpenAIAPI()
 
-            model_kwargs = {
-                # "extra_body": {
-                #     "enable_thinking": False
-                # }
-            }
-
-            llm = openai_api.get_model(model_kwargs)
+            llm = openai_api.get_model()
             llm = llm.with_structured_output(AnalyzeResult)
             response: AnalyzeResult = llm.invoke(messages)
 
