@@ -15,6 +15,7 @@ class RuleDefinition:
                  case_title_template: str = None,
                  deduplication_window: str = "24h",
                  source: str = "Default",
+                 workbook: str = None
                  ):
 
         self.rule_id = rule_id
@@ -22,6 +23,7 @@ class RuleDefinition:
         self.deduplication_fields = deduplication_fields
         self.case_title_template = case_title_template
         self.source = source
+        self.workbook = workbook
         valid_windows = ['10m', '30m', '1h', '8h', '12h', '24h']
         if deduplication_window not in valid_windows:
             raise ValueError(f"'{deduplication_window}' 不是一个有效的时间窗口选项。请从 {valid_windows} 中选择。")

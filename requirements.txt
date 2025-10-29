@@ -27,3 +27,4 @@ lxml
 openpyxl
 langchain-ollama
 uvicorn
+mcp[cli]

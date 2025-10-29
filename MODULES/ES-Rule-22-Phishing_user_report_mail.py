@@ -5,7 +5,8 @@ from typing import Optional, Union, Dict, Any
 from pydantic import BaseModel, Field
 
 from Lib.External.difyclient import DifyClient
-from Lib.External.nocolyapi import InputAlert, common_handler
+from Lib.External.nocolyapi import InputAlert
+from Lib.External.sirpapi import common_handler
 from Lib.api import string_to_string_time, get_current_time_string
 from Lib.basemodule import BaseModule
 from Lib.ruledefinition import RuleDefinition
@@ -93,7 +94,7 @@ class Module(BaseModule):
             "description": description,
             "reference": "https://your-siem-or-device-url.com/data?source=123456",
             "summary_ai": analyze_result.reasoning,
-            "artifacts": [
+            "artifact": [
                 {
                     "type": "mail_to",
                     "value": mail_to,
@@ -133,6 +134,5 @@ class Module(BaseModule):
 
 if __name__ == "__main__":
     module = Module()
-    module.debug_alert_name = "ES-Rule-22-Phishing_user_report_mail"
     module.debug_message_id = "0-0"
     module.run()

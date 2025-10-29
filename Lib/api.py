@@ -1,3 +1,4 @@
+import base64
 import datetime
 import ipaddress
 import json
@@ -11,6 +12,7 @@ import subprocess
 import time
 import uuid
 from collections import OrderedDict
+from io import BytesIO
 from urllib.parse import urlparse
 
 import dns.resolver
@@ -331,45 +333,78 @@ def get_dns_a(domain):
     return []
 
 
-def write_list_of_dict_to_excel_sheet(data_list: list[dict], file_path: str, sheet_name: str):
+def write_list_of_dict_to_excel_sheet(data_list: list[dict], file_path: str = '', sheet_name: str = None, return_content=False):
     """
     仅使用 openpyxl 库将字典列表中的数据写入指定的 XLSX 文件和 sheet。
 
     逻辑：
-    - 如果 XLSX 文件存在，则打开文件，否则创建文件。
+    - 如果 XLSX 文件存在，则打开文件，否则创建新的 Workbook。
     - 指定 sheet 如果存在，则覆盖（删除旧的，创建新的）；如果不存在，则创建。
     - 字典的 key 作为表头。
+    - 当 return_content 为 True 时，不进行任何本地文件系统操作。
 
     Args:
         data_list: 列表，列表中的每个元素是一个字典（代表一行数据）。
-        file_path: XLSX 文件的完整路径和名称。
+        file_path: XLSX 文件的完整路径和名称（仅在 return_content=False 时使用）。
         sheet_name: 要写入的 sheet 的名称。
+        return_content: 返回 Base64 编码的 Excel 内容。
     """
     if not data_list:
         return
 
-    if os.path.exists(file_path):
-        workbook = load_workbook(file_path)
+    if not return_content and file_path and os.path.exists(file_path):
+        try:
+            workbook = load_workbook(file_path)
+        except Exception as e:
+
+            raise IOError(f"Error loading workbook from {file_path}: {e}")
     else:
+
         workbook = Workbook()
 
-    if sheet_name in workbook.sheetnames:
-        del workbook[sheet_name]
+    final_sheet_name = sheet_name if sheet_name else 'Sheet1'  # 默认使用 'Sheet1'
 
-    worksheet = workbook.create_sheet(title=sheet_name, index=0)
+    if final_sheet_name in workbook.sheetnames:
+        del workbook[final_sheet_name]
+
+    worksheet = workbook.create_sheet(title=final_sheet_name, index=0)
 
     header = list(data_list[0].keys())
     worksheet.append(header)
+
     for row_dict in data_list:
-        # 按照 header 的顺序提取字典的值作为一行数据
         row_values = [row_dict.get(key, '') for key in header]
         worksheet.append(row_values)
 
-    os.makedirs(os.path.dirname(file_path) or '.', exist_ok=True)
-    if not os.path.exists(file_path) and 'Sheet' in workbook.sheetnames and workbook['Sheet'].max_row == 1 and workbook['Sheet'].cell(1, 1).value is None:
-        del workbook['Sheet']
+    if 'Sheet' in workbook.sheetnames:
+        default_sheet = workbook['Sheet']
+        if default_sheet.max_row == 1 and default_sheet.cell(1, 1).value is None:
+            del workbook['Sheet']
 
-    workbook.save(file_path)
+    if return_content:
+
+        file_stream = BytesIO()
+        workbook.save(file_stream)
+        file_stream.seek(0)
+
+        excel_bytes = file_stream.getvalue()
+        base64_content = base64.b64encode(excel_bytes).decode('utf-8')
+
+        return base64_content
+    else:
+
+        if not file_path:
+            raise ValueError("file_path cannot be empty when return_content is False")
+
+        directory = os.path.dirname(file_path)
+        if directory:
+            os.makedirs(directory, exist_ok=True)
+
+        try:
+            workbook.save(file_path)
+        except Exception as e:
+            raise IOError(f"Error saving workbook to {file_path}: {e}")
+        return None
 
 
 def read_excel_sheet_to_list_of_dict(file_path: str, sheet_name: str) -> list[dict]:
@@ -409,3 +444,45 @@ def read_excel_sheet_to_list_of_dict(file_path: str, sheet_name: str) -> list[di
         data_list.append(row_dict)
 
     return data_list
+
+
+def read_file_and_base64(file_path: str) -> dict:
+    """
+    读取指定路径的文件，并返回包含文件名称和文件内容base64编码的字典。
+
+    :param file_path: 文件的完整路径。
+    :return: 包含文件名称和文件内容base64编码的字典，
+             格式为 {"name": "文件名称，带后缀", "base64": "文件内容的base64编码"}。
+    :raises FileNotFoundError: 如果文件路径不存在。
+    :raises IOError: 如果读取文件时发生其他I/O错误。
+    :raises Exception: 如果发生其他意外错误。
+    """
+    try:
+        # 检查文件是否存在
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"文件未找到: {file_path}")
+
+        # 获取文件名称（带后缀）
+        file_name = os.path.basename(file_path)
+
+        # 读取文件内容并进行base64编码
+        with open(file_path, 'rb') as f:
+            file_content = f.read()
+            # 使用标准的base64编码
+            base64_encoded_content = base64.b64encode(file_content).decode('utf-8')
+
+        # 返回字典
+        return {
+            "name": file_name,
+            "base64": base64_encoded_content
+        }
+
+    except FileNotFoundError as e:
+        # 直接raise异常，不包含调试信息
+        raise e
+    except IOError as e:
+        # 直接raise异常，不包含调试信息
+        raise IOError(f"读取文件时发生I/O错误: {e}")
+    except Exception as e:
+        # 直接raise异常，不包含调试信息
+        raise Exception(f"发生未知错误: {e}")

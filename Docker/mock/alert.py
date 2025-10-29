@@ -13,7 +13,7 @@ edr_alerts = [
         "severity": "Medium",
         "reference": "主机FIN-WKS-JDOE-05上Word启动了PowerShell",
         "description": "在主机 FIN-WKS-JDOE-05 上，由 WINWORD.EXE 启动的 PowerShell 进程被检测到，这通常与宏病毒或钓鱼攻击有关。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "ip", "value": "192.168.1.101"},
             {"type": "username", "value": "j.doe"},
@@ -49,7 +49,7 @@ edr_alerts = [
         "severity": "Medium",
         "reference": "主机FIN-WKS-JDOE-05上Word启动的PowerShell再次活动",
         "description": "在主机 FIN-WKS-JDOE-05 上，再次检测到与近期活动相同的、由WINWORD.EXE启动的PowerShell进程。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "ip", "value": "192.168.1.101"},
             {"type": "username", "value": "j.doe"},
@@ -82,7 +82,7 @@ edr_alerts = [
         "severity": "Critical",
         "reference": "主机FIN-WKS-JDOE-05疑似建立C2通信",
         "description": "在主机 FIN-WKS-JDOE-05 上，powershell.exe 进程发起了到 known-bad.c2.server 的网络连接，其流量特征与 Cobalt Strike Beacon 匹配。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "ip", "value": "192.168.1.101"},
             {"type": "username", "value": "j.doe"},
@@ -121,7 +121,7 @@ edr_alerts = [
         "severity": "High",
         "reference": "主机SRV-DC-01检测到Mimikatz凭据窃取",
         "description": "在域控服务器 SRV-DC-01 上，检测到 mimikatz.exe 进程访问 LSASS 进程内存，这是严重的安全威胁。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "SRV-DC-01"},
             {"type": "ip", "value": "10.10.1.5"},
             {"type": "username", "value": "administrator"},
@@ -153,7 +153,7 @@ edr_alerts = [
         "severity": "High",
         "reference": "主机SRV-DC-01检测到Procdump转储LSASS",
         "description": "在域控服务器 SRV-DC-01 上，检测到 procdump.exe 进程转储 LSASS 进程内存，这是一种常见的凭据窃取技术。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "SRV-DC-01"},
             {"type": "ip", "value": "10.10.1.5"},
             {"type": "username", "value": "administrator"},
@@ -185,7 +185,7 @@ edr_alerts = [
         "severity": "High",
         "reference": "主机SRV-FILE-02检测到凭据窃取",
         "description": "在文件服务器 SRV-FILE-02 上，检测到可疑进程访问 LSASS 进程内存。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "SRV-FILE-02"},
             {"type": "ip", "value": "10.10.2.18"},
             {"type": "username", "value": "administrator"},
@@ -216,7 +216,7 @@ edr_alerts = [
         "severity": "Critical",
         "reference": "主机FIN-WKS-JDOE-05持续C2通信",
         "description": "在主机 FIN-WKS-JDOE-05 上，持续检测到与已知 Cobalt Strike 服务器 known-bad.c2.server 的出站连接。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "ip", "value": "192.168.1.101"},
             {"type": "username", "value": "j.doe"},
@@ -247,7 +247,7 @@ edr_alerts = [
         "severity": "Critical",
         "reference": "主机FIN-WKS-JDOE-05持续C2通信",
         "description": "在主机 FIN-WKS-JDOE-05 上，再次检测到与已知 Cobalt Strike 服务器 known-bad.c2.server 的出站连接。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "ip", "value": "192.168.1.101"},
             {"type": "process_name", "value": "powershell.exe"},
@@ -272,7 +272,7 @@ edr_alerts = [
         "severity": "Medium",
         "reference": "主机MKT-WKS-ASMITH-01上Excel启动了mshta",
         "description": "在主机 MKT-WKS-ASMITH-01 上，由 EXCEL.EXE 启动的 mshta.exe 进程被检测到，这是一种常见的恶意载荷执行方式。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "MKT-WKS-ASMITH-01"},
             {"type": "ip", "value": "192.168.2.54"},
             {"type": "username", "value": "a.smith"},
@@ -304,7 +304,7 @@ edr_alerts = [
         "severity": "High",
         "reference": "主机MKT-WKS-ASMITH-01重复检测到Excel启动可疑进程",
         "description": "在主机 MKT-WKS-ASMITH-01 上，再次检测到由 EXCEL.EXE 启动的 mshta.exe 进程。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "MKT-WKS-ASMITH-01"},
             {"type": "ip", "value": "192.168.2.54"},
             {"type": "username", "value": "a.smith"},
@@ -335,7 +335,7 @@ edr_alerts = [
         "severity": "High",
         "reference": "主机WKS-HR-03上执行了编码的PowerShell命令",
         "description": "主机 WKS-HR-03 上检测到一条经过 Base64 编码的 PowerShell 命令。这种技术常用于规避签名检测，可能用于下载或执行恶意脚本。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "WKS-HR-03"},
             {"type": "process_name", "value": "powershell.exe"},
             {"type": "command_line", "value": "powershell.exe -enc JABTAHQAYQByAHQALQBQAHIAbwBjAGUAcwBzACAAJABzAGUAbgBpAHQ..."}
@@ -358,7 +358,7 @@ edr_alerts = [
         "severity": "High",
         "reference": "主机FIN-WKS-JDOE-05连接到异常外部IP",
         "description": "主机 FIN-WKS-JDOE-05 发起了一个到外部 IP 地址 185.22.67.123 的网络连接。该 IP 不在公司白名单内，且已被威胁情报标记为恶意IP。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "destination_ip", "value": "185.22.67.123"},
@@ -381,7 +381,7 @@ edr_alerts = [
         "severity": "Critical",
         "reference": "主机WKS-HR-03上检测到lsass.exe进程访问",
         "description": "一个非系统进程尝试访问 Windows 本地安全认证子系统服务 (LSASS.exe) 的内存空间。此行为是凭据转储工具（如 Mimikatz）的典型特征。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "WKS-HR-03"},
             {"type": "target_process", "value": "lsass.exe"},
             {"type": "source_process", "value": "C:\\Program Files\\Tools\\dumper.exe"}
@@ -404,7 +404,7 @@ edr_alerts = [
         "severity": "Critical",
         "reference": "主机WKS-HR-03上发生大规模文件重命名",
         "description": "主机 WKS-HR-03 在短时间内对大量文件进行快速重命名，并附加了 '.encrypted' 扩展名。这是典型的勒索软件加密行为。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "WKS-HR-03"},
             {"type": "process_name", "value": "malware.exe"},
             {"type": "file_operations", "value": "250 file renames in 30 seconds"},
@@ -427,7 +427,7 @@ edr_alerts = [
         "severity": "Medium",
         "reference": "主机SRV-PROD-01上加载了非标准路径的DLL",
         "description": "主机 SRV-PROD-01 上的一个合法进程（services.exe）加载了一个来自非标准或可疑路径（C:\\Temp）的 DLL 文件。这可能是 DLL 劫持攻击的迹象。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "SRV-PROD-01"},
             {"type": "parent_process", "value": "services.exe"},
             {"type": "loaded_dll", "value": "C:\\Temp\\malicious.dll"}
@@ -449,7 +449,7 @@ edr_alerts = [
         "severity": "Low",
         "reference": "主机FIN-WKS-JDOE-05上执行了IP扫描命令",
         "description": "主机 FIN-WKS-JDOE-05 上的命令行中出现了 IP 扫描相关的参数，这表明可能正在进行内部网络侦察。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "process_name", "value": "ping.exe"},
             {"type": "command_line", "value": "ping -n 1 192.168.1.1-254"}
@@ -471,7 +471,7 @@ edr_alerts = [
         "severity": "High",
         "reference": "Word进程启动了cmd.exe",
         "description": "Microsoft Word (winword.exe) 进程创建了一个命令提示符 (cmd.exe) 进程。此行为极不寻常，通常是恶意文档或宏病毒的感染标志。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "WKS-HR-03"},
             {"type": "parent_process", "value": "winword.exe"},
             {"type": "child_process", "value": "cmd.exe"}
@@ -493,7 +493,7 @@ edr_alerts = [
         "severity": "High",
         "reference": "主机IT-ADMIN-01上添加新管理员用户",
         "description": "主机 IT-ADMIN-01 上的账户 'j.doe' 将一个新用户 'temp_admin' 添加到了本地 'Administrators' 组。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "IT-ADMIN-01"},
             {"type": "actor_account", "value": "j.doe"},
             {"type": "new_account", "value": "temp_admin"},
@@ -516,7 +516,7 @@ edr_alerts = [
         "severity": "Medium",
         "reference": "主机SRV-PROD-01上创建了可疑服务",
         "description": "主机 SRV-PROD-01 上创建了一个名为 'MaliciousService' 的新 Windows 服务，其可执行文件路径指向一个非标准位置。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "SRV-PROD-01"},
             {"type": "service_name", "value": "MaliciousService"},
             {"type": "service_path", "value": "C:\\Users\\Public\\malware.exe"}
@@ -538,7 +538,7 @@ edr_alerts = [
         "severity": "High",
         "reference": "主机FIN-WKS-JDOE-05上发生大规模文件删除",
         "description": "主机 FIN-WKS-JDOE-05 上的一个进程在短时间内删除了大量文件，这可能表明数据销毁或勒索软件活动。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "process_name", "value": "eraser.exe"},
             {"type": "file_operations", "value": "500 file deletions in 1 minute"}
@@ -560,7 +560,7 @@ edr_alerts = [
         "severity": "High",
         "reference": "主机IT-ADMIN-01上修改了Run注册表键",
         "description": "主机 IT-ADMIN-01 上的一个进程向 HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run 注册表键添加了一个新的值。这是实现持久化的常见技术。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "IT-ADMIN-01"},
             {"type": "registry_key", "value": "HKLM\\...\\Run"},
             {"type": "registry_value", "value": "C:\\ProgramData\\backdoor.exe"}
@@ -582,7 +582,7 @@ edr_alerts = [
         "severity": "Critical",
         "reference": "主机SRV-PROD-01上的恶意注入活动",
         "description": "主机 SRV-PROD-01 上，一个可疑进程尝试将代码注入到另一个合法的进程（如 svchost.exe）中。此技术常用于躲避检测。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "SRV-PROD-01"},
             {"type": "target_process", "value": "svchost.exe"},
             {"type": "source_process", "value": "C:\\Users\\Public\\malware.exe"}
@@ -604,7 +604,7 @@ edr_alerts = [
         "severity": "Medium",
         "reference": "用户a.smith在非工作时间启动财务应用",
         "description": "用户 a.smith 的账户在凌晨 2 点（非正常工作时间）启动了财务应用程序。此行为与该用户的日常行为模式不符。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "a.smith"},
             {"type": "hostname", "value": "MKT-WKS-ASMITH-01"},
             {"type": "process_name", "value": "FinanceApp.exe"},
@@ -627,7 +627,7 @@ edr_alerts = [
         "severity": "High",
         "reference": "主机IT-ADMIN-01批量访问网络共享",
         "description": "主机 IT-ADMIN-01 上的一个进程在短时间内对多个网络共享文件夹进行了批量访问。这通常是攻击者在进行内部网络侦察。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "IT-ADMIN-01"},
             {"type": "process_name", "value": "cmd.exe"},
             {"type": "accessed_shares", "value": ["\\fileshare\\HR", "\\fileshare\\Finance", "\\fileshare\\Eng"]}
@@ -649,7 +649,7 @@ edr_alerts = [
         "severity": "Medium",
         "reference": "Chrome浏览器进程访问敏感本地文件",
         "description": "Chrome 浏览器进程尝试读取一个通常不应被浏览器访问的敏感本地文件，例如密码或 SSH 密钥文件。这可能是恶意扩展或脚本的迹象。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "WKS-HR-03"},
             {"type": "process_name", "value": "chrome.exe"},
             {"type": "file_path", "value": "C:\\Users\\j.smith\\.ssh\\id_rsa"}
@@ -671,7 +671,7 @@ edr_alerts = [
         "severity": "High",
         "reference": "主机SRV-PROD-01上创建可疑计划任务",
         "description": "主机 SRV-PROD-01 上创建了一个新的计划任务，该任务旨在在每天凌晨 3 点执行一个可疑的可执行文件。这是一种常见的持久化机制。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "SRV-PROD-01"},
             {"type": "task_name", "value": "MaliciousUpdater"},
             {"type": "task_command", "value": "C:\\ProgramData\\backdoor.exe"}
@@ -693,7 +693,7 @@ edr_alerts = [
         "severity": "Critical",
         "reference": "主机FIN-WKS-JDOE-05上检测到提权尝试",
         "description": "主机 FIN-WKS-JDOE-05 上的一个低权限进程尝试通过已知的 Windows 提权漏洞模式来提升其权限。此行为与 CVE-2020-0796 的利用方式相似。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "vulnerability", "value": "CVE-2020-0796 (SMBGhost)"},
             {"type": "process_name", "value": "exploit.exe"}
@@ -715,7 +715,7 @@ edr_alerts = [
         "severity": "Critical",
         "reference": "主机SRV-PROD-01上对lsass.exe的远程访问",
         "description": "主机 SRV-PROD-01 上的一个进程从网络上的另一个主机（192.168.1.55）尝试远程访问 lsass.exe 的内存。这表明攻击者正在使用窃取的凭据进行横向移动。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "SRV-PROD-01"},
             {"type": "target_process", "value": "lsass.exe"},
             {"type": "source_ip", "value": "192.168.1.55"}
@@ -738,7 +738,7 @@ edr_alerts = [
         "severity": "High",
         "reference": "主机MKT-WKS-ASMITH-01上执行下载脚本",
         "description": "主机 MKT-WKS-ASMITH-01 上的 WScript.exe 进程执行了一个包含远程下载命令（'IEX'）的 VBScript 脚本。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "MKT-WKS-ASMITH-01"},
             {"type": "process_name", "value": "wscript.exe"},
             {"type": "script_command", "value": "wscript.exe script.vbs"},
@@ -761,7 +761,7 @@ edr_alerts = [
         "severity": "Critical",
         "reference": "IIS进程启动了cmd.exe",
         "description": "Web 服务器（SRV-WEB-02）上的 IIS 工作进程 (w3wp.exe) 创建了一个命令提示符 (cmd.exe) 进程。此行为通常是 Web 漏洞被利用（如 Web Shell 或远程命令执行）的标志。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "SRV-WEB-02"},
             {"type": "parent_process", "value": "w3wp.exe"},
             {"type": "child_process", "value": "cmd.exe"}
@@ -786,7 +786,7 @@ ndr_alert = [
         "severity": "Critical",
         "reference": "主机FIN-WKS-JDOE-05与已知C2服务器通信",
         "description": "检测到主机 FIN-WKS-JDOE-05 发起出站连接到被标记为恶意 C2 服务器的 IP 地址 198.51.100.50。流量特征与 Cobalt Strike Beacon 模式高度匹配。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "destination_ip", "value": "198.51.100.50"},
@@ -824,7 +824,7 @@ ndr_alert = [
         "severity": "High",
         "reference": "主机FIN-WKS-JDOE-05对域控SRV-DC-01发起异常连接",
         "description": "检测到 FIN-WKS-JDOE-05（工作站）发起大量到域控制器 SRV-DC-01 的 SMB 和 LDAP 连接，这与常规用户行为不符，表明可能存在横向移动或侦察行为。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "destination_ip", "value": "10.10.1.5"},
@@ -861,7 +861,7 @@ ndr_alert = [
         "severity": "High",
         "reference": "主机SRV-DC-01向外部IP传输异常数据量",
         "description": "域控制器 SRV-DC-01 正在通过非标准端口（44443）向外部 IP 地址 203.0.113.78 发送大量加密数据。此模式通常与数据外泄有关。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "SRV-DC-01"},
             {"type": "source_ip", "value": "10.10.1.5"},
             {"type": "destination_ip", "value": "203.0.113.78"},
@@ -896,7 +896,7 @@ ndr_alert = [
         "severity": "High",
         "reference": "主机SRV-DC-01对文件服务器SRV-FILE-02发起异常连接",
         "description": "检测到 SRV-DC-01（域控）正在扫描并尝试连接到 SRV-FILE-02（文件服务器）。该行为模式与攻击者在内网中进行横向移动以寻找新目标相符。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "SRV-DC-01"},
             {"type": "source_ip", "value": "10.10.1.5"},
             {"type": "destination_ip", "value": "10.10.2.18"},
@@ -932,7 +932,7 @@ ndr_alert = [
         "severity": "Critical",
         "reference": "主机FIN-WKS-JDOE-05与已知C2服务器持续通信",
         "description": "FIN-WKS-JDOE-05 与已知 C2 服务器 known-bad.c2.server (198.51.100.50) 之间持续存在低流量、周期性出站连接。这种通信模式是持续性命令与控制活动的典型特征。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "destination_ip", "value": "198.51.100.50"},
@@ -968,7 +968,7 @@ ndr_alert = [
         "severity": "Critical",
         "reference": "主机192.168.1.101与外部C2服务器进行周期性通信",
         "description": "主机 192.168.1.101 发起与外部 IP 地址 104.22.56.78 的周期性小数据包通信。此行为与命令与控制（C2）信标模式高度吻合。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "destination_ip", "value": "104.22.56.78"},
             {"type": "protocol", "value": "HTTPS"},
@@ -996,7 +996,7 @@ ndr_alert = [
         "severity": "High",
         "reference": "主机192.168.2.50对多个内部主机进行扫描",
         "description": "主机 192.168.2.50 在短时间内尝试连接同一网段内的多个 IP 地址和端口，这是一种典型的内部网络侦察行为。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.2.50"},
             {"type": "target_subnet", "value": "192.168.2.0/24"},
             {"type": "scan_type", "value": "TCP SYN Scan"}
@@ -1020,7 +1020,7 @@ ndr_alert = [
         "severity": "Critical",
         "reference": "主机192.168.3.88发起大量异常DNS查询",
         "description": "主机 192.168.3.88 发起大量包含长且无意义子域名的 DNS 查询。这是一种利用 DNS 协议进行数据外泄或C2通信的常见技术。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.3.88"},
             {"type": "query_domain", "value": "a1b2c3d4e5f6.malicious-domain.com"},
             {"type": "query_volume", "value": "100+ queries/min"}
@@ -1043,7 +1043,7 @@ ndr_alert = [
         "severity": "High",
         "reference": "主机192.168.1.101对敏感服务器进行SMB连接",
         "description": "主机 192.168.1.101（一名普通员工的工作站）与 HR 和财务部门的服务器进行了非计划的 SMB 连接，此行为与该主机的历史流量模式不符。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "destination_ip", "value": "192.168.10.20"},
             {"type": "protocol", "value": "SMB (445)"},
@@ -1069,7 +1069,7 @@ ndr_alert = [
         "severity": "High",
         "reference": "主机192.168.4.12向外部服务器上传大量数据",
         "description": "主机 192.168.4.12 在 5 分钟内向一个外部 IP 地址上传了异常大批量的 HTTPS 加密数据，这与该主机的历史数据上传量严重不符。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.4.12"},
             {"type": "destination_ip", "value": "52.8.10.20"},
             {"type": "protocol", "value": "HTTPS"},
@@ -1094,7 +1094,7 @@ ndr_alert = [
         "severity": "Medium",
         "reference": "非管理员主机进行RDP连接",
         "description": "一台通常不用于远程管理的普通工作站（192.168.2.50）与多台服务器建立了 RDP 连接。这可能表明攻击者正在使用 RDP 进行横向移动。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.2.50"},
             {"type": "destination_ip", "value": "192.168.10.30"},
             {"type": "protocol", "value": "RDP (3389)"}
@@ -1118,7 +1118,7 @@ ndr_alert = [
         "severity": "High",
         "reference": "主机192.168.1.101连接到低信誉IP",
         "description": "主机 192.168.1.101 正在通过 HTTP 协议（非加密）与一个已知信誉低下的 IP 地址 198.51.100.25 进行通信，可能存在恶意软件感染。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "destination_ip", "value": "198.51.100.25"},
             {"type": "protocol", "value": "HTTP (80)"},
@@ -1142,7 +1142,7 @@ ndr_alert = [
         "severity": "High",
         "reference": "主机192.168.10.5上出现新监听服务",
         "description": "服务器 192.168.10.5 上突然出现了一个在非标准端口 8443 上监听的服务。这可能是一个后门或远程访问工具。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.10.5"},
             {"type": "listening_port", "value": 8443},
             {"type": "protocol", "value": "TCP"}
@@ -1166,7 +1166,7 @@ ndr_alert = [
         "severity": "Low",
         "reference": "主机192.168.2.50进行大文件传输",
         "description": "主机 192.168.2.50 向另一台主机 192.168.3.88 发送了超过 1 GB 的未加密数据。这可能违反数据安全策略。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.2.50"},
             {"type": "destination_ip", "value": "192.168.3.88"},
             {"type": "protocol", "value": "FTP"},
@@ -1192,7 +1192,7 @@ ndr_alert = [
         "severity": "Critical",
         "reference": "Web服务器10.10.10.100上的WebShell通信",
         "description": "Web 服务器 10.10.10.100 与一个外部 IP 地址进行通信，流量中包含与已知 WebShell (China Chopper) 相关的特定 HTTP 参数和模式。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "10.10.10.100"},
             {"type": "destination_ip", "value": "172.67.100.200"},
             {"type": "protocol", "value": "HTTPS"},
@@ -1218,7 +1218,7 @@ ndr_alert = [
         "severity": "High",
         "reference": "主机192.168.1.101连接到使用恶意证书的服务器",
         "description": "主机 192.168.1.101 与一个使用自签名 SSL 证书且被威胁情报标记为恶意的服务器建立了 HTTPS 连接。这通常是 C2 或恶意软件通信的特征。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "destination_ip", "value": "203.0.113.1"},
             {"type": "certificate_fingerprint", "value": "abacadaeafabacadaeafabacadaeafabacadae"}
@@ -1242,7 +1242,7 @@ ndr_alert = [
         "severity": "Medium",
         "reference": "主机192.168.2.50连接到生产数据库",
         "description": "主机 192.168.2.50（一名非 DBA 的普通员工工作站）与生产数据库服务器建立了连接。该连接行为违反了其职责权限。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.2.50"},
             {"type": "destination_ip", "value": "192.168.10.50"},
             {"type": "protocol", "value": "SQL (1433)"}
@@ -1266,7 +1266,7 @@ ndr_alert = [
         "severity": "Critical",
         "reference": "主机192.168.1.101对多个主机进行高频连接",
         "description": "主机 192.168.1.101 在极短时间内对内部网络中的大量随机主机进行高频连接尝试。此行为与蠕虫或病毒的传播模式一致。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "target_count", "value": "50+ unique IPs"},
             {"type": "rate", "value": "10 connections/sec"}
@@ -1289,7 +1289,7 @@ ndr_alert = [
         "severity": "Medium",
         "reference": "主机192.168.4.12向新外部IP发起大流量HTTPS",
         "description": "主机 192.168.4.12 开始向一个之前未曾见过的外部 IP 地址 5.6.7.8 传输大量 HTTPS 加密数据。此行为可能表示数据外泄。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.4.12"},
             {"type": "destination_ip", "value": "5.6.7.8"},
             {"type": "protocol", "value": "HTTPS"},
@@ -1314,7 +1314,7 @@ ndr_alert = [
         "severity": "Low",
         "reference": "主机192.168.2.50连接到个人云存储",
         "description": "主机 192.168.2.50 发起与未经公司授权的个人云存储服务（如 Dropbox、Google Drive）的连接。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.2.50"},
             {"type": "destination_domain", "value": "drive.google.com"}
         ],
@@ -1337,7 +1337,7 @@ ndr_alert = [
         "severity": "Medium",
         "reference": "主机192.168.3.88发起慢速DNS查询",
         "description": "主机 192.168.3.88 发起少量但持续的、包含长且无意义子域名的 DNS 查询，这是一种试图规避检测的慢速数据外泄技术。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.3.88"},
             {"type": "query_domain", "value": "a1b2.malicious-domain.com"},
             {"type": "query_volume", "value": "5 queries/min"}
@@ -1360,7 +1360,7 @@ ndr_alert = [
         "severity": "Low",
         "reference": "主机192.168.1.101进行P2P通信",
         "description": "主机 192.168.1.101 的流量模式显示其正在参与点对点（P2P）通信，这违反了公司网络使用策略，并可能导致恶意软件传播。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "protocol", "value": "BitTorrent"}
         ],
@@ -1382,7 +1382,7 @@ ndr_alert = [
         "severity": "High",
         "reference": "管理员账户Admin-01在非标准时间进行登录",
         "description": "特权管理员账户 'Admin-01' 在夜间（非其通常工作时间）从一台普通工作站（192.168.2.50）登录了域控制器。此行为与其常规操作模式不符。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "Admin-01"},
             {"type": "source_ip", "value": "192.168.2.50"},
             {"type": "target_ip", "value": "192.168.10.100"},
@@ -1407,7 +1407,7 @@ ndr_alert = [
         "severity": "Critical",
         "reference": "主机192.168.1.101向DGA域名发起查询",
         "description": "主机 192.168.1.101 正在向一个由域名生成算法（DGA）创建的域名发起 DNS 查询。DGA 是僵尸网络使用的常见技术，用于动态生成 C2 服务器域名。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "query_domain", "value": "e9a6f2b5d0c7.malwaredomain.net"},
             {"type": "threat_type", "value": "DGA C2"}
@@ -1429,7 +1429,7 @@ ndr_alert = [
         "severity": "High",
         "reference": "主机192.168.2.50进行Nmap扫描",
         "description": "NDR 检测到主机 192.168.2.50 发起的流量模式与 Nmap 扫描工具的指纹相匹配。此行为表明内部网络正在被主动侦察。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.2.50"},
             {"type": "tool_name", "value": "Nmap"},
             {"type": "scan_pattern", "value": "SYN, FIN, XMAS flags"}
@@ -1452,7 +1452,7 @@ ndr_alert = [
         "severity": "High",
         "reference": "主机192.168.3.88进行ICMP隧道通信",
         "description": "主机 192.168.3.88 发出大量包含异常数据负载的 ICMP 请求。这可能是利用 ICMP 隧道进行秘密通信（如 C2）的迹象。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.3.88"},
             {"type": "destination_ip", "value": "203.0.113.50"},
             {"type": "protocol", "value": "ICMP"},
@@ -1477,7 +1477,7 @@ ndr_alert = [
         "severity": "High",
         "reference": "智能打印机发起外部连接",
         "description": "一台通常只进行内部通信的智能打印机 (192.168.5.10) 突然开始向外部 IP 地址 198.51.100.100 发起大量网络连接。这表明该设备可能已被劫持并成为僵尸网络的一部分。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.5.10"},
             {"type": "destination_ip", "value": "198.51.100.100"},
             {"type": "device_type", "value": "Printer"}
@@ -1500,7 +1500,7 @@ ndr_alert = [
         "severity": "Medium",
         "reference": "主机192.168.2.50对多台服务器发起失败的SSH登录",
         "description": "主机 192.168.2.50 在短时间内对多台 Linux 服务器进行了大量的失败 SSH 登录尝试。这是一种常见的横向移动技术。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.2.50"},
             {"type": "protocol", "value": "SSH (22)"},
             {"type": "failed_logins", "value": 20},
@@ -1524,7 +1524,7 @@ ndr_alert = [
         "severity": "Low",
         "reference": "主机192.168.1.101连接到私人VPN服务",
         "description": "主机 192.168.1.101 正在与一个已知私人 VPN 服务提供商的 IP 地址进行通信。这可能用于规避公司网络安全控制。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "destination_ip", "value": "104.16.200.100"},
             {"type": "destination_provider", "value": "NordVPN"}
@@ -1548,7 +1548,7 @@ ndr_alert = [
         "severity": "High",
         "reference": "主机192.168.2.50尝试SMB连接到外部IP",
         "description": "主机 192.168.2.50 尝试向一个外部 IP 地址 203.0.113.100 发起 SMB (Server Message Block) 连接。正常情况下，SMB 连接不应出站到互联网，这可能是数据外泄或恶意软件的迹象。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.2.50"},
             {"type": "destination_ip", "value": "203.0.113.100"},
             {"type": "protocol", "value": "SMB (445)"}
@@ -1574,7 +1574,7 @@ ndr_alert.extend([
         "severity": "Critical",
         "reference": "主机FIN-WKS-JDOE-05与已知C2服务器通信",
         "description": "检测到主机 FIN-WKS-JDOE-05 发起出站连接到被标记为恶意 C2 服务器的 IP 地址 198.51.100.50。流量特征与 Cobalt Strike Beacon 模式高度匹配。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "destination_ip", "value": "198.51.100.50"},
@@ -1612,7 +1612,7 @@ ndr_alert.extend([
         "severity": "High",
         "reference": "主机FIN-WKS-JDOE-05对域控SRV-DC-01发起异常连接",
         "description": "检测到 FIN-WKS-JDOE-05（工作站）发起大量到域控制器 SRV-DC-01 的 SMB 和 LDAP 连接，这与常规用户行为不符，表明可能存在横向移动或侦察行为。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "destination_ip", "value": "10.10.1.5"},
@@ -1649,7 +1649,7 @@ ndr_alert.extend([
         "severity": "High",
         "reference": "主机SRV-DC-01向外部IP传输异常数据量",
         "description": "域控制器 SRV-DC-01 正在通过非标准端口（44443）向外部 IP 地址 203.0.113.78 发送大量加密数据。此模式通常与数据外泄有关。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "SRV-DC-01"},
             {"type": "source_ip", "value": "10.10.1.5"},
             {"type": "destination_ip", "value": "203.0.113.78"},
@@ -1684,7 +1684,7 @@ ndr_alert.extend([
         "severity": "Critical",
         "reference": "主机FIN-SRV-ACCT-03与已知C2服务器通信",
         "description": "检测到主机 FIN-SRV-ACCT-03 发起出站连接到被标记为恶意 C2 服务器的 IP 地址 198.51.100.60。流量特征与 Metasploit payload 模式高度匹配。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "FIN-SRV-ACCT-03"},
             {"type": "source_ip", "value": "192.168.2.55"},
             {"type": "destination_ip", "value": "198.51.100.60"},
@@ -1722,7 +1722,7 @@ ndr_alert.extend([
         "severity": "High",
         "reference": "主机FIN-SRV-ACCT-03对FIN-WKS-JDOE-05发起异常连接",
         "description": "检测到 FIN-SRV-ACCT-03（财务服务器）发起异常数量的 RDP 连接到 FIN-WKS-JDOE-05，这与常规服务器行为不符，表明可能存在内部侦察或凭证窃取后的横向移动行为。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "FIN-SRV-ACCT-03"},
             {"type": "source_ip", "value": "192.168.2.55"},
             {"type": "destination_ip", "value": "192.168.1.101"},
@@ -1761,7 +1761,7 @@ dlp_alert = [
         "severity": "High",
         "reference": "用户j.doe将公司财务报表复制到U盘",
         "description": "检测到用户 j.doe 将包含公司季度财务数据的 Excel 文件复制到连接到 FIN-WKS-JDOE-05 主机的可移动存储设备。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "j.doe"},
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "action", "value": "file-copy-to-usb"},
@@ -1796,7 +1796,7 @@ dlp_alert = [
         "severity": "Critical",
         "reference": "研发部员工在公共网站发布源代码",
         "description": "检测到研发部用户试图将包含公司专有源代码的文本片段上传到 pastebin.com。这属于严重的数据外泄行为。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "d.chen"},
             {"type": "hostname", "value": "DEV-WKS-DCHEN-12"},
             {"type": "ip", "value": "10.10.3.25"},
@@ -1831,7 +1831,7 @@ dlp_alert = [
         "severity": "High",
         "reference": "HR部门员工外发员工健康数据",
         "description": "人力资源部用户 h.lin 试图通过电子邮件将包含员工受保护健康信息（PHI）的文件发送给外部收件人。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "h.lin"},
             {"type": "hostname", "value": "HR-WKS-HLIN-03"},
             {"type": "ip", "value": "192.168.4.15"},
@@ -1868,7 +1868,7 @@ dlp_alert = [
         "severity": "High",
         "reference": "Git推送中包含硬编码API密钥",
         "description": "检测到用户 m.li 在代码提交中包含硬编码的敏感 API 密钥。此行为可能导致未授权访问公司的服务。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "m.li"},
             {"type": "hostname", "value": "DEV-WKS-MLI-08"},
             {"type": "ip", "value": "10.10.3.18"},
@@ -1902,7 +1902,7 @@ dlp_alert = [
         "severity": "Medium",
         "reference": "用户j.doe通过内部邮件发送SSN",
         "description": "用户 j.doe 在内部电子邮件中发送了包含多个员工社会安全号码的列表，此行为违反了数据保护政策。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "j.doe"},
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "action", "value": "internal-email"},
@@ -1936,7 +1936,7 @@ dlp_alert = [
         "severity": "High",
         "reference": "用户c.jones从数据库下载敏感架构",
         "description": "用户 c.jones 从生产数据库中下载了包含敏感表结构和字段定义的数据库架构文件，这可能被用于未来的攻击或数据窃取。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "c.jones"},
             {"type": "hostname", "value": "DBA-WKS-CJONES-07"},
             {"type": "ip", "value": "10.10.4.8"},
@@ -1972,7 +1972,7 @@ dlp_alert = [
         "severity": "High",
         "reference": "用户a.smith上传加密压缩包到云服务",
         "description": "检测到用户 a.smith 将一个加密的压缩文件（ZIP）上传到非授权的云服务。由于无法检查其内容，该行为被视为可疑，可能用于规避DLP检查。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "a.smith"},
             {"type": "hostname", "value": "MKT-WKS-ASMITH-01"},
             {"type": "action", "value": "file-upload"},
@@ -2007,7 +2007,7 @@ dlp_alert = [
         "severity": "Low",
         "reference": "用户j.doe从浏览器复制信用卡信息",
         "description": "检测到用户 j.doe 从浏览器中复制了信用卡号码到剪贴板。虽然没有立即外发，但该行为存在潜在风险。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "j.doe"},
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "action", "value": "clipboard-copy"},
@@ -2040,7 +2040,7 @@ dlp_alert = [
         "severity": "High",
         "reference": "研发部员工d.chen打印工程图纸",
         "description": "检测到用户 d.chen 将包含公司知识产权的技术图纸（CAD）打印到非指定的打印机。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "d.chen"},
             {"type": "hostname", "value": "DEV-WKS-DCHEN-12"},
             {"type": "action", "value": "print"},
@@ -2074,7 +2074,7 @@ dlp_alert = [
         "severity": "Low",
         "reference": "用户j.doe在邮件主题中包含SSN",
         "description": "用户 j.doe 发送的内部电子邮件主题中包含了敏感的社会安全号码（SSN）。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "j.doe"},
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "action", "value": "internal-email"},
@@ -2108,7 +2108,7 @@ dlp_alert = [
         "severity": "High",
         "reference": "用户c.jones执行大规模客户数据查询",
         "description": "用户 c.jones 执行了返回大量客户数据的数据库查询，并将结果导出。该查询涉及敏感字段，超出了其正常工作权限。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "c.jones"},
             {"type": "hostname", "value": "DBA-WKS-CJONES-07"},
             {"type": "action", "value": "database-query-export"},
@@ -2141,7 +2141,7 @@ dlp_alert = [
         "severity": "High",
         "reference": "用户j.doe通过个人邮箱外发项目计划书",
         "description": "检测到用户 j.doe 试图通过其个人邮箱（johndoe.private@gmail.com）发送包含“2025年战略项目计划书”的文件。该文件被DLP系统标记为机密。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "j.doe"},
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "ip", "value": "192.168.1.101"},
@@ -2179,7 +2179,7 @@ dlp_alert = [
         "severity": "Medium",
         "reference": "市场部员工a.smith向Dropbox上传客户列表",
         "description": "用户 a.smith 将一个包含大量客户个人身份信息（PII）的电子表格上传到非授权的云存储服务 Dropbox。该行为违反了公司的数据处理政策。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "a.smith"},
             {"type": "hostname", "value": "MKT-WKS-ASMITH-01"},
             {"type": "ip", "value": "192.168.2.54"},
@@ -2216,7 +2216,7 @@ dlp_alert = [
         "severity": "Low",
         "reference": "用户j.doe在内部聊天中发送敏感信息",
         "description": "用户 j.doe 在内部即时通讯工具中发送了疑似信用卡号码的字符串。尽管是内部通信，但该行为仍违反了 PCI DSS（支付卡行业数据安全标准）规定。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "j.doe"},
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "action", "value": "chat-message"},
@@ -2251,7 +2251,7 @@ dlp_alert.extend([
         "severity": "High",
         "reference": "用户j.doe将公司财务报表复制到U盘",
         "description": "检测到用户 j.doe 将包含公司季度财务数据的 Excel 文件复制到连接到 FIN-WKS-JDOE-05 主机的可移动存储设备。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "j.doe"},
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "action", "value": "file-copy-to-usb"},
@@ -2286,7 +2286,7 @@ dlp_alert.extend([
         "severity": "Critical",
         "reference": "研发部员工在公共网站发布源代码",
         "description": "检测到研发部用户试图将包含公司专有源代码的文本片段上传到 pastebin.com。这属于严重的数据外泄行为。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "d.chen"},
             {"type": "hostname", "value": "DEV-WKS-DCHEN-12"},
             {"type": "ip", "value": "10.10.3.25"},
@@ -2321,7 +2321,7 @@ dlp_alert.extend([
         "severity": "High",
         "reference": "用户p.smith将客户数据库文件复制到U盘",
         "description": "检测到用户 p.smith 将包含客户数据库的 SQL 文件复制到连接到 FIN-WKS-PSMITH-07 主机的可移动存储设备。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "p.smith"},
             {"type": "hostname", "value": "FIN-WKS-PSMITH-07"},
             {"type": "action", "value": "file-copy-to-usb"},
@@ -2356,7 +2356,7 @@ dlp_alert.extend([
         "severity": "Critical",
         "reference": "研发部员工在公共网站发布源代码",
         "description": "检测到研发部用户试图将包含公司专有源代码的文本片段上传到 github.com。这属于严重的数据外泄行为。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "l.wang"},
             {"type": "hostname", "value": "DEV-WKS-LWANG-08"},
             {"type": "ip", "value": "10.10.3.51"},
@@ -2391,7 +2391,7 @@ dlp_alert.extend([
         "severity": "High",
         "reference": "用户s.jones将薪资表复制到U盘",
         "description": "检测到用户 s.jones 将包含员工薪资信息的 Excel 文件复制到连接到 FIN-WKS-SJONES-09 主机的可移动存储设备。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "s.jones"},
             {"type": "hostname", "value": "FIN-WKS-SJONES-09"},
             {"type": "action", "value": "file-copy-to-usb"},
@@ -2429,7 +2429,7 @@ mail_alert = [
         "severity": "High",
         "reference": "用户j.doe收到含有恶意URL的钓鱼邮件",
         "description": "用户 j.doe 收到一封伪装成银行通知的邮件，其中包含一个指向已知钓鱼网站的恶意链接。",
-        "artifacts": [
+        "artifact": [
             {"type": "recipient_email", "value": "j.doe@mycorp.com"},
             {"type": "sender_email", "value": "noreply@mybank-secure.net"},
             {"type": "subject", "value": "您的账户已被暂停，请立即验证"},
@@ -2462,7 +2462,7 @@ mail_alert = [
         "severity": "Critical",
         "reference": "用户a.smith收到含有恶意宏文档的邮件",
         "description": "一封发给用户 a.smith 的邮件附件中包含一个被沙箱分析为恶意软件（Ransomware）的 Word 文档。该文档试图执行恶意宏。",
-        "artifacts": [
+        "artifact": [
             {"type": "recipient_email", "value": "a.smith@mycorp.com"},
             {"type": "sender_email", "value": "invoice@supplier-online.co.kr"},
             {"type": "subject", "value": "重要：发票#20250918"},
@@ -2497,7 +2497,7 @@ mail_alert = [
         "severity": "High",
         "reference": "假冒CEO的邮件要求紧急转账",
         "description": "一封伪装成公司CEO（j.smith@mycorp.com）的邮件，要求财务部员工 j.doe 紧急执行一笔电汇。发件人显示名称与CEO一致，但发件人邮箱地址为外部域名。",
-        "artifacts": [
+        "artifact": [
             {"type": "recipient_email", "value": "j.doe@mycorp.com"},
             {"type": "sender_display_name", "value": "John Smith"},
             {"type": "sender_email", "value": "john.smith.ceo@outlook.com"},
@@ -2529,7 +2529,7 @@ mail_alert = [
         "severity": "High",
         "reference": "用户d.chen收到钓鱼邮件，链接到假冒的Office登录页面",
         "description": "用户 d.chen 收到一封声称“您的Office 365密码即将过期”的邮件，邮件中的链接指向一个模仿公司登录页面的钓鱼网站。",
-        "artifacts": [
+        "artifact": [
             {"type": "recipient_email", "value": "d.chen@mycorp.com"},
             {"type": "sender_email", "value": "admin@microsoft.co.us"},
             {"type": "subject", "value": "立即更新您的密码以避免账户锁定"},
@@ -2560,7 +2560,7 @@ mail_alert = [
         "severity": "High",
         "reference": "用户h.lin收到含有可疑PowerShell命令的邮件",
         "description": "用户 h.lin 收到一封邮件，邮件正文或附件中包含经过混淆的 PowerShell 命令，旨在下载并执行恶意载荷，不依赖于传统文件附件。",
-        "artifacts": [
+        "artifact": [
             {"type": "recipient_email", "value": "h.lin@mycorp.com"},
             {"type": "sender_email", "value": "updates@newsletters.xyz"},
             {"type": "subject", "value": "最新公司新闻"},
@@ -2591,7 +2591,7 @@ mail_alert = [
         "severity": "Medium",
         "reference": "用户m.li收到可疑登录通知邮件",
         "description": "一封发给用户 m.li 的邮件声称有“来自未知设备的登录尝试”，并要求用户点击链接“立即保护您的账户”。该邮件来自非官方来源。",
-        "artifacts": [
+        "artifact": [
             {"type": "recipient_email", "value": "m.li@mycorp.com"},
             {"type": "sender_email", "value": "security-alert@service.online-secure.ru"},
             {"type": "subject", "value": "警告：来自新设备的登录！"},
@@ -2620,7 +2620,7 @@ mail_alert = [
         "severity": "Medium",
         "reference": "假冒HR团队的邮件发送给全体员工",
         "description": "一封伪装成 HR 团队（hr@mycorp.com）的邮件，其发件人地址使用了高度相似的域名（hr@mycorps.com），邮件要求员工更新个人信息。",
-        "artifacts": [
+        "artifact": [
             {"type": "recipient_email", "value": "all@mycorp.com"},
             {"type": "sender_email", "value": "hr@mycorps.com"},
             {"type": "subject", "value": "请更新您的员工信息以获取最新福利"},
@@ -2652,7 +2652,7 @@ mail_alert = [
         "severity": "Medium",
         "reference": "用户c.jones收到密码保护的压缩附件",
         "description": "一封发给用户 c.jones 的邮件附件中包含一个密码保护的 ZIP 文件，邮件正文提供了密码。这种技术常用于规避安全扫描。",
-        "artifacts": [
+        "artifact": [
             {"type": "recipient_email", "value": "c.jones@mycorp.com"},
             {"type": "sender_email", "value": "support@data-service.ru"},
             {"type": "subject", "value": "数据请求回复"},
@@ -2683,7 +2683,7 @@ mail_alert = [
         "severity": "High",
         "reference": "被盗用的内部账户j.doe发送大量垃圾邮件",
         "description": "内部账户 j.doe@mycorp.com 发送了大量包含垃圾内容的邮件。该账户可能已被攻击者接管，用于传播恶意信息。",
-        "artifacts": [
+        "artifact": [
             {"type": "sender_email", "value": "j.doe@mycorp.com"},
             {"type": "source_ip", "value": "8.8.8.8"},
             {"type": "subject", "value": "赚取丰厚利润的秘诀"},
@@ -2712,7 +2712,7 @@ mail_alert = [
         "severity": "High",
         "reference": "用户a.smith收到含有隐写恶意代码的图片",
         "description": "一封发给用户 a.smith 的邮件附件中包含一张图片（JPG），但经深度内容分析，发现其中使用了隐写术隐藏了恶意代码。",
-        "artifacts": [
+        "artifact": [
             {"type": "recipient_email", "value": "a.smith@mycorp.com"},
             {"type": "sender_email", "value": "photo-share@online-gallery.biz"},
             {"type": "subject", "value": "您有一张新照片需要查看"},
@@ -2747,7 +2747,7 @@ mail_alert.extend([
         "severity": "High",
         "reference": "用户j.doe收到含有恶意URL的钓鱼邮件",
         "description": "用户 j.doe 收到一封伪装成银行通知的邮件，其中包含一个指向已知钓鱼网站的恶意链接。",
-        "artifacts": [
+        "artifact": [
             {"type": "recipient_email", "value": "j.doe@mycorp.com"},
             {"type": "sender_email", "value": "noreply@mybank-secure.net"},
             {"type": "subject", "value": "您的账户已被暂停，请立即验证"},
@@ -2780,7 +2780,7 @@ mail_alert.extend([
         "severity": "Critical",
         "reference": "用户a.smith收到含有恶意宏文档的邮件",
         "description": "一封发给用户 a.smith 的邮件附件中包含一个被沙箱分析为恶意软件（Ransomware）的 Word 文档。该文档试图执行恶意宏。",
-        "artifacts": [
+        "artifact": [
             {"type": "recipient_email", "value": "a.smith@mycorp.com"},
             {"type": "sender_email", "value": "invoice@supplier-online.co.kr"},
             {"type": "subject", "value": "重要：发票#20250918"},
@@ -2815,7 +2815,7 @@ mail_alert.extend([
         "severity": "High",
         "reference": "用户s.jones收到含有恶意URL的钓鱼邮件",
         "description": "用户 s.jones 收到一封伪装成薪资系统通知的邮件，其中包含一个指向已知钓鱼网站的恶意链接。",
-        "artifacts": [
+        "artifact": [
             {"type": "recipient_email", "value": "s.jones@mycorp.com"},
             {"type": "sender_email", "value": "hr-notifications@mycorp-payroll.com"},
             {"type": "subject", "value": "薪资变更通知：请立即查看"},
@@ -2848,7 +2848,7 @@ mail_alert.extend([
         "severity": "Critical",
         "reference": "用户l.chen收到含有恶意exe的邮件",
         "description": "一封发给用户 l.chen 的邮件附件中包含一个被沙箱分析为恶意软件（Trojan）的压缩文件。该文件试图伪装成软件更新。",
-        "artifacts": [
+        "artifact": [
             {"type": "recipient_email", "value": "l.chen@mycorp.com"},
             {"type": "sender_email", "value": "support@software-update.ru"},
             {"type": "subject", "value": "软件更新通知"},
@@ -2883,7 +2883,7 @@ mail_alert.extend([
         "severity": "High",
         "reference": "用户d.wang收到含有恶意URL的钓鱼邮件",
         "description": "用户 d.wang 收到一封伪装成发票通知的邮件，其中包含一个指向已知钓鱼网站的恶意链接。",
-        "artifacts": [
+        "artifact": [
             {"type": "recipient_email", "value": "d.wang@mycorp.com"},
             {"type": "sender_email", "value": "billing-support@invoices-secure.com"},
             {"type": "subject", "value": "发票提醒 #INV-87654"},
@@ -2919,7 +2919,7 @@ ot_alert = [
         "severity": "Critical",
         "reference": "生产线PLC01上发生未授权的配置修改",
         "description": "检测到生产线 PLC-PROD-01 的固件或配置发生未经授权的修改。此行为可能导致生产过程中断或安全风险。",
-        "artifacts": [
+        "artifact": [
             {"type": "device_id", "value": "PLC-PROD-01"},
             {"type": "ip", "value": "10.1.1.10"},
             {"type": "protocol", "value": "S7Comm"},
@@ -2942,7 +2942,7 @@ ot_alert = [
         "severity": "Medium",
         "reference": "SCADA网络中出现异常的RDP连接",
         "description": "SCADA 网络段中，主机 SCADA-HMI-05 发起了到未知主机的 RDP 连接。该协议通常不用于生产网络中的 SCADA 通信。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_device", "value": "SCADA-HMI-05"},
             {"type": "source_ip", "value": "10.1.1.20"},
             {"type": "destination_ip", "value": "10.1.50.123"},
@@ -2970,7 +2970,7 @@ ot_alert = [
         "severity": "Critical",
         "reference": "控制器ROB-ARM-03收到停止命令",
         "description": "生产机器人控制器 ROB-ARM-03 收到一个停止命令。该命令未在正常操作时间范围内或来自非授权源。",
-        "artifacts": [
+        "artifact": [
             {"type": "device_id", "value": "ROB-ARM-03"},
             {"type": "ip", "value": "10.1.1.30"},
             {"type": "command", "value": "stop"}
@@ -2992,7 +2992,7 @@ ot_alert = [
         "severity": "Critical",
         "reference": "来自外部IP的未经授权访问",
         "description": "检测到来自公司外部 IP 地址 203.0.113.10 的远程访问尝试，目标是生产网络中的主机，此访问未通过常规的 VPN 渠道。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "203.0.113.10"},
             {"type": "destination_ip", "value": "10.1.1.50"},
             {"type": "protocol", "value": "TCP", "port": 22},
@@ -3020,7 +3020,7 @@ ot_alert = [
         "severity": "Medium",
         "reference": "HMI-CTRL-02发出异常高频的命令",
         "description": "人机界面 HMI-CTRL-02 在短时间内向多个控制器发出异常高频的操作命令。这可能是恶意脚本或自动化攻击的迹象。",
-        "artifacts": [
+        "artifact": [
             {"type": "device_id", "value": "HMI-CTRL-02"},
             {"type": "ip", "value": "10.1.1.45"},
             {"type": "command_rate", "value": "20 commands/sec"}
@@ -3042,7 +3042,7 @@ ot_alert = [
         "severity": "High",
         "reference": "控制器PLC-PROD-02上发生多次密码重置失败",
         "description": "检测到对 PLC-PROD-02 控制器进行多次失败的密码重置尝试。这表明可能存在暴力破解或未经授权的访问尝试。",
-        "artifacts": [
+        "artifact": [
             {"type": "device_id", "value": "PLC-PROD-02"},
             {"type": "ip", "value": "10.1.1.11"},
             {"type": "attempt_count", "value": 5}
@@ -3064,7 +3064,7 @@ ot_alert = [
         "severity": "High",
         "reference": "WKS-ENG-12上发生未授权访问",
         "description": "检测到工程工作站 WKS-ENG-12 上发生未经授权的登录尝试。此工作站包含敏感的工程项目文件，是攻击者的主要目标。",
-        "artifacts": [
+        "artifact": [
             {"type": "device_id", "value": "WKS-ENG-12"},
             {"type": "ip", "value": "10.1.2.55"},
             {"type": "source_ip", "value": "10.1.1.10"},
@@ -3087,7 +3087,7 @@ ot_alert = [
         "severity": "Medium",
         "reference": "SCADA网络中出现未知的PLC",
         "description": "检测到 SCADA 网络中出现一个未在资产清单中注册的新 PLC。这可能是未经授权的连接或侦察行为。",
-        "artifacts": [
+        "artifact": [
             {"type": "device_type", "value": "PLC"},
             {"type": "ip", "value": "10.1.1.15"},
             {"type": "mac", "value": "00:1A:2B:3C:4D:5E"}
@@ -3109,7 +3109,7 @@ ot_alert = [
         "severity": "High",
         "reference": "CHEM-PUMP-04的压力超出正常范围",
         "description": "化学泵 CHEM-PUMP-04 的压力读数异常升高，已超出预设的安全操作范围。这可能由恶意命令或设备故障引起。",
-        "artifacts": [
+        "artifact": [
             {"type": "device_id", "value": "CHEM-PUMP-04"},
             {"type": "ip", "value": "10.2.1.22"},
             {"type": "parameter", "value": "Pressure"},
@@ -3132,7 +3132,7 @@ ot_alert = [
         "severity": "High",
         "reference": "IT网络主机通过SCADA网络访问PLC",
         "description": "IT 网络中的一台工作站（10.100.1.5）尝试通过 SCADA 网关（10.1.1.1）直接访问 PLC 设备。此行为违反了分段原则。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "10.100.1.5"},
             {"type": "destination_ip", "value": "10.1.1.10"},
             {"type": "protocol", "value": "Modbus/TCP"}
@@ -3159,7 +3159,7 @@ ot_alert = [
         "severity": "High",
         "reference": "主机10.1.2.80扫描生产网络",
         "description": "检测到来自主机 10.1.2.80 的大规模端口扫描活动，目标是生产网络中的多个 OT 设备。这通常是攻击者在进行侦察。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "10.1.2.80"},
             {"type": "scan_target_count", "value": 50},
             {"type": "ports_scanned", "value": ["502", "102", "44818"]}
@@ -3185,7 +3185,7 @@ ot_alert = [
         "severity": "Medium",
         "reference": "PLC-PROD-03的逻辑程序上传失败",
         "description": "检测到向 PLC-PROD-03 上传新逻辑程序的失败尝试。这可能表明存在未经授权的固件修改或恶意的逻辑注入。",
-        "artifacts": [
+        "artifact": [
             {"type": "device_id", "value": "PLC-PROD-03"},
             {"type": "ip", "value": "10.1.1.12"},
             {"type": "action", "value": "PLC-Logic-Write"},
@@ -3208,7 +3208,7 @@ ot_alert = [
         "severity": "High",
         "reference": "SCADA-Server-01向外部传输文件",
         "description": "SCADA 服务器 SCADA-Server-01 向生产网络外部的服务器（10.1.50.200）发起了一个大文件的传输。这可能与数据外泄有关。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_device", "value": "SCADA-Server-01"},
             {"type": "source_ip", "value": "10.1.2.10"},
             {"type": "destination_ip", "value": "10.1.50.200"},
@@ -3237,7 +3237,7 @@ ot_alert = [
         "severity": "Critical",
         "reference": "传感器SENSOR-TEMP-07固件哈希值异常",
         "description": "温度传感器 SENSOR-TEMP-07 的固件哈希值与已知良好哈希值不匹配。这表明其固件可能已被篡改。",
-        "artifacts": [
+        "artifact": [
             {"type": "device_id", "value": "SENSOR-TEMP-07"},
             {"type": "ip", "value": "10.2.2.35"},
             {"type": "file_hash_sha256", "value": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2"}
@@ -3260,7 +3260,7 @@ ot_alert = [
         "severity": "High",
         "reference": "HMI-CTRL-01与PLC-PROD-01的串行通信异常",
         "description": "人机界面 HMI-CTRL-01 与 PLC-PROD-01 之间建立了未经授权的串行通信。此通信绕过了网络安全控制，可能被用于发送恶意命令。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_device", "value": "HMI-CTRL-01"},
             {"type": "destination_device", "value": "PLC-PROD-01"},
             {"type": "protocol", "value": "Modbus-RTU"}
@@ -3290,7 +3290,7 @@ ot_alert.extend([
         "severity": "Critical",
         "reference": "生产线PLC01上发生未授权的配置修改",
         "description": "检测到生产线 PLC-PROD-01 的固件或配置发生未经授权的修改。此行为可能导致生产过程中断或安全风险。",
-        "artifacts": [
+        "artifact": [
             {"type": "device_id", "value": "PLC-PROD-01"},
             {"type": "ip", "value": "10.1.1.10"},
             {"type": "protocol", "value": "S7Comm"},
@@ -3313,7 +3313,7 @@ ot_alert.extend([
         "severity": "Medium",
         "reference": "SCADA网络中出现异常的RDP连接",
         "description": "SCADA 网络段中，主机 SCADA-HMI-05 发起了到未知主机的 RDP 连接。该协议通常不用于生产网络中的 SCADA 通信。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_device", "value": "SCADA-HMI-05"},
             {"type": "source_ip", "value": "10.1.1.20"},
             {"type": "destination_ip", "value": "10.1.50.123"},
@@ -3341,7 +3341,7 @@ ot_alert.extend([
         "severity": "Critical",
         "reference": "水处理系统PLC03上发生未授权的程序上传",
         "description": "检测到水处理系统 PLC-WATER-03 的程序发生未经授权的上传。此行为可能导致供水系统操作异常或污染风险。",
-        "artifacts": [
+        "artifact": [
             {"type": "device_id", "value": "PLC-WATER-03"},
             {"type": "ip", "value": "10.2.1.30"},
             {"type": "protocol", "value": "Modbus/TCP"},
@@ -3364,7 +3364,7 @@ ot_alert.extend([
         "severity": "Medium",
         "reference": "SCADA网络中出现异常的FTP连接",
         "description": "SCADA 网络段中，主机 SCADA-HMI-02 发起了到内部主机的 FTP 连接。该协议通常不用于SCADA数据传输，表明可能存在数据外泄或恶意文件传输。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_device", "value": "SCADA-HMI-02"},
             {"type": "source_ip", "value": "10.1.1.22"},
             {"type": "destination_ip", "value": "10.1.1.99"},
@@ -3392,7 +3392,7 @@ ot_alert.extend([
         "severity": "Critical",
         "reference": "燃气输送系统PLC05上发生未授权的设置更改",
         "description": "检测到燃气输送系统 PLC-GAS-05 的运行参数（如压力阈值）发生未经授权的修改。此行为可能导致燃气泄漏或其他严重的安全事故。",
-        "artifacts": [
+        "artifact": [
             {"type": "device_id", "value": "PLC-GAS-05"},
             {"type": "ip", "value": "10.3.1.50"},
             {"type": "protocol", "value": "DNP3"},
@@ -3418,7 +3418,7 @@ proxy_alert = [
         "severity": "Critical",
         "reference": "用户a.smith尝试从恶意站点下载可执行文件",
         "description": "代理服务器阻止了用户 a.smith 从已知恶意域名下载一个可执行文件。该文件被安全引擎标记为恶意软件。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "a.smith"},
             {"type": "source_ip", "value": "192.168.2.54"},
             {"type": "destination_url", "value": "http://malware-distro.com/update.exe"},
@@ -3452,7 +3452,7 @@ proxy_alert = [
         "severity": "Critical",
         "reference": "主机FIN-WKS-JDOE-05尝试连接C2服务器",
         "description": "代理服务器检测并阻止了来自主机 FIN-WKS-JDOE-05 对已知命令与控制 (C2) 服务器的连接请求。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "destination_domain", "value": "known-bad.c2.server"},
@@ -3485,7 +3485,7 @@ proxy_alert = [
         "severity": "High",
         "reference": "用户c.jones尝试访问钓鱼网站",
         "description": "代理服务器阻止了用户 c.jones 访问一个伪装成公司登录门户的钓鱼网站。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "c.jones"},
             {"type": "source_ip", "value": "192.168.3.88"},
             {"type": "destination_url", "value": "http://mycorp-ssologin.net/portal"},
@@ -3517,7 +3517,7 @@ proxy_alert = [
         "severity": "Medium",
         "reference": "用户d.chen访问个人Dropbox账户",
         "description": "用户 d.chen 访问了未经公司授权的个人云存储服务（Dropbox）。这可能用于数据外泄。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "d.chen"},
             {"type": "source_ip", "value": "192.168.4.12"},
             {"type": "destination_domain", "value": "dropbox.com"},
@@ -3548,7 +3548,7 @@ proxy_alert = [
         "severity": "Low",
         "reference": "用户m.li访问赌博网站",
         "description": "用户 m.li 访问了被归类为“赌博”的高风险网站。该行为违反了公司的网络使用策略。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "m.li"},
             {"type": "source_ip", "value": "192.168.5.31"},
             {"type": "destination_domain", "value": "online-casino.com"},
@@ -3579,7 +3579,7 @@ proxy_alert = [
         "severity": "Medium",
         "reference": "FIN-WKS-JDOE-05使用异常用户代理访问网络",
         "description": "主机 FIN-WKS-JDOE-05 发起的网络请求使用了异常的用户代理（User-Agent），这可能与僵尸网络或自动化脚本活动有关。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "user_agent", "value": "Mozilla/5.0 (Windows NT 6.1; WOW64) Gecko/20100101 Firefox/56.0"},
@@ -3609,7 +3609,7 @@ proxy_alert = [
         "severity": "High",
         "reference": "用户j.doe尝试绕过SSL检查",
         "description": "用户 j.doe 尝试访问一个通过无效证书来规避 SSL 检查的网站。该行为可能用于隐藏恶意流量或访问不当内容。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "j.doe"},
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "destination_domain", "value": "bad-cert-site.com"},
@@ -3640,7 +3640,7 @@ proxy_alert = [
         "severity": "Medium",
         "reference": "用户a.smith向可疑域名上传文件",
         "description": "用户 a.smith 上传了一个文件到已知信誉低下的域名。这可能表明数据外泄正在进行。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "a.smith"},
             {"type": "source_ip", "value": "192.168.2.54"},
             {"type": "destination_domain", "value": "data-receiver.ru"},
@@ -3671,7 +3671,7 @@ proxy_alert = [
         "severity": "High",
         "reference": "主机FIN-WKS-JDOE-05发起大量异常DNS查询",
         "description": "主机 FIN-WKS-JDOE-05 在短时间内发起大量异常 DNS 查询。该行为可能与 DNS 隧道通信或侦察活动有关。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "query_count", "value": 500}
@@ -3699,7 +3699,7 @@ proxy_alert = [
         "severity": "High",
         "reference": "用户j.doe尝试访问VPN服务",
         "description": "用户 j.doe 试图访问并连接到 VPN 服务，以规避公司的网络代理和内容过滤策略。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "j.doe"},
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "destination_domain", "value": "nordvpn.com"},
@@ -3732,7 +3732,7 @@ ueba_alert = [
         "severity": "High",
         "reference": "用户j.doe账户在非工作时间异常登录多台服务器",
         "description": "用户 j.doe 的账户在夜间（非其通常工作时间）异常登录了多台不属于其日常工作范围的服务器。这与该账户的历史行为基线存在显著偏差，可能表明账户已被盗用。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "j.doe"},
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "time_of_day", "value": "After-hours"},
@@ -3761,7 +3761,7 @@ ueba_alert = [
         "severity": "High",
         "reference": "用户h.lin下载大量文件到个人云存储",
         "description": "用户 h.lin 在短时间内从公司的 SharePoint 下载了异常大批量的文件，并将其同步到个人 Google Drive。这与该用户的历史数据传输习惯严重不符。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "h.lin"},
             {"type": "data_source", "value": "SharePoint"},
             {"type": "data_destination", "value": "Google Drive"},
@@ -3790,7 +3790,7 @@ ueba_alert = [
         "severity": "High",
         "reference": "来自多个IP地址对单个账户的暴力破解",
         "description": "检测到针对账户 s.brown 的大量失败登录尝试，这些尝试来自多个不同的外部 IP 地址。这表明可能存在分布式暴力破解攻击。",
-        "artifacts": [
+        "artifact": [
             {"type": "target_username", "value": "s.brown"},
             {"type": "failed_logins", "value": 58},
             {"type": "source_ip_count", "value": 12},
@@ -3817,7 +3817,7 @@ ueba_alert = [
         "severity": "High",
         "reference": "服务账户SVC-APP-01访问敏感数据库",
         "description": "服务账户 SVC-APP-01 通常仅用于应用程序通信，但现在却尝试访问一个包含客户 PII 的数据库，这与该账户的正常行为模式严重不符。",
-        "artifacts": [
+        "artifact": [
             {"type": "account_name", "value": "SVC-APP-01"},
             {"type": "source_ip", "value": "10.10.1.5"},
             {"type": "action", "value": "Database Query"},
@@ -3843,7 +3843,7 @@ ueba_alert = [
         "severity": "Medium",
         "reference": "用户l.wang搜索机密项目文件",
         "description": "用户 l.wang（非相关部门）在文件服务器上多次搜索并访问与“Project Chimera”相关的机密文件。该项目与该用户的日常职责无关。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "l.wang"},
             {"type": "source_ip", "value": "192.168.1.55"},
             {"type": "search_keywords", "value": ["Project Chimera", "acquisition", "financial model"]},
@@ -3869,7 +3869,7 @@ ueba_alert = [
         "severity": "High",
         "reference": "用户m.li在两地同时或短时间登录",
         "description": "用户 m.li 的账户在 10 分钟内分别从中国和美国登录。这在物理上是不可能的，强烈表明账户已被盗用。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "m.li"},
             {"type": "login_1_ip", "value": "203.0.113.1"},
             {"type": "login_1_country", "value": "China"},
@@ -3897,7 +3897,7 @@ ueba_alert = [
         "severity": "Medium",
         "reference": "WKS-ENG-12与不寻常主机通信",
         "description": "工程工作站 WKS-ENG-12 突然开始与一个不属于公司网络的内部主机进行高频通信，这偏离了其日常通信模式，可能表明感染或侦察行为。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "WKS-ENG-12"},
             {"type": "source_ip", "value": "192.168.4.12"},
             {"type": "destination_ip", "value": "192.168.5.88"},
@@ -3923,7 +3923,7 @@ ueba_alert = [
         "severity": "High",
         "reference": "特权账户k.smith异常查询员工工资信息",
         "description": "特权账户 k.smith 异常地访问了包含员工工资数据的敏感数据库。尽管该账户有此权限，但此行为与该用户的日常职责无关。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "k.smith"},
             {"type": "source_ip", "value": "192.168.1.200"},
             {"type": "resource", "value": "HR-Salary-DB"},
@@ -3949,7 +3949,7 @@ ueba_alert = [
         "severity": "High",
         "reference": "主机WKS-HR-03上发生大规模文件重命名",
         "description": "主机 WKS-HR-03 在短时间内执行了异常大量的批量文件重命名操作，将文件扩展名改为 '.encrypted'。这与勒索软件活动的行为模式高度一致。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "WKS-HR-03"},
             {"type": "source_ip", "value": "192.168.2.150"},
             {"type": "file_change_count", "value": 250},
@@ -3976,7 +3976,7 @@ ueba_alert = [
         "severity": "Medium",
         "reference": "非IT管理员账户创建新用户",
         "description": "非 IT 部门的管理员账户 n.jones 在非工作时间创建了一个新的高权限用户账户。此行为严重偏离了该账户的正常职责。",
-        "artifacts": [
+        "artifact": [
             {"type": "actor_username", "value": "n.jones"},
             {"type": "source_ip", "value": "192.168.1.120"},
             {"type": "action", "value": "user_creation"},
@@ -4004,7 +4004,7 @@ ti_alert = [
         "severity": "High",
         "reference": "来自俄罗斯僵尸网络IP的扫描尝试",
         "description": "防火墙日志显示，来自一个已知僵尸网络基础设施的恶意 IP 地址 185.22.67.123 尝试连接到内部网络。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "185.22.67.123"},
             {"type": "destination_ip", "value": "10.10.10.50"},
             {"type": "country", "value": "Russia"},
@@ -4030,7 +4030,7 @@ ti_alert = [
         "severity": "Critical",
         "reference": "主机WKS-HR-03连接到恶意C2域名",
         "description": "内部主机 WKS-HR-03 (192.168.2.150) 尝试通过代理服务器连接到一个被威胁情报标记为命令与控制 (C2) 服务器的域名。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.2.150"},
             {"type": "destination_domain", "value": "evil.c2-server.net"},
             {"type": "threat_list", "value": "APT C2 Domains"}
@@ -4053,7 +4053,7 @@ ti_alert = [
         "severity": "High",
         "reference": "主机FIN-WKS-JDOE-05上发现恶意文件",
         "description": "终端日志显示，主机 FIN-WKS-JDOE-05 上存在一个文件的 SHA256 哈希值与一个已知的恶意软件（勒索软件）哈希值匹配。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "file_path", "value": "C:\\Users\\j.doe\\Downloads\\invoice.exe"},
             {"type": "file_hash_sha256", "value": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2"},
@@ -4076,7 +4076,7 @@ ti_alert = [
         "severity": "Medium",
         "reference": "用户d.chen访问钓鱼URL",
         "description": "用户 d.chen 访问了一个被威胁情报标记为钓鱼网站的 URL。虽然访问被允许，但该行为需要进一步调查。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "d.chen"},
             {"type": "source_ip", "value": "192.168.4.12"},
             {"type": "url", "value": "http://my-corp-sso-secure.cc/login"},
@@ -4100,7 +4100,7 @@ ti_alert = [
         "severity": "High",
         "reference": "来自IP 104.22.56.78的Log4j漏洞扫描",
         "description": "来自 IP 地址 104.22.56.78 的流量模式与 Log4j (CVE-2021-44228) 漏洞的扫描特征相匹配。该 IP 被列在恶意扫描者列表中。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "104.22.56.78"},
             {"type": "destination_ip", "value": "10.10.10.200"},
             {"type": "vulnerability", "value": "Log4j (CVE-2021-44228)"}
@@ -4123,7 +4123,7 @@ ti_alert = [
         "severity": "Medium",
         "reference": "主机WKS-ENG-12连接到数据外泄端点",
         "description": "主机 WKS-ENG-12 (192.168.4.12) 尝试连接到一个被标记为数据外泄端点的 IP 地址 45.33.20.10。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "WKS-ENG-12"},
             {"type": "source_ip", "value": "192.168.4.12"},
             {"type": "destination_ip", "value": "45.33.20.10"},
@@ -4147,7 +4147,7 @@ ti_alert = [
         "severity": "Medium",
         "reference": "主机IT-ADMIN-01查询恶意域名",
         "description": "IT-ADMIN-01 (192.168.10.5) 主机向内部 DNS 服务器查询了一个被列为恶意软件分发站点的域名。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.10.5"},
             {"type": "query_domain", "value": "malware-repo.xyz"},
             {"type": "threat_list", "value": "Malware Drop Zones"}
@@ -4169,7 +4169,7 @@ ti_alert = [
         "severity": "Low",
         "reference": "来自受限制国家朝鲜的连接尝试",
         "description": "来自 IP 地址 175.45.176.1 的连接尝试，该 IP 归属于一个被公司安全策略列为高风险或受限制的国家/地区（朝鲜）。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "175.45.176.1"},
             {"type": "country", "value": "North Korea"}
         ],
@@ -4192,7 +4192,7 @@ ti_alert = [
         "severity": "High",
         "reference": "账户l.wang的凭据出现在暗网数据库",
         "description": "威胁情报源报告，用户 l.wang (l.wang@mycorp.com) 的凭据（用户名和密码）在一个已泄露的暗网数据库中被发现。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "l.wang"},
             {"type": "email", "value": "l.wang@mycorp.com"},
             {"type": "leak_source", "value": "Dark Web Credential Dump"}
@@ -4213,7 +4213,7 @@ ti_alert = [
         "severity": "Medium",
         "reference": "IP 1.1.1.1与蜜罐服务进行交互",
         "description": "IP 地址 1.1.1.1 (可能为攻击者) 与公司内部的蜜罐服务建立了连接。该行为表示有针对性的侦察或攻击尝试。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "1.1.1.1"},
             {"type": "destination_ip", "value": "10.10.10.250"},
             {"type": "device_type", "value": "Honeypot"}
@@ -4237,7 +4237,7 @@ ti_alert = [
         "severity": "High",
         "reference": "主机WKS-HR-03尝试连接到恶意IP",
         "description": "主机 WKS-HR-03 (192.168.2.150) 尝试连接到一个被列为恶意基础设施的 IP 地址 5.6.7.8。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.2.150"},
             {"type": "destination_ip", "value": "5.6.7.8"},
             {"type": "threat_list", "value": "Malicious IPs"}
@@ -4260,7 +4260,7 @@ ti_alert = [
         "severity": "Medium",
         "reference": "邮件中检测到可疑URL",
         "description": "邮件安全网关检测到一封入站邮件中包含一个被威胁情报标记为可疑或钓鱼的 URL。",
-        "artifacts": [
+        "artifact": [
             {"type": "sender_email", "value": "noreply@sso-update.com"},
             {"type": "url", "value": "https://sso-update.mycorp.io"},
             {"type": "threat_list", "value": "Suspicious URLs"}
@@ -4284,7 +4284,7 @@ ti_alert = [
         "severity": "Critical",
         "reference": "来自APT组织IP的扫描",
         "description": "来自一个被确定为APT（高级持续威胁）组织使用的 IP 地址 103.203.20.12 的流量被检测到。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "103.203.20.12"},
             {"type": "threat_actor", "value": "Fancy Bear"}
         ],
@@ -4306,7 +4306,7 @@ ti_alert = [
         "severity": "Critical",
         "reference": "主机MKT-WKS-ASMITH-01下载勒索软件文件",
         "description": "终端日志显示，主机 MKT-WKS-ASMITH-01 上下载的一个文件与一个已知的勒索软件哈希值匹配。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "MKT-WKS-ASMITH-01"},
             {"type": "file_hash_sha256", "value": "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2"},
             {"type": "file_path", "value": "C:\\Users\\a.smith\\Downloads\\document.zip"}
@@ -4328,7 +4328,7 @@ ti_alert = [
         "severity": "Medium",
         "reference": "主机FIN-WKS-JDOE-05连接到加密货币挖矿池",
         "description": "主机 FIN-WKS-JDOE-05 尝试连接到一个被威胁情报标记为加密货币挖矿池的域名。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "destination_domain", "value": "mine-xmr.pool.net"}
         ],
@@ -4350,7 +4350,7 @@ ti_alert = [
         "severity": "High",
         "reference": "暗网论坛提及公司名称和泄露数据",
         "description": "在暗网的一个黑客论坛上，公司名称 'MyCorp' 被提及，并附有泄露员工数据的链接。",
-        "artifacts": [
+        "artifact": [
             {"type": "company_name", "value": "MyCorp"},
             {"type": "leak_type", "value": "Employee Data"}
         ],
@@ -4369,7 +4369,7 @@ ti_alert = [
         "severity": "Medium",
         "reference": "来自IP 134.119.50.60的大规模端口扫描",
         "description": "来自一个已知恶意 IP 的 134.119.50.60 对内部资产进行大规模端口扫描，试图发现开放的服务。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "134.119.50.60"},
             {"type": "destination_ip", "value": "10.10.10.0/24"},
             {"type": "threat_list", "value": "Malicious Scanners"}
@@ -4392,7 +4392,7 @@ ti_alert = [
         "severity": "High",
         "reference": "针对CEO的鱼叉式钓鱼邮件",
         "description": "一封针对 CEO (j.smith@mycorp.com) 的鱼叉式钓鱼邮件，该邮件模仿了客户公司的通信，并包含一个恶意附件。",
-        "artifacts": [
+        "artifact": [
             {"type": "recipient_email", "value": "j.smith@mycorp.com"},
             {"type": "sender_email", "value": "info@customer-relations-co.org"},
             {"type": "subject", "value": "Regarding Q3 contract renewal"}
@@ -4416,7 +4416,7 @@ ti_alert = [
         "severity": "Critical",
         "reference": "针对Web服务器的SQL注入尝试",
         "description": "Web 应用防火墙 (WAF) 检测到针对 Web 服务器 (10.10.10.100) 的一个 SQL 注入尝试，该模式与已知的攻击工具和方法相符。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "172.67.100.200"},
             {"type": "destination_ip", "value": "10.10.10.100"},
             {"type": "attack_type", "value": "SQL Injection"}
@@ -4440,7 +4440,7 @@ ti_alert = [
         "severity": "Medium",
         "reference": "Twitter上提及公司为即将攻击目标",
         "description": "在公共社交媒体平台（Twitter）上，一个可疑账户发布了关于将 'MyCorp' 作为即将攻击目标的帖子。",
-        "artifacts": [
+        "artifact": [
             {"type": "platform", "value": "Twitter"},
             {"type": "mention_text", "value": "MyCorp is next. #breach"},
             {"type": "threat_actor_alias", "value": "CyberViking"}
@@ -4463,7 +4463,7 @@ iam_alert = [
         "severity": "High",
         "reference": "用户j.doe账户被授予敏感管理员权限",
         "description": "用户 j.doe 的账户被授予 'Global Administrator' 权限。此权限提升发生在非IT管理员的操作下，且不符合其日常工作职责，可能表明特权提升攻击。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "j.doe"},
             {"type": "actor_account", "value": "l.smith"},
             {"type": "permission_granted", "value": "Global Administrator"},
@@ -4487,7 +4487,7 @@ iam_alert = [
         "severity": "High",
         "reference": "用户c.jones账户在两地同时登录",
         "description": "用户 c.jones 的账户在 10 分钟内分别从美国和日本登录。这在物理上是不可能的，强烈表明账户已被盗用。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "c.jones"},
             {"type": "login_1_ip", "value": "198.51.100.25"},
             {"type": "login_1_location", "value": "New York, USA"},
@@ -4512,7 +4512,7 @@ iam_alert = [
         "severity": "High",
         "reference": "来自IP 104.22.56.78的密码喷洒攻击",
         "description": "来自单个 IP 地址 104.22.56.78 对多个用户账户进行了大量的失败登录尝试。该攻击模式与密码喷洒攻击一致。",
-        "artifacts": [
+        "artifact": [
             {"type": "source_ip", "value": "104.22.56.78"},
             {"type": "failed_logins", "value": 50},
             {"type": "target_user_count", "value": 10}
@@ -4534,7 +4534,7 @@ iam_alert = [
         "severity": "Medium",
         "reference": "非IT管理员账户创建新管理员用户",
         "description": "非 IT 部门的管理员账户 s.brown 在非工作时间创建了一个新的高权限用户账户，名为 'temp_admin_user'。",
-        "artifacts": [
+        "artifact": [
             {"type": "actor_username", "value": "s.brown"},
             {"type": "new_username", "value": "temp_admin_user"},
             {"type": "source_ip", "value": "192.168.1.55"},
@@ -4557,7 +4557,7 @@ iam_alert = [
         "severity": "High",
         "reference": "AWS账户'App-Service'在异常地点调用API",
         "description": "AWS 服务账户 'App-Service' 通常仅从美国东部地区发起 API 调用，但现在却从欧洲地区发起了异常的 'EC2 StartInstances' API 调用。",
-        "artifacts": [
+        "artifact": [
             {"type": "account_name", "value": "App-Service"},
             {"type": "api_call", "value": "EC2:StartInstances"},
             {"type": "source_region", "value": "eu-west-1"},
@@ -4581,7 +4581,7 @@ iam_alert = [
         "severity": "Medium",
         "reference": "用户h.lin多次尝试失败的MFA验证",
         "description": "用户 h.lin 在短时间内多次尝试失败的多因素认证（MFA）。这可能表明攻击者已经窃取了其密码，并正在尝试绕过 MFA。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "h.lin"},
             {"type": "failed_attempts", "value": 5},
             {"type": "source_ip", "value": "203.0.113.100"},
@@ -4604,7 +4604,7 @@ iam_alert = [
         "severity": "Critical",
         "reference": "管理员账户k.smith在异常时间被重置密码",
         "description": "管理员账户 k.smith 的密码在非工作时间被重置，且重置请求来自一个不属于正常管理员工作站的 IP 地址。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "k.smith"},
             {"type": "source_ip", "value": "192.168.10.20"},
             {"type": "time_of_day", "value": "After-hours"}
@@ -4626,7 +4626,7 @@ iam_alert = [
         "severity": "Medium",
         "reference": "新用户n.jones创建后立即访问敏感数据",
         "description": "新创建的用户 n.jones 在其账户创建后 1 小时内，尝试访问一个包含客户 PII 的文件服务器。此行为与新员工的正常入职流程不符。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "n.jones"},
             {"type": "source_ip", "value": "192.168.2.150"},
             {"type": "resource", "value": "FileServer-HR-PII"}
@@ -4649,7 +4649,7 @@ iam_alert = [
         "severity": "High",
         "reference": "服务账户SVC-APP-01在工作站进行登录",
         "description": "服务账户 'SVC-APP-01' 通常仅用于自动化进程，但现在却在工作站上进行了交互式登录。这强烈表明账户已被攻击者盗用。",
-        "artifacts": [
+        "artifact": [
             {"type": "account_name", "value": "SVC-APP-01"},
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "login_type", "value": "Interactive"}
@@ -4672,7 +4672,7 @@ iam_alert = [
         "severity": "High",
         "reference": "新账户'temp_admin_user'被创建后立即登录异地",
         "description": "新创建的账户 'temp_admin_user' 在其创建后 10 分钟内，从一个异常的外部 IP 地址 203.0.113.20 进行了首次登录。这表明该账户可能被恶意创建并立即被盗用。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "temp_admin_user"},
             {"type": "login_ip", "value": "203.0.113.20"},
             {"type": "time_since_creation_min", "value": 10}
@@ -4694,7 +4694,7 @@ iam_alert = [
         "severity": "Medium",
         "reference": "用户a.smith高频访问被拒绝的资源",
         "description": "用户 a.smith 在短时间内对多个权限不足的资源进行了高频访问尝试。这可能是攻击者在进行侦察，试图发现可利用的权限。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "a.smith"},
             {"type": "source_ip", "value": "192.168.2.54"},
             {"type": "denied_attempts", "value": 30},
@@ -4718,7 +4718,7 @@ iam_alert = [
         "severity": "Low",
         "reference": "共享账户'Guest-User'在异常时间登录",
         "description": "共享账户 'Guest-User' 通常仅在白天使用，但在凌晨 2:00 进行了登录。这表明该共享账户可能被滥用。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "Guest-User"},
             {"type": "source_ip", "value": "192.168.3.88"},
             {"type": "time_of_day", "value": "Unusual-hours"}
@@ -4740,7 +4740,7 @@ iam_alert = [
         "severity": "High",
         "reference": "主机FIN-WKS-JDOE-05上发生本地凭据转储",
         "description": "主机 FIN-WKS-JDOE-05 上检测到 Mimikatz 等凭据转储工具的活动。攻击者可能试图从本地系统窃取管理员或域账户凭据。",
-        "artifacts": [
+        "artifact": [
             {"type": "hostname", "value": "FIN-WKS-JDOE-05"},
             {"type": "source_ip", "value": "192.168.1.101"},
             {"type": "tool_name", "value": "Mimikatz"}
@@ -4763,7 +4763,7 @@ iam_alert = [
         "severity": "High",
         "reference": "用户c.jones被授予'IAMFullAccess'角色",
         "description": "用户 c.jones 被授予 AWS 'IAMFullAccess' 角色，该角色允许创建和管理所有 IAM 资源。此权限与该用户的开发人员角色不符。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "c.jones"},
             {"type": "role_granted", "value": "IAMFullAccess"},
             {"type": "platform", "value": "AWS"}
@@ -4785,7 +4785,7 @@ iam_alert = [
         "severity": "Medium",
         "reference": "账户j.doe因高频失败登录被锁定",
         "description": "用户 j.doe 的账户因在 5 分钟内多次失败登录而达到锁定阈值。这可能是针对该账户的直接暴力破解攻击。",
-        "artifacts": [
+        "artifact": [
             {"type": "username", "value": "j.doe"},
             {"type": "failed_logins", "value": 6},
             {"type": "lockout_time", "value": "2025-09-24T00:15:15Z"}
@@ -4813,7 +4813,7 @@ cloud_alert = [
         "severity": "High",
         "reference": "AWS Root账户进行登录",
         "description": "AWS Root账户在非指定设备上进行了登录。出于安全最佳实践，Root账户应被锁定且只在紧急情况下使用。",
-        "artifacts": [
+        "artifact": [
             {"type": "account_id", "value": "123456789012"},
             {"type": "user_identity", "value": "Root"},
             {"type": "event_name", "value": "ConsoleLogin"}
@@ -4839,7 +4839,7 @@ cloud_alert = [
         "severity": "Medium",
         "reference": "Azure VM进行内部网络扫描",
         "description": "Azure 虚拟机 'prod-web-01' 突然开始对内部虚拟网络中的其他资源进行大规模端口扫描。这可能表明该虚拟机已被入侵。",
-        "artifacts": [
+        "artifact": [
             {"type": "vm_name", "value": "prod-web-01"},
             {"type": "vm_ip", "value": "10.0.0.4"},
             {"type": "scan_type", "value": "TCP Port Scan"}
@@ -4863,7 +4863,7 @@ cloud_alert = [
         "severity": "High",
         "reference": "GCP存储桶被设置为公开可访问",
         "description": "名为 'mycorp-customer-data' 的 GCP Cloud Storage 存储桶的权限被修改为公开可访问。这可能导致敏感数据泄露。",
-        "artifacts": [
+        "artifact": [
             {"type": "bucket_name", "value": "mycorp-customer-data"},
             {"type": "permission_change", "value": "publicAccess: True"},
             {"type": "user_identity", "value": "api-service-account"}
@@ -4888,7 +4888,7 @@ cloud_alert = [
         "severity": "Medium",
         "reference": "EC2实例'web-server-02'被异常停止",
         "description": "EC2 实例 'web-server-02' 在非工作时间被一个不寻常的 IAM 角色停止。此行为可能表示账户被盗用。",
-        "artifacts": [
+        "artifact": [
             {"type": "instance_id", "value": "i-0a1b2c3d4e5f6a7b8"},
             {"type": "instance_name", "value": "web-server-02"},
             {"type": "event_name", "value": "StopInstances"}
@@ -4913,7 +4913,7 @@ cloud_alert = [
         "severity": "High",
         "reference": "Azure AD用户'j.doe'被标记为高风险",
         "description": "Azure AD 识别出用户 'j.doe' 的登录行为为高风险，例如来自匿名 IP 地址或不可能的行程。这可能表明账户已被盗用。",
-        "artifacts": [
+        "artifact": [
             {"type": "user_id", "value": "j.doe@mycorp.com"},
             {"type": "risk_state", "value": "High"},
             {"type": "risk_detection", "value": "Anonymous IP address"}
@@ -4937,7 +4937,7 @@ cloud_alert = [
         "severity": "High",
         "reference": "GCP防火墙规则被修改为允许所有流量",
         "description": "GCP 防火墙规则 'allow-all-inbound' 被修改，允许来自所有 IP 地址的入站流量。此操作可能为攻击者创建了入侵点。",
-        "artifacts": [
+        "artifact": [
             {"type": "rule_name", "value": "allow-all-inbound"},
             {"type": "source_ip", "value": "0.0.0.0/0"},
             {"type": "user_identity", "value": "user@mycorp.com"}
@@ -4962,7 +4962,7 @@ cloud_alert = [
         "severity": "High",
         "reference": "包含敏感信息的CSV文件上传至S3",
         "description": "名为 'customer-pii.csv' 的文件被上传到一个公共可访问的 S3 存储桶。该文件可能包含个人身份信息（PII）。",
-        "artifacts": [
+        "artifact": [
             {"type": "bucket_name", "value": "mycorp-public-data"},
             {"type": "file_name", "value": "customer-pii.csv"},
             {"type": "user_identity", "value": "s.brown"}
@@ -4987,7 +4987,7 @@ cloud_alert = [
         "severity": "Medium",
         "reference": "Azure中创建了新的VPN网关",
         "description": "一个未知的账户 'developer-account' 创建了一个新的 Azure VPN 网关，并将其连接到内部虚拟网络。这可能是一个非授权的访问点。",
-        "artifacts": [
+        "artifact": [
             {"type": "gateway_name", "value": "malicious-vpn-gw"},
             {"type": "user_identity", "value": "developer-account"}
         ],
@@ -5011,7 +5011,7 @@ cloud_alert = [
         "severity": "High",
         "reference": "服务账户'prod-service'API调用激增",
         "description": "服务账户 'prod-service' 突然发起了异常大量的 API 调用，包括创建虚拟机的请求。这可能表明该账户已被盗用。",
-        "artifacts": [
+        "artifact": [
             {"type": "service_account", "value": "prod-service-account@mycorp.iam.gserviceaccount.com"},
             {"type": "api_calls", "value": "1000+/min"},
             {"type": "unusual_activity", "value": "compute.instances.insert"}
@@ -5035,7 +5035,7 @@ cloud_alert = [
         "severity": "High",
         "reference": "RDS实例从异常IP访问",
         "description": "AWS RDS 实例 'prod-db-01' 被来自一个之前从未见过的外部 IP 地址访问。这可能是数据外泄或入侵的迹象。",
-        "artifacts": [
+        "artifact": [
             {"type": "db_instance_id", "value": "database-1"},
             {"type": "source_ip", "value": "104.22.56.78"},
             {"type": "database_type", "value": "MySQL"}
@@ -5060,7 +5060,7 @@ cloud_alert = [
         "severity": "Critical",
         "reference": "Azure Blob存储桶被大规模删除文件",
         "description": "存储账户 'mycorp-data-storage' 中的 Blob 存储桶 'backups' 在短时间内发生了大规模文件删除。这可能表明数据销毁或勒索软件攻击。",
-        "artifacts": [
+        "artifact": [
             {"type": "account_name", "value": "mycorp-data-storage"},
             {"type": "container_name", "value": "backups"},
             {"type": "user_identity", "value": "compromised-account"}
@@ -5084,7 +5084,7 @@ cloud_alert = [
         "severity": "High",
         "reference": "GCP用户被授予'Owner'角色",
         "description": "用户 'l.smith' 被授予了 GCP 项目的 'Owner' 角色。此角色具有最高权限，且通常只授予少数几个核心管理员。",
-        "artifacts": [
+        "artifact": [
             {"type": "user_identity", "value": "l.smith"},
             {"type": "role_granted", "value": "roles/owner"},
             {"type": "project_id", "value": "mycorp-prod-project"}
@@ -5109,7 +5109,7 @@ cloud_alert = [
         "severity": "High",
         "reference": "Lambda函数被异常IP访问",
         "description": "Lambda 函数 'customer-processor-func' 从一个异常的、不属于其触发器的 IP 地址发起调用。这可能表明存在漏洞利用。",
-        "artifacts": [
+        "artifact": [
             {"type": "lambda_name", "value": "customer-processor-func"},
             {"type": "source_ip", "value": "1.1.1.1"}
         ],
@@ -5132,7 +5132,7 @@ cloud_alert = [
         "severity": "High",
         "reference": "Azure SQL数据库异常批量查询",
         "description": "Azure SQL 数据库 'prod-sql-db' 在非工作时间收到了异常大批量的查询请求。这可能表明数据外泄或恶意侦察。",
-        "artifacts": [
+        "artifact": [
             {"type": "db_name", "value": "prod-sql-db"},
             {"type": "query_count", "value": "10000+ queries/min"},
             {"type": "user_identity", "value": "app-service-user"}
@@ -5157,7 +5157,7 @@ cloud_alert = [
         "severity": "Critical",
         "reference": "GCP VM与恶意IP进行通信",
         "description": "GCP 虚拟机 'dev-server' 正在与一个被威胁情报标记为 C2 服务器的外部 IP 地址进行通信。该虚拟机可能已被恶意软件感染。",
-        "artifacts": [
+        "artifact": [
             {"type": "vm_name", "value": "dev-server"},
             {"type": "vm_ip", "value": "10.0.1.10"},
             {"type": "destination_ip", "value": "185.22.67.123"}
@@ -5183,7 +5183,7 @@ cloud_alert = [
         "severity": "High",
         "reference": "针对IAM账户的暴力破解尝试",
         "description": "在 IAM 用户 'dev-user' 上检测到大量的登录失败尝试。这可能是一次密码喷洒或暴力破解攻击。",
-        "artifacts": [
+        "artifact": [
             {"type": "user_identity", "value": "dev-user"},
             {"type": "failed_attempts", "value": 50},
             {"type": "source_ip", "value": "203.0.113.50"}
@@ -5208,7 +5208,7 @@ cloud_alert = [
         "severity": "Critical",
         "reference": "Azure应用服务中检测到WebShell",
         "description": "一个名为 'shell.aspx' 的文件被上传到 Azure 应用服务 'mycorp-web-app' 的根目录。该文件被识别为 WebShell，可用于远程控制。",
-        "artifacts": [
+        "artifact": [
             {"type": "app_name", "value": "mycorp-web-app"},
             {"type": "file_path", "value": "/wwwroot/shell.aspx"},
             {"type": "threat_type", "value": "WebShell"}
@@ -5232,7 +5232,7 @@ cloud_alert = [
         "severity": "High",
         "reference": "Cloud SQL实例从异常地理位置访问",
         "description": "GCP Cloud SQL 实例 'prod-sql' 接收到了来自一个非指定地区（如中国）的连接请求。这违反了地理访问策略。",
-        "artifacts": [
+        "artifact": [
             {"type": "db_instance_id", "value": "prod-sql"},
             {"type": "source_ip", "value": "118.123.45.67"},
             {"type": "source_country", "value": "China"}
@@ -5256,7 +5256,7 @@ cloud_alert = [
         "severity": "High",
         "reference": "AWS安全组被修改以允许SSH访问",
         "description": "名为 'prod-sg' 的 AWS 安全组被修改，以允许来自所有 IP 地址的 SSH (端口 22) 入站流量。此操作暴露了敏感服务。",
-        "artifacts": [
+        "artifact": [
             {"type": "security_group", "value": "sg-0a1b2c3d4e5f6a7b8"},
             {"type": "rule_change", "value": "allow port 22 from 0.0.0.0/0"},
             {"type": "user_identity", "value": "dev-user"}
@@ -5282,7 +5282,7 @@ cloud_alert = [
         "severity": "Medium",
         "reference": "Azure中创建了新的服务主体",
         "description": "一个不寻常的用户 'guest-user' 创建了一个新的 Azure 服务主体。服务主体通常用于自动化，被恶意创建后可用于持久化。",
-        "artifacts": [
+        "artifact": [
             {"type": "service_principal_name", "value": "malicious-sp"},
             {"type": "actor", "value": "guest-user@mycorp.com"}
         ],
@@ -5306,7 +5306,7 @@ cloud_alert = [
         "severity": "High",
         "reference": "Cloud Function连接到恶意IP",
         "description": "Cloud Function 'data-processor-func' 尝试连接到一个已知的恶意 IP 地址 198.51.100.25。此行为表明函数代码可能已被恶意注入或篡改。",
-        "artifacts": [
+        "artifact": [
             {"type": "function_name", "value": "data-processor-func"},
             {"type": "destination_ip", "value": "198.51.100.25"}
         ],
@@ -5330,7 +5330,7 @@ cloud_alert = [
         "severity": "High",
         "reference": "S3存储桶策略被更改为允许外部访问",
         "description": "S3 存储桶 'mycorp-public-assets' 的存储桶策略被修改，允许未经身份验证的外部用户 'Everyone' 列出对象。这违反了数据保护策略。",
-        "artifacts": [
+        "artifact": [
             {"type": "bucket_name", "value": "mycorp-public-assets"},
             {"type": "permission_change", "value": "GetObject from Everyone"}
         ],
@@ -5353,7 +5353,7 @@ cloud_alert = [
         "severity": "High",
         "reference": "Key Vault被异常用户高频访问",
         "description": "Key Vault 'prod-secrets-kv' 收到来自一个不寻常账户 'l.smith' 的异常高频的密钥和证书访问请求。",
-        "artifacts": [
+        "artifact": [
             {"type": "key_vault_name", "value": "prod-secrets-kv"},
             {"type": "actor", "value": "l.smith@mycorp.com"},
             {"type": "request_count", "value": 500}
@@ -5378,7 +5378,7 @@ cloud_alert = [
         "severity": "High",
         "reference": "GCP VPN网关出站流量激增",
         "description": "GCP VPN 网关的出站流量在短时间内激增至异常水平。这可能表明通过 VPN 的数据外泄正在进行。",
-        "artifacts": [
+        "artifact": [
             {"type": "gateway_name", "value": "prod-vpn-gw"},
             {"type": "traffic_direction", "value": "Outbound"},
             {"type": "data_volume_gb", "value": 20}
@@ -5402,7 +5402,7 @@ cloud_alert = [
         "severity": "Critical",
         "reference": "IAM Access Key在GitHub上被发现",
         "description": "AWS Threat Detection 服务检测到 IAM 访问密钥 'AKIAIOSFODNN7EXAMPLE' 在一个公开的 GitHub 存储库中被发现。此凭证应立即失效。",
-        "artifacts": [
+        "artifact": [
             {"type": "access_key", "value": "AKIAIOSFODNN7EXAMPLE"},
             {"type": "leak_platform", "value": "GitHub"}
         ],
@@ -5424,7 +5424,7 @@ cloud_alert = [
         "severity": "High",
         "reference": "SAS令牌被用于异常IP",
         "description": "一个 SAS (Shared Access Signature) 令牌被来自一个异常 IP 地址的请求使用，该 IP 地址不属于预期的应用程序或位置。此令牌可能已被泄露。",
-        "artifacts": [
+        "artifact": [
             {"type": "account_name", "value": "mycorp-data-storage"},
             {"type": "sas_token_id", "value": "sp=r&st=..."},
             {"type": "source_ip", "value": "203.0.113.50"}
@@ -5449,7 +5449,7 @@ cloud_alert = [
         "severity": "High",
         "reference": "BigQuery表被导出到外部存储",
         "description": "BigQuery 用户 'data-analyst' 将一个包含数百万条记录的敏感表导出到一个外部存储桶。此行为可能导致数据泄露。",
-        "artifacts": [
+        "artifact": [
             {"type": "user_identity", "value": "data-analyst@mycorp.com"},
             {"type": "table_name", "value": "customer-pii-table"},
             {"type": "destination", "value": "external-bucket"}
@@ -5474,7 +5474,7 @@ cloud_alert = [
         "severity": "Medium",
         "reference": "用户'dev-user'Assume了'prod-admin-role'",
         "description": "IAM 用户 'dev-user' 在非其职责范围内 Assume 了 'prod-admin-role' 角色。此行为可能表明权限滥用。",
-        "artifacts": [
+        "artifact": [
             {"type": "user_identity", "value": "dev-user"},
             {"type": "assumed_role", "value": "prod-admin-role"}
         ],
@@ -5498,7 +5498,7 @@ cloud_alert = [
         "severity": "Medium",
         "reference": "Azure虚拟网络创建了新的对等连接",
         "description": "Azure 虚拟网络 'prod-vnet' 被创建了一个新的对等连接，连接到另一个未知的虚拟网络。这可能为横向移动创造了新的路径。",
-        "artifacts": [
+        "artifact": [
             {"type": "vnet_name", "value": "prod-vnet"},
             {"type": "peered_vnet", "value": "unknown-vnet"},
             {"type": "user_identity", "value": "api-automation"}
@@ -5522,7 +5522,7 @@ cloud_alert = [
         "severity": "Low",
         "reference": "新创建的VM实例被分配了外部IP",
         "description": "GCP Compute Engine 实例 'prod-db-proxy' 被创建并分配了一个外部 IP 地址，这违反了公司内部的无外部 IP 策略。",
-        "artifacts": [
+        "artifact": [
             {"type": "vm_name", "value": "prod-db-proxy"},
             {"type": "external_ip", "value": "34.123.45.67"},
             {"type": "user_identity", "value": "ops-user"}
@@ -5548,7 +5548,7 @@ cloud_alert.extend([
         "severity": "High",
         "reference": "AWS Root账户进行登录",
         "description": "AWS Root账户在非指定设备上进行了登录。出于安全最佳实践，Root账户应被锁定且只在紧急情况下使用。",
-        "artifacts": [
+        "artifact": [
             {"type": "account_id", "value": "123456789012"},
             {"type": "user_identity", "value": "Root"},
             {"type": "event_name", "value": "ConsoleLogin"}
@@ -5574,7 +5574,7 @@ cloud_alert.extend([
         "severity": "Medium",
         "reference": "Azure VM进行内部网络扫描",
         "description": "Azure 虚拟机 'prod-web-01' 突然开始对内部虚拟网络中的其他资源进行大规模端口扫描。这可能表明该虚拟机已被入侵。",
-        "artifacts": [
+        "artifact": [
             {"type": "vm_name", "value": "prod-web-01"},
             {"type": "vm_ip", "value": "10.0.0.4"},
             {"type": "scan_type", "value": "TCP Port Scan"}
@@ -5598,7 +5598,7 @@ cloud_alert.extend([
         "severity": "High",
         "reference": "GCP存储桶被设置为公开可访问",
         "description": "名为 'mycorp-customer-data' 的 GCP Cloud Storage 存储桶的权限被修改为公开可访问。这可能导致敏感数据泄露。",
-        "artifacts": [
+        "artifact": [
             {"type": "bucket_name", "value": "mycorp-customer-data"},
             {"type": "permission_change", "value": "publicAccess: True"},
             {"type": "user_identity", "value": "api-service-account"}
@@ -5623,7 +5623,7 @@ cloud_alert.extend([
         "severity": "High",
         "reference": "AWS Root账户在新的IP地址登录",
         "description": "AWS Root账户从一个以前未知的IP地址进行了登录。出于安全最佳实践，Root账户应被锁定且只在紧急情况下使用。",
-        "artifacts": [
+        "artifact": [
             {"type": "account_id", "value": "123456789012"},
             {"type": "user_identity", "value": "Root"},
             {"type": "event_name", "value": "ConsoleLogin"}
@@ -5649,7 +5649,7 @@ cloud_alert.extend([
         "severity": "Medium",
         "reference": "Azure VM进行内部网络端口扫描",
         "description": "Azure 虚拟机 'dev-app-02' 突然开始对内部虚拟网络中的其他虚拟机进行大规模端口扫描。这可能表明该虚拟机已被入侵。",
-        "artifacts": [
+        "artifact": [
             {"type": "vm_name", "value": "dev-app-02"},
             {"type": "vm_ip", "value": "10.0.1.5"},
             {"type": "scan_type", "value": "UDP Port Scan"}

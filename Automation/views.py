@@ -15,5 +15,5 @@ class PlaybookView(BaseView):
             context = Playbook.create(playbook, params=request.data)
         except Exception as E:
             logger.exception(E)
-            context = data_return(500, {}, CODE_MSG_ZH.get(500), CODE_MSG_EN.get(500))
+            context = data_return(500, {"status": "Failed", "job_id": None}, CODE_MSG_ZH.get(500), CODE_MSG_EN.get(500))
         return Response(context)

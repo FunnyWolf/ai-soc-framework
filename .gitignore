@@ -175,3 +175,6 @@ Test/*
 
 Docker/log/*
 !Docker/log/.gitkeep
+
+PLAYBOOK/Debug_*
+DATA/Debug_*/

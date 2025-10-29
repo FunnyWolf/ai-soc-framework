@@ -31,13 +31,11 @@ DIFY_API_KEY = {
 THEHIVE_URL = "https://192.168.1.114:443"
 THEHIVE_API_KEY = "xxx"
 
-# Nocodb Config
-NOCODB_URL = "http://192.168.1.114:8080"
-NOCODB_TOKEN = "xxx"
-NOCODB_ALERT_TABLE_ID = "xxx"
+# SIRP Config
+SIRP_URL = "http://192.168.3.128:8880"
+SIRP_APPKEY = "8exxx"
+SIRP_SIGN = "YTxxxxxx=="
+SIRP_NOTICE_WEBHOOK = "http://192.168.3.128:8880/api/workflow/hooks/XXXX"
 
-# Nocoly Config
-NOCOLY_URL = "http://192.168.241.128:8880"
-AISOAR_APPKEY = "8exxx"
-AISOAR_SIGN = "YTxxxxxx=="
+# APITOKEN
 ASF_TOKEN = "nocoly_token_for_playbook"

@@ -9,7 +9,8 @@ from langgraph.graph.state import CompiledStateGraph
 from pydantic import BaseModel, Field
 
 from Lib.External.llmapi import LLMAPI
-from Lib.External.nocolyapi import InputAlert, common_handler
+from Lib.External.nocolyapi import InputAlert
+from Lib.External.sirpapi import common_handler
 from Lib.External.thehiveclient import TheHiveClient
 from Lib.api import string_to_string_time, get_current_time_string
 from Lib.basemodule import LanggraphModule
@@ -173,7 +174,7 @@ class Module(LanggraphModule):
                 "description": description,
                 "reference": "https://your-siem-or-device-url.com/data?source=123456",
                 "summary_ai": analyze_result.reasoning,
-                "artifacts": [
+                "artifact": [
                     {
                         "type": "mail_to",
                         "value": mail_to,
@@ -199,7 +200,8 @@ class Module(LanggraphModule):
                 rule_id=self.module_name,
                 rule_name=rule_name,
                 deduplication_fields=["mail_from"],
-                source="Email"
+                source="Email",
+                workbook="PHISHING_L2_WORKBOOK"
             )
             case_row_id = common_handler(input_alert, rule)
             return state
@@ -222,6 +224,5 @@ class Module(LanggraphModule):
 
 if __name__ == "__main__":
     module = Module()
-    module.debug_alert_name = "ES-Rule-21-Phishing_user_report_mail"  # needed when debug module, framework will read redis stream by this name
     module.debug_message_id = "0-0"
     module.run()

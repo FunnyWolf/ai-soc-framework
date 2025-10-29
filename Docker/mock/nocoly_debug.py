@@ -1,10 +1,12 @@
 import datetime
 import random
 
-from Lib.External.nocolyapi import Artifact, Alert, Case, OptionSet, Option
-from Lib.api import get_current_time_string, string_to_timestamp
 from Docker.mock.alert import get_mock_alerts
 from Docker.mock.rule import rule_list
+from Lib.External.nocolyapi import OptionSet
+from Lib.External.sirpapi import Artifact, Alert, Case
+from Lib.api import get_current_time_string, string_to_timestamp
+from Lib.ruledefinition import RuleDefinition
 
 
 def generate_four_random_timestamps(
@@ -106,7 +108,7 @@ if __name__ == "__main__":
     case_status_new = OptionSet.get_option_key_by_name_and_value("case_status", "New")
 
     for alert in alert_list:
-        rule_def = ALL_RULES.get(alert["rule_id"])
+        rule_def: RuleDefinition = ALL_RULES.get(alert["rule_id"])
         if rule_def is None:
             print(f"未找到规则定义，跳过处理此告警: {alert['rule_id']}")
             continue
@@ -114,7 +116,7 @@ if __name__ == "__main__":
         default_times = generate_four_random_timestamps()
         # artifact
         artifact_rowid_list = []
-        artifacts = alert.get("artifacts", [])
+        artifacts = alert.get("artifact", [])
         for artifact in artifacts:
             artifact_fields = [
                 {"id": "type", "value": artifact["type"]},
@@ -137,7 +139,7 @@ if __name__ == "__main__":
             {"id": "raw_log", "value": alert["raw_log"]},
             {"id": "rule_id", "value": alert["rule_id"]},
             {"id": "rule_name", "value": alert["rule_name"]},
-            {"id": "artifacts", "value": artifact_rowid_list},
+            {"id": "artifact", "value": artifact_rowid_list},
         ]
         # alert
         row_id_alert = Alert.create(alert_fields)
@@ -150,6 +152,13 @@ if __name__ == "__main__":
 
         row = Case.get_by_deduplication_key(deduplication_key)
         if row is None:
+            if rule_def.source == "EDR":
+                workbook = Case.load_workbook_md("EDR_L2_WORKBOOK")
+            elif rule_def.source == "Email":
+                workbook = Case.load_workbook_md("PHISHING_L2_WORKBOOK")
+            else:
+                workbook = "# There is no workbook for this source."
+
             case_field = [
                 {"id": "deduplication_key", "value": deduplication_key},
                 {"id": "title", "value": rule_def.generate_case_title(artifacts=artifacts)},
@@ -159,13 +168,20 @@ if __name__ == "__main__":
                 {"id": "created_date", "value": default_times["created_date"]},
                 {"id": "tags", "value": alert["tags"], "type": 2},
                 {"id": "description", "value": alert["description"]},
-                {"id": "alert", "value": [row_id_alert]},
+
+                {"id": "description", "value": alert["description"]},
+
+                {"id": "workbook", "value": workbook},
 
                 {"id": "acknowledged_date", "value": default_times["acknowledged_date"]},
                 {"id": "closed_date", "value": default_times["closed_date"]},
 
             ]
-            row_id_create = Case.create(case_field)
+            try:
+                row_id_create = Case.create(case_field)
+            except Exception as e:
+                print(f"创建工单失败: {e}")
+                continue
             print(f"create case: {row_id_create}")
         else:
             row_id_case = row.get("rowId")
@@ -175,7 +191,7 @@ if __name__ == "__main__":
 
             option_new_score = OptionSet.get_option_by_name_and_value("alert_case_severity", alert["severity"]).get("score", 0)
 
-            severity_value_exist = row.get("severity")[0].get("value")
+            severity_value_exist = row.get("severity")
             option_exist_score = OptionSet.get_option_by_name_and_value("alert_case_severity", severity_value_exist).get("score", 0)
 
             if option_new_score > option_exist_score:
@@ -183,7 +199,7 @@ if __name__ == "__main__":
             else:
                 severity = severity_value_exist
 
-            tags_exist = Option.to_value_list(row.get("tags", []))
+            tags_exist = row.get("tags", [])
             for tag in alert["tags"]:
                 if tag not in tags_exist:
                     tags_exist.append(tag)

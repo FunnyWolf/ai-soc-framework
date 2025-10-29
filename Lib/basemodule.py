@@ -6,7 +6,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph.state import CompiledStateGraph
 
 from CONFIG import DIFY_API_KEY
-from Lib.configs import MODULE_DATA_DIR, REDIS_CONSUMER_GROUP
+from Lib.configs import DATA_DIR, REDIS_CONSUMER_GROUP
 from Lib.llmapi import AgentState
 from Lib.log import logger
 from Lib.redis_stream_api import RedisStreamAPI
@@ -18,18 +18,40 @@ class BaseModule(object):
     def __init__(self):
         self._thread_name = None
         self.logger = logger
-
+        self.agent_state = None
         # debug
-        self.debug_alert_name = None
         self.debug_message_id = None  # 设置为非None以启用Debug模式
+
+    @staticmethod
+    def _get_main_script_name():
+        """
+        获取主执行脚本的文件名（不含扩展名）。
+        无论当前代码在哪个模块中运行，sys.argv[0]始终指向最初启动的脚本。
+        """
+        try:
+            # 1. 获取主执行脚本的完整路径
+            script_path = sys.argv[0]
+
+            # 2. 从完整路径中提取文件名
+            script_filename = os.path.basename(script_path)
+
+            # 3. 分离文件名和扩展名
+            script_name, _ = os.path.splitext(script_filename)
+
+            return script_name
+        except IndexError as e:
+            raise RuntimeError("无法获取主执行脚本名称，sys.argv[0]不存在。") from e
+        except Exception as e:
+            raise RuntimeError(f"获取主执行脚本名称时发生错误: {e}") from e
 
     @property
     def module_name(self):
         """获取模块加载路径"""
-        if self.debug_alert_name is None:
-            return self.__module__.split(".")[-1]
+        module_name = self.__module__.split(".")[-1]
+        if module_name == "__main__":
+            return self._get_main_script_name()
         else:
-            return self.debug_alert_name
+            return module_name
 
     def read_message(self) -> dict:
         """读取消息"""
@@ -66,7 +88,7 @@ class LanggraphModule(BaseModule):
 
         优先级：
         1. 如果传入的 filename 作为路径(可包含或不包含 .md)直接存在文件，则直接读取该文件。
-        2. 否则，从 MODULES_DATA/<module_name>/ 目录下按原有逻辑加载 (自动补全 .md 后缀)。
+        2. 否则，从 DATA/<module_name>/ 目录下按原有逻辑加载 (自动补全 .md 后缀)。
 
         Args:
             filename (str): 可以是一个直接文件路径，或是模板名（不含 .md）。
@@ -82,7 +104,7 @@ class LanggraphModule(BaseModule):
                 fname = filename
             else:
                 fname = f"{filename}.md"
-            template_path = os.path.join(MODULE_DATA_DIR, self.module_name, fname)
+            template_path = os.path.join(DATA_DIR, self.module_name, fname)
 
         try:
             with open(template_path, 'r', encoding='utf-8') as f:
@@ -104,3 +126,4 @@ class LanggraphModule(BaseModule):
 
     def run(self):
         self.run_graph()
+        return self.agent_state
