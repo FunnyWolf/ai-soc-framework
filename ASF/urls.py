@@ -16,6 +16,6 @@ router.register(r'api/v1/automation/playbook', PlaybookView, basename="PlaybookV
 urlpatterns = [
     re_path(r'^', include(router.urls)),
 ]
-# from Lib.montior import MainMonitor
-#
-# MainMonitor().start()
+from Lib.montior import MainMonitor
+
+MainMonitor().start()
