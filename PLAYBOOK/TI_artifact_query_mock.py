@@ -4,10 +4,10 @@ from Lib.External.nocolyapi import WorksheetRow
 from Lib.baseplaybook import BasePlaybook
 
 
-class Module(BasePlaybook):
+class Playbook(BasePlaybook):
 
-    def __init__(self, params):
-        super().__init__(params)  # do not delete this code
+    def __init__(self):
+        super().__init__()  # do not delete this code
 
     def run(self):
         worksheet = self.param("worksheet")
@@ -26,7 +26,8 @@ class Module(BasePlaybook):
 
 
 if __name__ == "__main__":
-    params = {'playbook': 'TI_artifact_query_mock', 'rowid': 'c6caa5eb-b4af-44df-aa10-b94829243fd4', 'worksheet': 'Artifact'}
-    module = Module(params)
+    params_debug = {'playbook': 'TI_artifact_query_mock', 'rowid': 'a966036e-b29e-4449-be48-23293bacac5d', 'worksheet': 'Artifact'}
+    module = Playbook()
+    module._params = params_debug
     result = module.run()
     print(result)
