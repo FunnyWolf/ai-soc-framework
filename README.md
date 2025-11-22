@@ -58,4 +58,4 @@ ASF processes security alerts and incidents through a simplified multi-stage pro
 
 ## Official Website
 
-[https://asf.viperrtp.com/zh/](https://asf.viperrtp.com/zh/)
+[https://asf.viperrtp.com](https://asf.viperrtp.com)
