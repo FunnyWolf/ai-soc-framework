@@ -22,6 +22,10 @@ class Playbook(object):
         if name is not None and type is not None:
             module_config = Xcache.get_module_config_by_name_and_type(type, name)
             if module_config is None:
+                # try again to load all module config
+                Playbook.load_all_module_config()
+                module_config = Xcache.get_module_config_by_name_and_type(type, name)
+            if module_config is None:
                 context = data_return(305, {"status": "Failed", "job_id": None}, Playbook_MSG_ZH.get(305), Playbook_MSG_EN.get(305))
                 return context
             load_path = module_config.get("load_path")

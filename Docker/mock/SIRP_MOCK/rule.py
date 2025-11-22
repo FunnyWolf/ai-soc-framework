@@ -1,4 +1,4 @@
-from Lib.grouprule import GroupRule
+from PLUGINS.SIRP.grouprule import GroupRule
 
 rule_list = [
     GroupRule(

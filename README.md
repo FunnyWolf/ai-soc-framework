@@ -1,57 +1,61 @@
-# AI SOC Framework (ASF)
+![cover-v5-optimized](Docker/Img/img.png)
 
-基于 AI Agent 的 SOC 自动化框架. 开源, 灵活, 强大, 私有部署.
+<p align="center">
+  <a href="https://asf.viperrtp.com/asf/Development/environment_setup/">Getting-started</a> ·
+  <a href="https://asf.viperrtp.com/asf/Introduction/what_is_asf/">Documentation</a>
+</p>
 
-## 功能
+<p align="center">
+    <a href="https://asf.viperrtp.com/" target="_blank">
+        <img alt="Static Badge" src="https://img.shields.io/badge/Website-F04438"></a>
+    <a href="https://discord.gg/3R9yZvQueT" target="_blank">
+        <img src="https://img.shields.io/badge/Community-blue?logo=discord&labelColor=%20%235462eb&logoColor=%20%23f5f5f5&color=%20%235462eb"
+            alt="chat on Discord"></a>
+    <a href="https://twitter.com/intent/follow?screen_name=viperrtp" target="_blank">
+        <img src="https://img.shields.io/twitter/follow/viperrtp?logo=X&color=%20%23f5f5f5"
+            alt="follow on X(Twitter)"></a>
+    <a href="https://github.com/funnywolf/ai-soc-framework/graphs/commit-activity" target="_blank">
+        <img alt="Commits last month" src="https://img.shields.io/github/commit-activity/m/funnywolf/viper?labelColor=%20%2332b583&color=%20%2312b76a"></a>
+    <a href="https://github.com/funnywolf/ai-soc-framework/" target="_blank">
+        <img alt="Issues closed" src="https://img.shields.io/github/issues-search?query=repo%3Afunnywolf%2Fviper%20is%3Aclosed&label=issues%20closed&labelColor=%20%237d89b0&color=%20%235d6b98"></a>
+    <a href="https://github.com/funnywolf/viper/releases" target="_blank">
+        <img alt="Release" src="https://img.shields.io/github/v/release/funnywolf/viper?style=flat&label=Release&color=limegreen"></a>
+</p>
 
-- 基于 Webhook + Redis Stream 的告警流水线, 支持主流 SIEM 平台
-- 提供 Langchain/Langgraph/Dify 等 AI Agent 模块模板, 快速开发 Pre Automation/Post Automation 模块
-- 内置功能齐全的 SIRP 平台(AI SOAR), 支持 Artifact/Alert/Case 网络安全告警数据模型
-- AI SOAR 内置简单易用的告警聚合功能, 支持默认规则和自定义规则
-- 框架代码皆为 Python 编写, 易于二次开发和扩展
+<p align="center">
+  <a href="./README.md"><img alt="README in English" src="https://img.shields.io/badge/English-d9d9d9"></a>
+  <a href="./README_ZH.md"><img alt="简体中文版自述文件" src="https://img.shields.io/badge/简体中文-d9d9d9"></a>
+</p>
 
-## 为什么使用 ASF & ASF 解决哪些问题
 
-- 预算 / 资源有限无法购买商用 SOAR 产品
+**AI SOC FRAMEWORK (ASF)** is a powerful, flexible, and open-source automated security operations platform. It integrates AI Agent capabilities with automation orchestration, supporting mainstream SIEM/SOAR scenarios to help enterprises efficiently build intelligent security operations systems.
 
-> ASF 完全开源免费, 且支持对接社区版的 ELK(SIEM), 企业只需有基础的安全设备和日志采集能力即可构建完整的 SOC 基础设施
+## Core Features
 
-- 所有网络安全相关数据不允许离开企业内网
+- 🧠 **AI-driven Intelligence**: Utilizes built-in AI Agent templates like Langgraph and Dify, supporting local LLMs to enhance alert analysis and automated response capabilities.
+- 📊 **Built-in SIRP Platform**: Comes with a ready-to-use Security Incident Response Platform (SIRP) built on Nocoly, allowing for rapid customization of user interfaces, data models, reports, and workflows.
+- ⚙️ **Powerful Automation Workflow**: Achieves efficient alert processing through Webhook + Redis Stream, natively supporting mainstream SIEM platforms such as Splunk and Kibana (ELK).
+- 🛠️ **Highly Extensible**: Provides a rich library of modules and plugins. The entire framework is written in Python, facilitating secondary development and integration with various security devices and APIs.
+- 🛡️ **Local Deployment & Data Control**: Supports complete local deployment. All data, models, and operations can be hosted within your own environment, ensuring enterprise data security and privacy.
+- ⚡ **Streaming and Batch Processing**: Offers streaming processing (modules) for real-time alert analysis and event-driven automation (playbooks) for user-triggered tasks.
 
-> ASF 所有组件 (AI SOAR/Redis Stack/Module Framework) 均可本地部署,
-> 通过 vllm/ollama 等部署本地化的 LLM, 实现完全本地化的 AI Agent 能力
+## Architecture Overview
 
-- 对于 SIRP 有大量定制化需求, 不限于个性化 UI, 定制化流程, 自定义数据模型, 数据报表等
+ASF processes security alerts and incidents through a simplified multi-stage process:
 
-> AI SOAR 基于 [Nocoly](https://www.nocoly.com/) 构建, 无需编写代码即可实现定制化 UI 修改, 自定义工作流, 自定义报表等
+1. **SIEM/Alert Sources**: EDR, NDR, or other security tools send alerts to a SIEM (e.g., Splunk, Kibana).
+2. **Webhook Forwarder**: The SIEM forwards these alerts via Webhook to the ASF's built-in Webhook receiver.
+3. **Redis Stream**: The receiver pushes the alerts to the corresponding Redis Stream, serving as a persistent message queue. Each alert type has its own stream.
+4. **Module Engine**: ASF **modules** consume alerts from their designated streams, perform analysis (often using AI Agents), enrich data, and determine outcomes.
+5. **SIRP Platform**: The output of the modules (now formatted into standardized security records) is sent to the **SIRP** platform, where cases, alerts, and artifacts are created or updated.
+6. **Playbook Engine**: Analysts can trigger **playbooks** from the SIRP user interface against cases, alerts, or artifacts to perform further automated actions, such as threat intelligence enrichment or remediation.
 
-- 出于特定的安全业务需求或提高效率, 需要定制化的 AI Agent 分析告警
+![img_1.webp](Docker/Img/img_20.png)
+![img_2.webp](Docker/Img/img_21.png)
+![img_2.webp](Docker/Img/img_22.png)
+![img_3.webp](Docker/Img/img_23.png)
+![img_4.webp](Docker/Img/img_24.png)
 
-> ASF 提供模块模板及样例模块, 用户可根据自身需求快速开发定制化的 AI Agent 模块, 支持多框架(Langchain/Langgraph/Dify 等)
+## Official Website
 
-- 内部系统 / 设备接口众多, 需要额外的数据处理及转化, 主流的 SOAR(如 Swimlane/Splunk SOAR)或可视化编排产品 (n8n) 等无法满足需求
-
-> ASF 的模块开发完全基于 Python, 用户可以使用任何 Python 库, 并且可以灵活地对接任何 API 或设备
-
-- SOAR 的自动化剧本和自定义的自动化脚本无法调试
-
-> ASF 中有用于调试的适配性代码, 用户可单独运行模块对指定告警 (Redis Insight 检索查看) 进行调试, 而无需启动整个框架
-
-## 不适用于哪些场景
-
-- 安全团队没有基础的 Python 开发能力
-
-> ASF 不是开箱即用平台, 需要一定的 Python 开发能力来进行模块开发和定制化
-
-- 企业使用单独厂商一揽子解决方案(如 XDR/MDR/MSS 等)
-
-> ASF 需要告警数据或日志来进行自动化分析,XDR/MDR/MSS 等封闭系统无法实现
-
-- 企业没有基础的安全设备和日志采集能力
-
-> 没有设备就没有日志和告警, 那也就不需要自动化
-
-## 许可证
-
-该项目采用 [MIT](https://choosealicense.com/licenses/mit/) 许可证。
-
+[https://asf.viperrtp.com/zh/](https://asf.viperrtp.com/zh/)

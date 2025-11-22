@@ -37,7 +37,7 @@ class LanggraphPlaybook(BasePlaybook):
         config = RunnableConfig()
         config["configurable"] = {"thread_id": self.module_name}
         if self.agent_state is None:
-            self.agent_state = AgentState(messages=[], alert_raw={}, temp_data={}, analyze_result={})
+            self.agent_state = AgentState()
         for event in self.graph.stream(self.agent_state, config, stream_mode="values"):
             self.logger.debug(event)
 

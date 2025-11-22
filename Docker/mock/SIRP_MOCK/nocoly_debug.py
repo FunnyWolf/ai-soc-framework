@@ -1,12 +1,36 @@
 from Docker.mock.SIRP_MOCK.alert import get_mock_alerts
 from Docker.mock.SIRP_MOCK.rule import rule_list
 from Lib.api import get_current_time_string, string_to_timestamp, generate_four_random_timestamps
-from Lib.grouprule import GroupRule
+from PLUGINS.SIRP.grouprule import GroupRule
 from PLUGINS.SIRP.nocolyapi import OptionSet
-from PLUGINS.SIRP.sirpapi import Alert, Artifact, Case
+from PLUGINS.SIRP.sirpapi import Alert, Artifact, Case, create_alert_with_group_rule
 
-if __name__ == "__main__":
 
+def import_alerts():
+    alert_list = get_mock_alerts()
+    ALL_RULES = {}
+    for rule in rule_list:
+        ALL_RULES[rule.rule_id] = rule
+
+    for alert in alert_list:
+        rule_def: GroupRule = ALL_RULES.get(alert["rule_id"])
+        if rule_def is None:
+            print(f"未找到规则定义，跳过处理此告警: {alert['rule_id']}")
+            continue
+
+        default_times = generate_four_random_timestamps()
+        alert_date = default_times["alert_date"]
+        created_date = default_times["created_date"]
+        acknowledged_date = default_times["acknowledged_date"]
+        closed_date = default_times["closed_date"]
+
+        alert["name"] = alert["rule_name"]
+        alert["alert_date"] = alert_date
+
+        case_row_id = create_alert_with_group_rule(alert, rule_def)
+
+
+def old():
     # print("使用自定义参数生成时间戳:")
     # custom_times = generate_four_random_timestamps(
     #     days_ago_max=5,  # T1 在当前时间前 5 天内
@@ -77,6 +101,8 @@ if __name__ == "__main__":
             row_id_list = Artifact.update_or_create(fields, artifact_filter)
             artifact_rowid_list.extend(row_id_list)
 
+        case_row_id = create_alert_with_group_rule(input_alert, rule)
+
         alert_fields = [
             {"id": "tags", "value": alert["tags"], "type": 2},
             {"id": "severity", "value": alert["severity"]},
@@ -91,7 +117,7 @@ if __name__ == "__main__":
             {"id": "artifact", "value": artifact_rowid_list},
         ]
         # alert
-        row_id_alert = Alert.create(alert_fields)
+        row_id_alert = Alert.create(alert)
         print(f"create alert: {row_id_alert}")
 
         # case
@@ -160,3 +186,7 @@ if __name__ == "__main__":
             ]
             row_id_updated = Case.update(row_id_case, case_field)
             print(f"update case: {row_id_updated}")
+
+
+if __name__ == "__main__":
+    import_alerts()

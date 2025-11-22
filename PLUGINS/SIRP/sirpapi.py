@@ -5,28 +5,11 @@ from typing import TypedDict, List, Optional, Union, Dict, Any, NotRequired
 import requests
 
 from Lib.api import string_to_timestamp, get_current_time_string
-from Lib.grouprule import GroupRule
 from Lib.log import logger
 from PLUGINS.Embeddings.embeddingsapi import EmbeddingsAPI
 from PLUGINS.SIRP.CONFIG import SIRP_NOTICE_WEBHOOK
+from PLUGINS.SIRP.grouprule import GroupRule
 from PLUGINS.SIRP.nocolyapi import WorksheetRow, OptionSet
-
-
-class InputAlert(TypedDict):
-    source: str
-    rule_id: str
-    rule_name: str
-    name: str
-    alert_date: str
-    created_date: str
-    tags: List[str]
-    severity: str
-    reference: NotRequired[str]
-    source_data_identifier: NotRequired[str]
-    description: str
-    summary_ai: NotRequired[Optional[Union[str, Dict[str, Any]]]]
-    artifact: List[Dict]
-    raw_log: NotRequired[Optional[Union[str, Dict[str, Any]]]]
 
 
 class InputCase(TypedDict):
@@ -51,6 +34,23 @@ class InputCase(TypedDict):
     recommended_actions_ai: NotRequired[List[str]]
 
     alert: List[str]
+
+
+class InputAlert(TypedDict):
+    source: str
+    rule_id: str
+    rule_name: str
+    name: str
+    alert_date: str
+    created_date: str
+    tags: List[str]
+    severity: str
+    reference: NotRequired[str]
+    source_data_identifier: NotRequired[str]
+    description: str
+    summary_ai: NotRequired[Optional[Union[str, Dict[str, Any]]]]
+    artifact: List[Dict]
+    raw_log: NotRequired[Optional[Union[str, Dict[str, Any]]]]
 
 
 class InputArtifact(TypedDict):
@@ -112,15 +112,11 @@ class Alert(object):
 
     @staticmethod
     def create(alert: InputAlert):
-        # debug
-
-        # debug
-
         artifact_rowid_list = []
         artifacts: list[dict] = alert.get("artifact", [])
         for artifact in artifacts:
-            if artifact.get("deduplication_key") is None:
-                artifact["deduplication_key"] = f"{artifact["type"]}-{artifact["value"]}"
+            # if artifact.get("deduplication_key") is None:
+            #     artifact["deduplication_key"] = f"{artifact["type"]}-{artifact["value"]}"
 
             artifact_fields = [
                 {"id": "type", "value": artifact.get("type")},
@@ -149,6 +145,9 @@ class Alert(object):
 
             row_id_list = Artifact.update_or_create(artifact_fields, artifact_filter)
             artifact_rowid_list.extend(row_id_list)
+
+        if alert.get("created_date") is None:
+            alert["created_date"] = get_current_time_string()
 
         alert_fields = [
             {"id": "tags", "value": alert.get("tags"), "type": 2},
@@ -333,11 +332,13 @@ def create_alert_with_group_rule(alert: InputAlert, rule_def: GroupRule) -> str:
         else:
             workbook = rule_def.workbook
 
+        case_status_new = OptionSet.get_option_key_by_name_and_value("case_status", "New")
+
         case: InputCase = {
             "title": rule_def.generate_case_title(artifacts=artifacts),
             "deduplication_key": deduplication_key,
             "alert": [row_id_alert],
-            "case_status": "New",
+            "case_status": case_status_new,
             "created_date": get_current_time_string(),
             "tags": alert["tags"],
             "severity": alert["severity"],
@@ -353,25 +354,30 @@ def create_alert_with_group_rule(alert: InputAlert, rule_def: GroupRule) -> str:
         if row_id_alert not in existing_alerts:
             existing_alerts.append(row_id_alert)
 
-        option_new_score = OptionSet.get_option_by_name_and_value("alert_case_severity", alert["severity"]).get("score", 0)
-
-        severity_value_exist = row.get("severity")
-        option_exist_score = OptionSet.get_option_by_name_and_value("alert_case_severity", severity_value_exist).get("score", 0)
-
-        if option_new_score > option_exist_score:
-            severity = alert["severity"]
-        else:
-            severity = severity_value_exist
-
-        tags_exist = row.get("tags", [])
-        for tag in alert["tags"]:
-            if tag not in tags_exist:
-                tags_exist.append(tag)
-
         case_field = [
             {"id": "alert", "value": existing_alerts},
-            {"id": "severity", "value": severity},
-            {"id": "tags", "value": tags_exist, "type": 2}
         ]
+
+        # change case severity if new alert severity is higher
+        if rule_def.follow_alert_severity:
+            option_new_score = OptionSet.get_option_by_name_and_value("alert_case_severity", alert["severity"]).get("score", 0)
+
+            severity_value_exist = row.get("severity")
+            option_exist_score = OptionSet.get_option_by_name_and_value("alert_case_severity", severity_value_exist).get("score", 0)
+
+            if option_new_score > option_exist_score:
+                severity = alert["severity"]
+            else:
+                severity = severity_value_exist
+            case_field.append({"id": "severity", "value": severity})
+
+        # append alert tags to case tags
+        if rule_def.append_alert_tags:
+            tags_exist = row.get("tags", [])
+            for tag in alert["tags"]:
+                if tag not in tags_exist:
+                    tags_exist.append(tag)
+            case_field.append({"id": "tags", "value": tags_exist, "type": 2})
+
         row_id_updated = Case.update(row_id_case, case_field)
         return row_id_updated

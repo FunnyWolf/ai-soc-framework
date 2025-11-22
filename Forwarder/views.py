@@ -20,7 +20,6 @@ class WebhookSplunkView(BaseView):
             app = request.data.get('app')
             owner = request.data.get('owner')
             results_link = request.data.get('results_link')
-            app = request.data.get('app')
             logger.debug(f"Splunk webhook: {request.data}")
             redis_stream_api = RedisStreamAPI()
             redis_stream_api.send_message(search_name, result)
@@ -62,6 +61,7 @@ class WebhookNocolyMailView(BaseView):
     def create(self, request, **kwargs):
         try:
             data = request.data
+            logger.info(data)
             context = data_return(200, {}, CODE_MSG_ZH.get(200), CODE_MSG_EN.get(200))
             return Response(context)
         except Exception as E:

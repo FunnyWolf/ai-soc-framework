@@ -9,9 +9,9 @@ from pydantic import BaseModel, Field, ConfigDict
 
 from Lib.api import get_current_time_string
 from Lib.basemodule import LanggraphModule
-from Lib.grouprule import GroupRule
 from Lib.llmapi import AgentState
 from PLUGINS.LLM.llmapi import LLMAPI
+from PLUGINS.SIRP.grouprule import GroupRule
 from PLUGINS.SIRP.sirpapi import create_alert_with_group_rule, InputAlert, Case
 
 
@@ -59,7 +59,7 @@ class Module(LanggraphModule):
             if alert is None:
                 return
 
-            state.alert_raw = alert
+            state.alert = alert
             artifact: list = alert.get("artifact")
             alert_date: str = alert.get("alert_date")
             rule_name = "Suspicious command and control (C2) communication"

@@ -6,8 +6,8 @@ from pydantic import BaseModel, Field
 
 from Lib.api import string_to_string_time, get_current_time_string
 from Lib.basemodule import BaseModule
-from Lib.grouprule import GroupRule
 from PLUGINS.Dify.dify import Dify
+from PLUGINS.SIRP.grouprule import GroupRule
 from PLUGINS.SIRP.sirpapi import create_alert_with_group_rule, InputAlert
 
 
@@ -46,7 +46,7 @@ class Module(BaseModule):
         client = Dify()
         api_key = client.get_dify_api_key(self.module_name)
         inputs = {
-            "alert_raw": json.dumps(self.agent_state.alert_raw)
+            "alert": json.dumps(self.agent_state.alert_raw)
         }
 
         result = client.run_workflow(
@@ -96,19 +96,16 @@ class Module(BaseModule):
                 {
                     "type": "mail_to",
                     "value": mail_to,
-                    # "deduplication_key": f"mail_to-{mail_to}",
                     "enrichment": {"update_time": get_current_time_string()}  # just for test, no meaning, data should come from TI or other cmdb
                 },
                 {
                     "type": "mail_subject",
                     "value": mail_subject,
-                    # "deduplication_key": f"mail_subject-{mail_subject}",
                     "enrichment": {"update_time": get_current_time_string()}
                 },
                 {
                     "type": "mail_from",
                     "value": mail_from,
-                    # "deduplication_key": f"mail_from-{mail_from}",
                     "enrichment": {"update_time": get_current_time_string()}
                 },
             ],

@@ -10,9 +10,9 @@ from pydantic import BaseModel, Field
 
 from Lib.api import string_to_string_time, get_current_time_string
 from Lib.basemodule import LanggraphModule
-from Lib.grouprule import GroupRule
 from Lib.llmapi import AgentState
 from PLUGINS.LLM.llmapi import LLMAPI
+from PLUGINS.SIRP.grouprule import GroupRule
 from PLUGINS.SIRP.sirpapi import create_alert_with_group_rule, InputAlert
 
 
@@ -48,7 +48,7 @@ class Module(LanggraphModule):
                        "Authentication-Results": headers["Authentication-Results"]}
             alert["headers"] = headers
 
-            state.alert_raw = alert
+            state.alert = alert
             return state
 
         # Define nodes
@@ -124,7 +124,7 @@ class Module(LanggraphModule):
             messages = [
                 system_message,
                 *few_shot_examples,
-                HumanMessage(content=json.dumps(state.alert_raw)),
+                HumanMessage(content=json.dumps(state.alert)),
             ]
 
             # Execute
@@ -140,7 +140,7 @@ class Module(LanggraphModule):
         def alert_output_node(state: AgentState):
             """Process analysis results"""
             analyze_result: AnalyzeResult = AnalyzeResult(**state.analyze_result)
-            alert_raw = state.alert_raw
+            alert_raw = state.alert
 
             mail_to = alert_raw["headers"]["To"]
             mail_subject = alert_raw["headers"]["Subject"]
@@ -151,7 +151,7 @@ class Module(LanggraphModule):
                 severity = "Info"
 
             # splunk webhook timestamp format: 2024-10-10T12:34:56.789Z
-            # alert_date = string_to_string_time(alert_raw.get("@timestamp"), "%Y-%m-%dT%H:%M:%S.%fZ", "%Y-%m-%dT%H:%M:%SZ")
+            # alert_date = string_to_string_time(alert.get("@timestamp"), "%Y-%m-%dT%H:%M:%S.%fZ", "%Y-%m-%dT%H:%M:%SZ")
             alert_date = string_to_string_time(alert_raw.get("headers").get("Date"), "%a, %d %b %Y %H:%M:%S %z", "%Y-%m-%dT%H:%M:%SZ")
             description = f"""
                 ## Analyze Result (AI)

@@ -22,9 +22,9 @@ class AgentState(BaseModel):
 
 
 class Playbook(LanggraphPlaybook):
-    RUN_AS_JOB = True
-    TYPE = "ALERT"
-    NAME = "Suggestion Generation by LLM"
+    RUN_AS_JOB = True  # 异步模块
+    TYPE = "ALERT"  # 分类标签
+    NAME = "Suggestion Generation by LLM"  # 剧本名称
 
     def __init__(self):
         super().__init__()  # do not delete this code
@@ -35,13 +35,11 @@ class Playbook(LanggraphPlaybook):
             """预处理数据"""
             # worksheet = self.param("worksheet")
             rowid = self.param("rowid")
-            alert = WorksheetRow.get(Alert.WORKSHEET_ID, rowid, include_system_fields=False)
+            worksheet = self.param("worksheet")
+            alert = WorksheetRow.get(worksheet, rowid, include_system_fields=False)
             artifacts = WorksheetRow.relations(Alert.WORKSHEET_ID, alert.get("rowId"), "artifact", relation_worksheet_id=Artifact.WORKSHEET_ID,
                                                include_system_fields=False)
             alert["artifact"] = artifacts
-
-            Notice.send(self.param("user"), "Alert_Suggestion_Gen_By_LLM preprocess_node Finish", f"rowid：{self.param('rowid')}")
-
             state.alert = alert
             return state
 
@@ -82,8 +80,6 @@ class Playbook(LanggraphPlaybook):
             response = llm.invoke(messages)
             response = LLMAPI.extract_think(response)  # langchain chatollama bug临时方案
             state.suggestion = response.content
-
-            Notice.send(self.param("user"), "Alert_Suggestion_Gen_By_LLM analyze_node Finish", f"rowid：{self.param('rowid')}")
             return state
 
         def output_node(state: AgentState):
